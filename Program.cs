@@ -1,7 +1,11 @@
-﻿using OpenTK.Windowing.Desktop;
+﻿///   <date> 27/03/2023 </date>
+///   <author> Caio Henriques Sica Lamas </author> 
+///   <e-mail> caio.lamas@ifnmg.edu.br </e-mail>
+
+using OpenTK.Windowing.Desktop;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using _3dCG.Examples;
+using _3dCG.Examples.Basics;
 
 namespace _3dCG
 {
@@ -9,18 +13,21 @@ namespace _3dCG
     {
         static void Main(string[] args)
         {
-            // Create the app's window
-            var _window = new Chapter_13_HelloNormal(GameWindowSettings.Default,
+            // Cria e configura uma janela da aplicação
+            // TODO: Permitir a seleção dos diferentes exemplos / casos de uso a partir de uma janela central,
+            // através de uma lista ou pelos seus nomes.
+            // HACK: A configuração da resolução de tela poderia ser carregada diferentemente para namespaces diferentes. Podemos usar json + namespace para rever isso.
+            var _window = new Chapter_01_HelloWindow(GameWindowSettings.Default,
                 new NativeWindowSettings()
                 {
                     Size = new Vector2i(800, 800),
                     WindowBorder = WindowBorder.Fixed,
                     WindowState = WindowState.Normal,
                 });
-
+            // HACK: Precisa pensar numa forma de configurar esse caminho automaticamente para os exemplos, de repente, utilzar o json + namespace de alguma forma para organizar isso.
             Shader.SetRootPath("Resources/Shader/Basics/");
 
-            // Run it!
+            // Executa a aplicação
             _window.Run();
         }
     }

@@ -4,7 +4,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
-namespace _3dCG.Examples
+namespace _3dCG.Examples.Basics
 {
     internal class Chapter_12_HelloLight : GameWindow
     {

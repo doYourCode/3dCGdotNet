@@ -79,10 +79,10 @@
     <None Update="Resources\Shader\Basics\HelloShader.vert">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Shader\Image\HelloShader.frag">
+    <None Update="Resources\Shader\Image\HelloImage.frag">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Shader\Image\HelloShader.vert">
+    <None Update="Resources\Shader\Image\HelloImage.vert">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Texture\David_Albedo.bmp">

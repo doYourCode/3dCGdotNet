@@ -4,6 +4,8 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
+//TODO: esse exemplo deverá demonstrar a utilizãção de um framebuffer para a criaççao de sombreamento (shadow mappping).
+
 namespace _3dCG.Examples.Basics
 {
     internal class Chapter_15_HelloShadow : GameWindow

@@ -4,6 +4,8 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
+//TODO: esse exemplo deverá demonstrar a capacidade de renderizar para um frame buffer específico e utilizá-lo de maneiras distintas no processo de render.
+
 namespace _3dCG.Examples.Basics
 {
     internal class Chapter_14_HelloFrameBuffer : GameWindow

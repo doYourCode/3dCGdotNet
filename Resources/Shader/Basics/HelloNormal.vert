@@ -8,7 +8,6 @@ layout(location = 4) in vec3 aTangent;
 
 out VS_OUT
 {
-    vec3 fragPosition;
     vec3 color;
     vec2 uv;
     vec3 tangentLightPos;
@@ -25,7 +24,7 @@ uniform vec3 viewPosition;
 
 void main(void)
 {
-    vs_out.fragPosition = vec3(model * vec4(aPosition, 1.0));
+    vec3 fragPosition = vec3(model * vec4(aPosition, 1.0));
     vs_out.uv = aUv;
     vs_out.color = aColor;
 
@@ -41,7 +40,7 @@ void main(void)
 
     vs_out.tangentLightPos = TBN * lightPosition;
     vs_out.tangentViewPos  = TBN * viewPosition;
-    vs_out.tangentFragPos  = TBN * vs_out.fragPosition;
+    vs_out.tangentFragPos  = TBN * fragPosition;
 
-    gl_Position = view * projection * vec4(vs_out.fragPosition, 1.0);
+    gl_Position = vec4(fragPosition, 1.0) * view * projection ;
 }

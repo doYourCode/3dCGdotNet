@@ -4,7 +4,6 @@ out vec4 outputColor;
 
 in VS_OUT
 {
-    vec3 fragPosition;
     vec3 color;
     vec2 uv;
     vec3 tangentLightPos;
@@ -33,11 +32,11 @@ void main()
     vec3 diffuse = diffuseColor * diffuseLight;
 
     // Specular lighting
-    float specularStrength = 0.32;
+    float specularStrength = 0.24;
     vec3 viewDir = normalize(fs_in.tangentViewPos - fs_in.tangentFragPos.xyz);
     vec3 reflectDir = reflect(lightDir, normal);
     vec3 halfwayDir = normalize(lightDir + viewDir);  
-    float specular = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+    float specular = pow(max(dot(normal, halfwayDir), 0.0), 12.0);
 
-    outputColor = vec4(diffuse + specular, 1.0);
+    outputColor = vec4(diffuse + (specular * specularStrength), 1.0);
 }

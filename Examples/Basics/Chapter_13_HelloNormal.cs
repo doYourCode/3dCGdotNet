@@ -4,6 +4,8 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
+// TODO: consertar a rotação das normais
+
 namespace _3dCG.Examples.Basics
 {
     internal class Chapter_13_HelloNormal : GameWindow
@@ -41,8 +43,8 @@ namespace _3dCG.Examples.Basics
             _texture = Texture.LoadFromFile("Resources/Texture/David_Albedo.bmp");
             _normalTexture = Texture.LoadFromFile("Resources/Texture/David_Normals.bmp");
 
-            _shader.SetInt("texture0", 0);
-            _shader.SetInt("texture1", 1);
+            _shader.SetInt("diffuseMap", 0);
+            _shader.SetInt("normalMap", 1);
 
             _mesh = new TangentSpaceMesh("Resources/Mesh/David.obj");
 

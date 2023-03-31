@@ -1,32 +1,43 @@
 ﻿#version 400
 
-in vec3 vColor;
-in vec2 vUv;
-in vec3 TangentLightPos;
-in vec3 TangentViewPos;
-in vec3 TangentFragPos;
-
 out vec4 outputColor;
 
-uniform sampler2D texture0;
-uniform sampler2D texture1;
+in VS_OUT
+{
+    vec3 fragPosition;
+    vec3 color;
+    vec2 uv;
+    vec3 tangentLightPos;
+    vec3 tangentViewPos;
+    vec3 tangentFragPos;
+} fs_in;
+
+uniform sampler2D diffuseMap;
+uniform sampler2D normalMap;
 
 uniform vec3 lightColor;
 
 void main()
 {
-    vec3 imgNormal = texture(texture1, vUv).xyz;
-    vec3 rangedNormal = imgNormal * 2.0 - 1.0;   
+    // obtain normal from normal map in range [0,1]
+    vec3 normal = texture(normalMap, fs_in.uv).rgb;
+    // transform normal vector to range [-1,1]
+    normal = normalize(normal * 2.0 - 1.0); // this normal is in tangent space
+
+    // Get the difusse color from texture
+    vec3 diffuseColor = texture(diffuseMap, fs_in.uv).rgb;
+
     // Diffuse lighting
-    vec3 norm = normalize(rangedNormal);
-    vec3 lightDir = normalize(TangentLightPos - TangentFragPos.xyz);
-    float diffuse = max(dot(norm, lightDir), 0.0);
+    vec3 lightDir = normalize(fs_in.tangentLightPos - fs_in.tangentFragPos.xyz);
+    float diffuseLight = max(dot(normal, lightDir), 0.0);
+    vec3 diffuse = diffuseColor * diffuseLight;
 
     // Specular lighting
-    float specularStrength = 0.16;
-    vec3 viewDir = normalize(-TangentViewPos - TangentFragPos.xyz);
-    vec3 reflectDir = reflect(lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 8);
+    float specularStrength = 0.32;
+    vec3 viewDir = normalize(fs_in.tangentViewPos - fs_in.tangentFragPos.xyz);
+    vec3 reflectDir = reflect(lightDir, normal);
+    vec3 halfwayDir = normalize(lightDir + viewDir);  
+    float specular = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
 
-    outputColor = texture(texture0, vUv) * diffuse + spec * specularStrength;
+    outputColor = vec4(diffuse + specular, 1.0);
 }

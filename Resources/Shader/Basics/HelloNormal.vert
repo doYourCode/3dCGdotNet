@@ -6,11 +6,15 @@ layout(location = 2) in vec2 aUv;
 layout(location = 3) in vec3 aNormal;
 layout(location = 4) in vec3 aTangent;
 
-out vec3 vColor;
-out vec2 vUv;
-out vec3 TangentLightPos;
-out vec3 TangentViewPos;
-out vec3 TangentFragPos;
+out VS_OUT
+{
+    vec3 fragPosition;
+    vec3 color;
+    vec2 uv;
+    vec3 tangentLightPos;
+    vec3 tangentViewPos;
+    vec3 tangentFragPos;
+} vs_out;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -21,11 +25,13 @@ uniform vec3 viewPosition;
 
 void main(void)
 {
-    vUv = aUv;
-    vColor = aColor;
+    vs_out.fragPosition = vec3(model * vec4(aPosition, 1.0));
+    vs_out.uv = aUv;
+    vs_out.color = aColor;
 
-    vec3 T = normalize(vec3(model * vec4(aTangent, 0.0)));
-    vec3 N = normalize(vec3(model * vec4(aNormal, 0.0)));
+    mat3 normalMatrix = transpose(inverse(mat3(model)));
+    vec3 T = normalize(vec3(normalMatrix * aTangent));
+    vec3 N = normalize(vec3(normalMatrix * aNormal));
     // re-orthogonalize T with respect to N
     T = normalize(T - dot(T, N) * N);
     // then retrieve perpendicular vector B with the cross product of T and N
@@ -33,9 +39,9 @@ void main(void)
     
     mat3 TBN = transpose(mat3(T, B, N));
 
-    TangentLightPos = TBN * lightPosition;
-    TangentViewPos  = TBN * viewPosition;
-    TangentFragPos  = TBN * vec3(model * vec4(aPosition, 1.0));
+    vs_out.tangentLightPos = TBN * lightPosition;
+    vs_out.tangentViewPos  = TBN * viewPosition;
+    vs_out.tangentFragPos  = TBN * vs_out.fragPosition;
 
-    gl_Position = vec4(aPosition, 1.0) * model * view * projection;
+    gl_Position = view * projection * vec4(vs_out.fragPosition, 1.0);
 }

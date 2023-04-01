@@ -54,7 +54,7 @@ namespace _3dCG.Examples.Basics
 
             _light = new Light
             {
-                Position = new Vector3D(2.0f, 2.0f, 2.0f),
+                Position = new Vector3D(20.0f, 20.0f, 20.0f),
                 Direction = new Vector3D(1.0f, 1.0f, 1.0f),
                 ColorDiffuse = new Color3D(1.0f, 1.0f, 1.0f)
             };

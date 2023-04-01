@@ -4,8 +4,6 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
-// TODO: consertar a rotação das normais
-
 namespace _3dCG.Examples.Basics
 {
     internal class Chapter_13_HelloNormal : GameWindow

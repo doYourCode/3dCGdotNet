@@ -32,7 +32,8 @@ namespace _3dCG.Examples.Basics
             // Dados que serão carregados no buffer (por hora só temos as posições dos vértices de um triângulo)
             float[] _data =
             {
-                // Posições
+                // Posições (no eixo X, Y e Z respectivamente)
+
                 -0.75f, -0.75f, 0.0f, // Vértice 0 -> canto inferior esquerdo
                 0.75f , -0.75f, 0.0f, // Vértice 1 -> canto inferior direito
                 0.0f  , 0.75f , 0.0f  // Vértice 2 -> canto superior (no centro da tela)
@@ -76,7 +77,7 @@ namespace _3dCG.Examples.Basics
         }
 
         /// <summary>
-        /// Apaga os dados carregados na memória de vídeo
+        /// Apaga os dados não gerenciados carregados na memória de vídeo
         /// </summary>
         protected override void OnUnload()
         {

@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using _3dCG.Core;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -12,6 +13,7 @@ namespace _3dCG.Examples.Basics
         private Shader _shader;
         private Texture _texture;
         private BasicMesh _mesh;
+        private Transform _transform;
         private Matrix4 _modelMatrix;
 
         public Chapter_10_HelloTransformation(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
@@ -30,6 +32,8 @@ namespace _3dCG.Examples.Basics
             _texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png");
 
             _mesh = new BasicMesh("Resources/Mesh/Suzanne.obj");
+
+            _transform = new Transform();
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         }
@@ -53,11 +57,11 @@ namespace _3dCG.Examples.Basics
             base.OnUpdateFrame(args);
 
             // Rotate the model matrix
-            _modelMatrix = Matrix4.Identity * Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(_tick));
+            _transform.SetRotation(new Vector3(0.0f, _tick, 0.0f));
             // Identity matrix (per object)
-            _shader.SetMatrix4("model", _modelMatrix);
+            _shader.SetMatrix4("model", _transform.GetModelMatrix());
 
-            _tick += 0.01f;
+            _tick += 0.0001f;
         }
 
         protected override void OnUnload()

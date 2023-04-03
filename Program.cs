@@ -1,8 +1,4 @@
-﻿///   <date> 27/03/2023 </date>
-///   <author> Caio Henriques Sica Lamas </author> 
-///   <e-mail> caio.lamas@ifnmg.edu.br </e-mail>
-
-using OpenTK.Windowing.Desktop;
+﻿using OpenTK.Windowing.Desktop;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using _3dCG.Examples.Basics;

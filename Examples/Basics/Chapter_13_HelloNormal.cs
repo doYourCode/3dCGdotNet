@@ -1,4 +1,4 @@
-﻿using Assimp;
+﻿using _3dCG.Core;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -53,11 +53,13 @@ namespace _3dCG.Examples.Basics
             _cameraController = new CameraController(_camera, this);
 
             _light = new Light
-            {
-                Position = new Vector3D(20.0f, 20.0f, 20.0f),
-                Direction = new Vector3D(1.0f, 1.0f, 1.0f),
-                ColorDiffuse = new Color3D(1.0f, 1.0f, 1.0f)
-            };
+                (
+                    new Vector3(1.0f, 1.0f, 1.0f),
+                    new Vector3(1.0f, 1.0f, 1.0f),
+                    new Vector3(1.0f, 1.0f, 1.0f),
+                    1.0f,
+                    0.0f
+                );
 
             _lightPositionLocation = GL.GetUniformLocation(_shader.Handle, "lightPosition");
             _lightDirectionLocation = GL.GetUniformLocation(_shader.Handle, "lightDirection");
@@ -81,9 +83,9 @@ namespace _3dCG.Examples.Basics
             _shader.Use();
 
             // Uniforms update
-            GL.Uniform3(_lightPositionLocation, _light.Position.ToOpenTK());
-            GL.Uniform3(_lightDirectionLocation, _light.Direction.ToOpenTK());
-            GL.Uniform3(_lightColorLocation, _light.ColorDiffuse.ToOpenTK());
+            GL.Uniform3(_lightPositionLocation, _light.Position);
+            GL.Uniform3(_lightDirectionLocation, _light.Direction);
+            GL.Uniform3(_lightColorLocation, _light.Color);
             GL.Uniform3(_viewPositionLocation, _camera.Position);
 
             _mesh.Draw();

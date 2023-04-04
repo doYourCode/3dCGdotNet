@@ -14,7 +14,6 @@ namespace _3dCG.Examples.Basics
         private Texture _texture;
         private BasicMesh _mesh;
         private Transform _transform;
-        private Matrix4 _modelMatrix;
 
         public Chapter_10_HelloTransformation(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -57,7 +56,7 @@ namespace _3dCG.Examples.Basics
             base.OnUpdateFrame(args);
 
             // Rotate the model matrix
-            _transform.SetRotation(new Vector3(0.0f, _tick, 0.0f));
+            _transform.SetRotationY(_tick);
             // Identity matrix (per object)
             _shader.SetMatrix4("model", _transform.GetModelMatrix());
 

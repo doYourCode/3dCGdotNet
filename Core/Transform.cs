@@ -36,7 +36,10 @@ namespace _3dCG.Core
         /// </summary>
         public Transform(Vector3 pos, Vector3 rot) : this(pos, rot, Vector3.One) { }
 
-
+        /// <summary>
+        /// Gets an object space matrix of a transformed model.
+        /// </summary>
+        /// <returns></returns>
         public Matrix4 GetModelMatrix()
         {
             Matrix4 posMat = Matrix4.CreateTranslation(position);
@@ -59,7 +62,19 @@ namespace _3dCG.Core
         public Vector3 GetScale() { return scale; }
 
         public void SetPosition(Vector3 pos) { position = pos; }
+        public void SetPositionX(float pos) { position.X = pos; }
+        public void SetPositionY(float pos) { position.Y = pos; }
+        public void SetPositionZ(float pos) { position.Z = pos; }
+
+
         public void SetRotation(Vector3 rot) { rotation = rot; }
+        public void SetRotationX(float rot) { rotation.X = rot; }
+        public void SetRotationY(float rot) { rotation.Y = rot; }
+        public void SetRotationZ(float rot) { rotation.Z = rot; }
+
         public void SetScale(Vector3 scl) { scale = scl; }
+        public void SetScaleX(float scl) { scale.X = scl; }
+        public void SetScaleY(float scl) { scale.Y = scl; }
+        public void SetScaleZ(float scl) { scale.Z = scl; }
     }
 }

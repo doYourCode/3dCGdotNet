@@ -21,7 +21,6 @@ namespace _3dCG.Examples
         private static readonly byte POSITION_SIZE = (byte)(POSITION_COUNT * sizeof(float));
         private static readonly byte DATA_SIZE = (byte)((COLOR_COUNT + UV_COUNT + NORMAL_COUNT + TANGENT_COUNT) * sizeof(float));
 
-
         private int _vao;
         private int _vertexBuffer;
         private int _colorUVNormalBuffer;

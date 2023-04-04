@@ -18,7 +18,7 @@ namespace _3dCG.Core
         {
             position = pos;
             rotation = rot;
-            this.scale = scl;
+            scale = scl;
         }
 
         /// <summary>

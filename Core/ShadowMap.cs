@@ -11,11 +11,11 @@ namespace _3dCG.Core
         int depthMap;
         int _width, _height;
         Shader _simpleDepthShader;
-        Light light;
+        Light _light;
 
         public ShadowMap(Light light, ushort width, ushort height)
         {
-            light = light;
+            _light = light;
             _width = width;
             _height = height;
 
@@ -52,7 +52,7 @@ namespace _3dCG.Core
 
             // render scene from light's point of view
             _simpleDepthShader.Use();
-            _simpleDepthShader.SetMatrix4("lightSpaceMatrix", light.LightSpaceMatrix);
+            _simpleDepthShader.SetMatrix4("lightSpaceMatrix", _light.LightSpaceMatrix);
 
             GL.Viewport(0, 0, _width, _height);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, _depthMapFBO);

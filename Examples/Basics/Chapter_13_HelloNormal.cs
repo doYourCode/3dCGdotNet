@@ -14,7 +14,7 @@ namespace _3dCG.Examples.Basics
         private Texture _texture;
         private Texture _normalTexture;
         private TangentSpaceMesh _mesh;
-        private Matrix4 _modelMatrix;
+        private Transform _transform;
         private Camera _camera;
         private CameraController _cameraController;
         private Light _light;
@@ -45,6 +45,8 @@ namespace _3dCG.Examples.Basics
             _shader.SetInt("normalMap", 1);
 
             _mesh = new TangentSpaceMesh("Resources/Mesh/David.obj");
+
+            _transform = new Transform();
 
             // We initialize the camera so that it is 3 units back from where the rectangle is.
             // We also give it the proper aspect ratio.
@@ -98,14 +100,14 @@ namespace _3dCG.Examples.Basics
             base.OnUpdateFrame(args);
 
             // Rotate the model matrix
-            _modelMatrix = Matrix4.Identity * Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(_tick));
+            _transform.SetRotationY(_tick);
             // Identity matrix (per object)
-            _shader.SetMatrix4("model", _modelMatrix);
+            _shader.SetMatrix4("model", _transform.GetModelMatrix());
             // Camera matrices
             _shader.SetMatrix4("view", _camera.GetViewMatrix());
             _shader.SetMatrix4("projection", _camera.GetProjectionMatrix());
 
-            _tick += 0.01f;
+            _tick += 0.0001f;
 
             _cameraController.Update(args, KeyboardState, MouseState);
         }

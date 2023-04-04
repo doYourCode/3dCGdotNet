@@ -14,10 +14,10 @@ namespace _3dCG.Core
         public Matrix4 LightSpaceMatrix { get; set; }
         float near_plane = 1.0f, far_plane = 7.5f;
 
-        public Light(Vector3 position, Vector3 Direction, Vector3 color, float ambientIntensity, float diffuseIntensity)
+        public Light(Vector3 position, Vector3 direction, Vector3 color, float ambientIntensity, float diffuseIntensity)
         {
             Position = position;
-            Direction = Direction;
+            Direction = direction;
             Color = color;
             AmbientIntensity = ambientIntensity;
             DiffuseIntensity = diffuseIntensity;

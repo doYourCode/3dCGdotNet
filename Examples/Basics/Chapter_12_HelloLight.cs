@@ -13,10 +13,10 @@ namespace _3dCG.Examples.Basics
         private Shader _shader;
         private Texture _texture;
         private BasicMesh _mesh;
-        private Matrix4 _modelMatrix;
+        private Transform _transform;
         private Camera _camera;
         private CameraController _cameraController;
-        private Light _light;
+        private Core.Light _light;
 
         int _lightPositionLocation;
         int _lightDirectionLocation;
@@ -40,20 +40,15 @@ namespace _3dCG.Examples.Basics
 
             _mesh = new BasicMesh("Resources/Mesh/Suzanne.obj");
 
+            _transform = new Transform();
+
             // We initialize the camera so that it is 3 units back from where the rectangle is.
             // We also give it the proper aspect ratio.
             _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
 
             _cameraController = new CameraController(_camera, this);
 
-            _light = new Light
-                (
-                    new Vector3(1.0f, 1.0f, 1.0f), 
-                    new Vector3(1.0f, 1.0f, 1.0f), 
-                    new Vector3(1.0f, 1.0f, 1.0f), 
-                    1.0f, 
-                    0.0f
-                );
+            _light = new Light(Vector3.One, Vector3.One, Vector3.One, 1.0f, 0.0f);
 
             _lightPositionLocation = GL.GetUniformLocation(_shader.Handle, "lightPosition");
             _lightDirectionLocation = GL.GetUniformLocation(_shader.Handle, "lightDirection");
@@ -91,14 +86,14 @@ namespace _3dCG.Examples.Basics
             base.OnUpdateFrame(args);
 
             // Rotate the model matrix
-            _modelMatrix = Matrix4.Identity * Matrix4.CreateRotationY((float)MathHelper.DegreesToRadians(_tick));
+            _transform.SetRotationY(_tick);
             // Identity matrix (per object)
-            _shader.SetMatrix4("model", _modelMatrix);
+            _shader.SetMatrix4("model", _transform.GetModelMatrix());
             // Camera matrices
             _shader.SetMatrix4("view", _camera.GetViewMatrix());
             _shader.SetMatrix4("projection", _camera.GetProjectionMatrix());
 
-            _tick += 0.01f;
+            _tick += 0.0001f;
 
             _cameraController.Update(args, KeyboardState, MouseState);
         }

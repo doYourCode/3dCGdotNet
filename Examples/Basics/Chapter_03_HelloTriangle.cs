@@ -13,10 +13,13 @@ namespace _3dCG.Examples.Basics
     {
 
         // TODO: Criar uma classe para gerenciar os buffers de dados, e permitir que o usuário configure os atributos de cada buffer.
+
+        // Constantes relacionadas aos atributos dos vértices
         private const int POSITION = 0;
         private readonly int[] OFFSET = { 0 };
         private const int VERTEX_SIZE = 3 * sizeof(float);
 
+        // Para guardar os dados de vértices na memória de vídeo nós usaremos buffers, esses buffers requerem umareferência (handlers) que guardamos como índices em números inteiros.
         private int _vertexBufferObject;
         private int _vertexArrayObject;
 

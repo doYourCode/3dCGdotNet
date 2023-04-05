@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK.Mathematics;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,11 +9,18 @@ namespace _3dCG.Core
     {
         // TODO
 
-        private Shader shader;
-        private Texture albedo;
-        private Texture normalMap;
-        private Texture specularMap;
-        private Texture heightMap;
+        private Shader Shader { get; set; }
+        private Texture Albedo { get; set; }
+        private Texture NormalMap { get; set; }
+        private Texture SpecularMap { get; set; }
+        private Texture HeightMap { get; set; }
+
+        private Vector3 DiffuseColor { get; set; }
+
+        public Material()
+        {
+            //this.Shader = new Shader("Shaders/vertex.glsl", "Shaders/fragment.glsl");
+        }
 
     }
 }

@@ -1,8 +1,6 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using System.ComponentModel;
-using System;
 
 namespace _3dCG.Examples.Basics
 {

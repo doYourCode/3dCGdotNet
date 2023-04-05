@@ -9,7 +9,7 @@ namespace _3dCG.Core
         // TODO
 
         private Transform transform;
-        // private Mesh mesh;
+        private Geometry geometry;
         private Material material;
         private bool visible;
         private bool castShadow;

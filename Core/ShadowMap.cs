@@ -1,5 +1,5 @@
 ﻿using System;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 // TODO: Corrigir esse código, pois nãp está funcionando como planejado. Precisa definir melhor essa relação com a classe Light e também como o objeto se comporta ao ser renderizado.
 

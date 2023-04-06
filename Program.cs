@@ -2,6 +2,7 @@
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using _3dCG.Examples.Basics;
+using System;
 
 namespace _3dCG
 {
@@ -19,6 +20,7 @@ namespace _3dCG
                     Size = new Vector2i(800, 800),
                     WindowBorder = WindowBorder.Fixed,
                     WindowState = WindowState.Normal,
+                    APIVersion = new Version(3, 3),
                 });
             // HACK: Precisa pensar numa forma de configurar esse caminho automaticamente para os exemplos, de repente, utilzar o json + namespace de alguma forma para organizar isso.
             Shader.SetRootPath("Resources/Shader/Basics/");

@@ -35,6 +35,7 @@ namespace _3dCG.Examples.Basics
             base.OnLoad();
 
             GL.Enable(EnableCap.DepthTest);
+            GL.DepthFunc(DepthFunction.Less);
 
             _shader = new Shader("HelloNormal");
 
@@ -56,7 +57,7 @@ namespace _3dCG.Examples.Basics
 
             _light = new Light
                 (
-                    new Vector3(1.0f, 1.0f, 1.0f),
+                    new Vector3(10.0f, 10.0f, 10.0f),
                     new Vector3(1.0f, 1.0f, 1.0f),
                     new Vector3(1.0f, 1.0f, 1.0f),
                     1.0f,

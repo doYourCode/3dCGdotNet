@@ -33,6 +33,7 @@ namespace _3dCG.Examples
             // Loads the data into a "scene"
             var scene = context.ImportFile(filePath, PostProcessSteps.Triangulate | PostProcessSteps.GenerateSmoothNormals | PostProcessSteps.FlipUVs);
 
+            // Arrays p/ guardar copia dos dados na RAM
             var vertices = new List<Vector3>();
             var colors = new List<Color4>();
             var uvs = new List<Vector2>();
@@ -82,6 +83,8 @@ namespace _3dCG.Examples
             // Create and bind VAO
             _vao = GL.GenVertexArray();
             GL.BindVertexArray(_vao);
+
+            // Buffers p/ guardar copia dos dados na RAM
 
             // Create and bind vertex position buffer
             _vertexBuffer = GL.GenBuffer();

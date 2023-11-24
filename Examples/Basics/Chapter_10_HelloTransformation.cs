@@ -40,6 +40,7 @@ namespace _3dCG.Examples.Basics
         {
             base.OnRenderFrame(args);
 
+            // Limpar a tela antes de desenhar (usando a clear color)
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             _texture.Use(TextureUnit.Texture0);

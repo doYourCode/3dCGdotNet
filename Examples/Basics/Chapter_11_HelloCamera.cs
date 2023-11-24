@@ -32,7 +32,7 @@ namespace _3dCG.Examples.Basics
 
             _texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png");
 
-            _mesh = new BasicMesh("Resources/Mesh/Suzanne.obj");
+            _mesh = new BasicMesh("Resources/Mesh/Car.fbx");
 
             _transform = new Transform();
 

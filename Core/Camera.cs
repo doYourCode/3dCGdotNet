@@ -18,7 +18,6 @@ namespace _3dCG
             AspectRatio = aspectRatio;
         }
 
-
         public Vector3 Position { get; set; }
         public float AspectRatio { private get; set; }
         public Vector3 Front => _front;

@@ -40,8 +40,11 @@ namespace _3dCG
 
             // We do the same for the fragment shader.
             shaderSource = File.ReadAllText(fragPath);
+
             var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+
             GL.ShaderSource(fragmentShader, shaderSource);
+
             CompileShader(fragmentShader);
 
             // These two shaders must then be merged into a shader program, which can then be used by OpenGL.
@@ -104,6 +107,7 @@ namespace _3dCG
             {
                 // We can use `GL.GetShaderInfoLog(shader)` to get information about the error.
                 var infoLog = GL.GetShaderInfoLog(shader);
+
                 throw new Exception($"Error occurred whilst compiling Shader({shader}).\n\n{infoLog}");
             }
         }

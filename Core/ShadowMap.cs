@@ -1,8 +1,60 @@
 ﻿using System;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 
 // TODO: Corrigir esse código, pois nãp está funcionando como planejado. Precisa definir melhor essa relação com a classe Light e também como o objeto se comporta ao ser renderizado.
 
+namespace _3dCG.Core
+{
+    public class ShadowMap
+    {
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+        public Matrix4 LightViewProjection { get; private set; }
+        public int DepthTexture { get; private set; }
+        public int Framebuffer { get; private set; }
+
+        public ShadowMap(int width, int height)
+        {
+            Width = width;
+            Height = height;
+
+            DepthTexture = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, DepthTexture);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.DepthComponent, Width, Height, 0, PixelFormat.DepthComponent, PixelType.Float, IntPtr.Zero);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+
+            Framebuffer = GL.GenFramebuffer();
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, Framebuffer);
+            GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, DepthTexture, 0);
+            GL.DrawBuffer(DrawBufferMode.None);
+
+            if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
+                throw new Exception("Erro ao criar framebuffer");
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        }
+
+        public void Begin(Matrix4 lightViewProjection)
+        {
+            LightViewProjection = lightViewProjection;
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, Framebuffer);
+            GL.Viewport(0, 0, Width, Height);
+            GL.Clear(ClearBufferMask.DepthBufferBit);
+        }
+
+        public void End()
+        {
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        }
+    }
+}
+
+/*
 namespace _3dCG.Core
 {
     internal class ShadowMap
@@ -79,7 +131,7 @@ namespace _3dCG.Core
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, woodTexture);
             GL.ActiveTexture(TextureUnit.Texture1);
-            GL.BindTexture(TextureTarget.Texture2D, depthMap);*/
+            GL.BindTexture(TextureTarget.Texture2D, depthMap);
         }
 
         public void Bind()
@@ -101,3 +153,60 @@ namespace _3dCG.Core
 
     }
 }
+*/
+
+
+/*  OUTRA VERSÃO
+ 
+ using OpenTK;
+using OpenTK.Graphics.OpenGL;
+
+public class ShadowMap
+{
+    public int Width { get; private set; }
+    public int Height { get; private set; }
+    public Matrix4 LightViewProjection { get; private set; }
+    public int DepthTexture { get; private set; }
+    public int Framebuffer { get; private set; }
+
+    public ShadowMap(int width, int height)
+    {
+        Width = width;
+        Height = height;
+
+        DepthTexture = GL.GenTexture();
+        GL.BindTexture(TextureTarget.Texture2D, DepthTexture);
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.DepthComponent, Width, Height, 0, PixelFormat.DepthComponent, PixelType.Float, IntPtr.Zero);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+
+        Framebuffer = GL.GenFramebuffer();
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, Framebuffer);
+        GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, DepthTexture, 0);
+        GL.DrawBuffer(DrawBufferMode.None);
+
+        if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
+            throw new Exception("Erro ao criar framebuffer");
+
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+    }
+
+    public void Begin(Matrix4 lightViewProjection)
+    {
+        LightViewProjection = lightViewProjection;
+
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, Framebuffer);
+        GL.Viewport(0, 0, Width, Height);
+        GL.Clear(ClearBufferMask.DepthBufferBit);
+    }
+
+    public void End()
+    {
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+    }
+}
+ 
+ 
+ */

@@ -27,5 +27,26 @@ namespace _3dCG.Core
             LightSpaceMatrix = lightProjection * lightView;
         }
 
+        public Matrix4 GetViewProjectionMatrix()
+        {
+            float nearPlane = 1.0f;
+            float farPlane = 100.0f;
+            Matrix4 lightProjection = Matrix4.CreateOrthographicOffCenter(-10.0f, 10.0f, -10.0f, 10.0f, nearPlane, farPlane);
+            Matrix4 lightView = Matrix4.LookAt(Position, Position + Direction, Vector3.UnitY);
+            return lightView * lightProjection;
+        }
+
+        public Matrix4 GetViewMatrix()
+        {
+            return Matrix4.LookAt(Position, Position + Direction, Vector3.UnitY);
+        }
+
+        public Matrix4 GetProjectionMatrix()
+        {
+            float nearPlane = 1.0f;
+            float farPlane = 100.0f;
+            return Matrix4.CreateOrthographicOffCenter(-10.0f, 10.0f, -10.0f, 10.0f, nearPlane, farPlane);
+        }
+
     }
 }

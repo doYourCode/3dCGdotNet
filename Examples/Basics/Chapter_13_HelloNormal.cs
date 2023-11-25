@@ -24,7 +24,10 @@ namespace _3dCG.Examples.Basics
         int _lightColorLocation;
         int _viewPositionLocation;
 
-        public Chapter_13_HelloNormal(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_13_HelloNormal(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Normal!";
             Shader.SetRootPath("Resources/Shader/Basics/");

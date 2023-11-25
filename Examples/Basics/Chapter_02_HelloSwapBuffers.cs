@@ -12,7 +12,10 @@ namespace _3dCG.Examples.Basics
     {
         Color4 bgColor = new Color4(0.0f, 0.0f, 0.0f, 1.0f);
 
-        public Chapter_02_HelloSwapBuffers(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_02_HelloSwapBuffers(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Swap Buffers!";
         }
@@ -51,8 +54,7 @@ namespace _3dCG.Examples.Basics
             // Limpa o Frame Buffer, utilizando a cor configurada anteriormente.
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-
-            // ENTRE ESSES DOIS VOCÊ DESENHA OS OBJETOS
+            // AQUI VOCÊ DESENHA OS OBJETOS
 
             // Disponibiliza o Frame Buffer na tela, alternando entre dois buffers que são pintados em sequência (Double buffering).
             SwapBuffers();

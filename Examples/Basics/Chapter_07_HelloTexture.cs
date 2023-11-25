@@ -19,7 +19,10 @@ namespace _3dCG.Examples.Basics
         private Shader _shader;
         private Texture _texture;
 
-        public Chapter_07_HelloTexture(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_07_HelloTexture(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Texture!";
         }

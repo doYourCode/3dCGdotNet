@@ -22,7 +22,10 @@ namespace _3dCG.Examples.Basics
         private Shader _shader;
         private Texture _texture;
 
-        public Chapter_08_HelloIndex(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_08_HelloIndex(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Index!";
         }

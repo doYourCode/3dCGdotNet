@@ -25,7 +25,10 @@ namespace _3dCG.Examples.Basics
         int _lightColorLocation;
         int _viewPositionLocation;
 
-        public Chapter_15_HelloShadow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_15_HelloShadow(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Shadow!";
             Shader.SetRootPath("Resources/Shader/Basics/");

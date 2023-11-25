@@ -11,7 +11,10 @@ namespace _3dCG.Examples.Basics
         private Texture _texture;
         private BasicMesh _mesh;
 
-        public Chapter_09_HelloMesh(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_09_HelloMesh(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Mesh!";
         }

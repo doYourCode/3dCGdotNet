@@ -17,7 +17,10 @@ namespace _3dCG.Examples.Basics
         private Camera _camera;
         private CameraController _cameraController;
 
-        public Chapter_11_HelloCamera(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_11_HelloCamera(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Camera!";
         }
@@ -32,7 +35,7 @@ namespace _3dCG.Examples.Basics
 
             _texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png");
 
-            _mesh = new BasicMesh("Resources/Mesh/Car.fbx");
+            _mesh = new BasicMesh("Resources/Mesh/Suzanne.obj");
 
             _transform = new Transform();
 

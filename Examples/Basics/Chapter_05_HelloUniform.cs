@@ -19,7 +19,10 @@ namespace _3dCG.Examples.Basics
         private int _tickUniformLocation;
         private float _tick = 0.0f;
 
-        public Chapter_05_HelloUniform(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_05_HelloUniform(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Uniform!";
         }

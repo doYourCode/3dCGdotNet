@@ -17,7 +17,10 @@ namespace _3dCG.Examples.Basics
 
         private Shader _shader;
 
-        public Chapter_06_HelloAttribute(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_06_HelloAttribute(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Attribute!";
         }

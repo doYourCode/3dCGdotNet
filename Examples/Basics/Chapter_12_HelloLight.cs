@@ -23,7 +23,10 @@ namespace _3dCG.Examples.Basics
         int _lightColorLocation;
         int _viewPositionLocation;
 
-        public Chapter_12_HelloLight(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_12_HelloLight(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Light!";
         }

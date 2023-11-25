@@ -14,7 +14,10 @@ namespace _3dCG.Examples.Basics
         private BasicMesh _mesh;
         private Transform _transform;
 
-        public Chapter_10_HelloTransformation(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_10_HelloTransformation(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Transformation!";
         }

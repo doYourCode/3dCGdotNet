@@ -16,7 +16,10 @@ namespace _3dCG.Examples.Basics
 
         private Shader _shader;
 
-        public Chapter_04_HelloShader(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_04_HelloShader(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Shader!";
         }

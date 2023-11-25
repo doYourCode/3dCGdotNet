@@ -21,7 +21,10 @@ namespace _3dCG.Examples.Basics
         private int _vertexBufferObject;
         private int _vertexArrayObject;
 
-        public Chapter_03_HelloTriangle(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
+        public Chapter_03_HelloTriangle(
+            GameWindowSettings gameWindowSettings,
+            NativeWindowSettings nativeWindowSettings) :
+            base(gameWindowSettings, nativeWindowSettings)
         {
             Title = "Hello Triangle!";
         }

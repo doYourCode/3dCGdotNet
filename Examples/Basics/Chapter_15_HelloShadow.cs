@@ -43,8 +43,8 @@ namespace _3dCG.Examples.Basics
 
             _shader = new Shader("HelloShadow");
 
-            _texture = Texture.LoadFromFile("Resources/Texture/David_Albedo.bmp");
-            _normalTexture = Texture.LoadFromFile("Resources/Texture/David_Normals.bmp");
+            _texture = Texture.LoadFromFile("Resources/Texture/David_Albedo.bmp", TextureUnit.Texture0);
+            _normalTexture = Texture.LoadFromFile("Resources/Texture/David_Normals.bmp", TextureUnit.Texture1);
 
             _shadowMap = new ShadowMap(1024, 1024);
 

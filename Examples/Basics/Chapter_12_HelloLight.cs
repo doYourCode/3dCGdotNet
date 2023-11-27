@@ -39,7 +39,7 @@ namespace _3dCG.Examples.Basics
 
             _shader = new Shader("HelloLight");
 
-            _texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png");
+            _texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
 
             _mesh = new BasicMesh("Resources/Mesh/Suzanne.obj");
 

@@ -10,11 +10,11 @@ namespace _3dCG
     {
         public readonly int Handle;
 
-        public static Texture LoadFromFile(string path)
+        public static Texture LoadFromFile(string path, TextureUnit unit)
         {
             // Generate & bind the handle for the texture
             int handle = GL.GenTexture();
-            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, handle);
 
             //StbImage.stbi_set_flip_vertically_on_load(1);
@@ -34,6 +34,24 @@ namespace _3dCG
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+
+            return new Texture(handle);
+        }
+
+        public static Texture CreateInMemory(int width, int height, TextureUnit unit)
+        {
+            // Generate & bind the handle for the texture
+            int handle = GL.GenTexture();
+            GL.ActiveTexture(unit);
+            GL.BindTexture(TextureTarget.Texture2D, handle);
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, (System.IntPtr)0);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
 
             return new Texture(handle);
         }

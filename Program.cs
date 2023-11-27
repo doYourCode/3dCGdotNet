@@ -14,7 +14,7 @@ namespace _3dCG
             // TODO: Permitir a seleção dos diferentes exemplos / casos de uso a partir de uma janela central,
             // através de uma lista ou pelos seus nomes.
             // HACK: A configuração da resolução de tela poderia ser carregada diferentemente para namespaces diferentes. Podemos usar json + namespace para rever isso.
-            var _window = new Chapter_14_HelloDepth(
+            var _window = new Chapter_xx_HelloRenderToTexture(
                 GameWindowSettings.Default,
                 new NativeWindowSettings()
                 {

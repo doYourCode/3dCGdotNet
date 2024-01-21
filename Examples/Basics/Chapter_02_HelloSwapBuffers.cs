@@ -34,7 +34,7 @@ namespace _3dCG.Examples.Basics
         {
             base.OnUpdateFrame(args);
 
-            int taxaDeAtualizacao = 10;
+            int taxaDeAtualizacao = 1;
 
             // A variável 'canalAtivo' determina qual canal de cor (vermelho ou verde ou azul) está sendo alterado
             // O switch verifica qual canal está ativo e incrementa seu valor

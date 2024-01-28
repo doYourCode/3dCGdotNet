@@ -1,4 +1,6 @@
-﻿using OpenTK.Windowing.Desktop;
+﻿using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Desktop;
+using System;
 
 namespace _3dCG.Examples.Basics
 {
@@ -18,5 +20,6 @@ namespace _3dCG.Examples.Basics
             // O título da janela precisa ser configurado pra cada exemplo individualmente.
             Title = "Hello Window!";
         }
+
     }
 }

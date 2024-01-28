@@ -1,6 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
+using System;
 
 namespace _3dCG.Examples.Basics
 {
@@ -9,6 +10,8 @@ namespace _3dCG.Examples.Basics
     /// </summary>
     internal class Chapter_03_HelloTriangle : GameWindow
     {
+
+        private float _pointSize = 4.0f;
 
         // TODO: Criar uma classe para gerenciar os buffers de dados, e permitir que o usuário configure os atributos de cada buffer.
 
@@ -39,7 +42,7 @@ namespace _3dCG.Examples.Basics
                 // Posições (no eixo X, Y e Z respectivamente)
 
                 -0.75f, -0.75f, 0.0f, // Vértice 0 -> canto inferior esquerdo
-                0.75f , -0.75f, 0.0f, // Vértice 1 -> canto inferior direito
+                0.7f , -0.75f, 0.0f, // Vértice 1 -> canto inferior direito
                 0.0f  , 0.75f , 0.0f  // Vértice 2 -> canto superior (no centro da tela)
             };
 
@@ -64,7 +67,8 @@ namespace _3dCG.Examples.Basics
             GL.VertexAttribPointer(POSITION, 3, VertexAttribPointerType.Float, false, VERTEX_SIZE, OFFSET[POSITION]);
             GL.EnableVertexAttribArray(POSITION);
 
-            GL.ClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+            GL.ClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+
         }
         protected override void OnRenderFrame(FrameEventArgs args)
         {
@@ -80,6 +84,14 @@ namespace _3dCG.Examples.Basics
             SwapBuffers();
         }
 
+        protected override void OnUpdateFrame(FrameEventArgs args)
+        {
+            base.OnUpdateFrame(args);
+
+            GL.PointSize(_pointSize);
+            
+        }
+
         /// <summary>
         /// Apaga os dados não gerenciados carregados na memória de vídeo
         /// </summary>
@@ -92,6 +104,15 @@ namespace _3dCG.Examples.Basics
             GL.BindVertexArray(0);
             GL.DeleteBuffer(_vertexBufferObject);
             GL.DeleteVertexArray(_vertexArrayObject);
+        }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            _pointSize += e.OffsetY;
+            if (_pointSize > 8.0f ) { _pointSize = 8.0f; }
+            else if (_pointSize < 2.0f) { _pointSize = 2.0f; }
         }
     }
 }

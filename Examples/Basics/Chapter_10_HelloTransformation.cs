@@ -8,6 +8,7 @@ namespace _3dCG.Examples.Basics
     internal class Chapter_10_HelloTransformation : GameWindow
     {
         private float _tick = 0.0f;
+        private float _speed = 10.0f;
 
         private Shader _shader;
         private Texture _texture;
@@ -63,7 +64,7 @@ namespace _3dCG.Examples.Basics
             // Identity matrix (per object)
             _shader.SetMatrix4("model", _transform.GetModelMatrix());
 
-            _tick += 0.0001f;
+            _tick += 0.0001f * _speed;
         }
 
         protected override void OnUnload()

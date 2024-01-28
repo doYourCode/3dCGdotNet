@@ -80,7 +80,7 @@ namespace _3dCG.Examples.Basics
         {
             base.OnUpdateFrame(args);
 
-            _tick += 0.0001f;
+            _tick += 0.01f;
         }
 
         protected override void OnUnload()

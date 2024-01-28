@@ -30,7 +30,7 @@ namespace _3dCG.Examples.Basics
             base.OnLoad();
 
             float[] _data =
-            {  // Position          // Color
+            {  // Position          // Color RGB
                 -0.75f, -0.75f, 0.0f, 1.0f, 0.0f, 0.0f,
                 0.75f , -0.75f, 0.0f, 0.0f, 1.0f, 0.0f,
                 0.0f  , 0.75f , 0.0f, 0.0f, 0.0f, 1.0f,

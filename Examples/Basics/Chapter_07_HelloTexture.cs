@@ -33,7 +33,7 @@ namespace _3dCG.Examples.Basics
 
             float[] _data =
             {  
-                // Position          // Color          // Uv coords
+                // Position          // Color          // Uv coords (texture coordinates)
                 -0.75f, -0.75f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
                 0.75f , -0.75f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
                 0.0f  , 0.75f , 0.0f, 0.0f, 0.0f, 1.0f, 0.5f, 0.0f,

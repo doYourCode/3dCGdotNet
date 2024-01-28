@@ -34,7 +34,7 @@ namespace _3dCG.Examples
             // Loads the data into a "scene"
             var scene = context.ImportFile(filePath, PostProcessSteps.Triangulate | PostProcessSteps.GenerateSmoothNormals | PostProcessSteps.FlipUVs | PostProcessSteps.CalculateTangentSpace);
 
-            var vertices = new List<Vector3>();
+            var positions = new List<Vector3>();
             var colors = new List<Color4>();
             var uvs = new List<Vector2>();
             var normals = new List<Vector3>();
@@ -46,7 +46,7 @@ namespace _3dCG.Examples
             {
                 for (int i = 0; i < mesh.VertexCount; i++)
                 {
-                    vertices.Add(mesh.Vertices[i].ToOpenTK());
+                    positions.Add(mesh.Vertices[i].ToOpenTK());
 
                     if (mesh.HasVertexColors(0))
                         colors.Add(mesh.VertexColorChannels[0][i].ToOpenTK());
@@ -75,7 +75,7 @@ namespace _3dCG.Examples
 
             // Create interleaved buffer for colors, uvs and normals
             var interleaved = new List<float>();
-            for (int i = 0; i < vertices.Count; i++)
+            for (int i = 0; i < positions.Count; i++)
             {
                 interleaved.AddRange(new[] { colors[i].R, colors[i].G, colors[i].B, colors[i].A });
                 interleaved.AddRange(new[] { uvs[i].X, uvs[i].Y });
@@ -90,7 +90,7 @@ namespace _3dCG.Examples
             // Create and bind vertex position buffer
             _vertexBuffer = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
-            GL.BufferData(BufferTarget.ArrayBuffer, POSITION_SIZE * vertices.Count, vertices.ToArray(), BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, POSITION_SIZE * positions.Count, positions.ToArray(), BufferUsageHint.StaticDraw);
             GL.VertexAttribPointer(POSITION, POSITION_COUNT, VertexAttribPointerType.Float, false, 0, OFFSET[POSITION]);
             GL.EnableVertexAttribArray(POSITION);
 

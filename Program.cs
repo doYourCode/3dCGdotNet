@@ -2,8 +2,6 @@
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using _3dCG.Examples.Basics;
-using _3dCG.Examples.ShadingModel;
-using _3dCG.Examples.ImGuiImpl;
 using System;
 
 namespace _3dCG
@@ -16,7 +14,7 @@ namespace _3dCG
             // TODO: Permitir a seleção dos diferentes exemplos / casos de uso a partir de uma janela central,
             // através de uma lista ou pelos seus nomes.
             // HACK: A configuração da resolução de tela poderia ser carregada diferentemente para namespaces diferentes. Podemos usar json + namespace para rever isso.
-            /*var _window = new Chapter_02_FlatShading(
+            var _window = new Chapter_01_HelloWindow(
                 GameWindowSettings.Default,
                 new NativeWindowSettings()
                 {
@@ -25,9 +23,9 @@ namespace _3dCG
                     WindowState = WindowState.Normal,
                     APIVersion = new Version(3, 3),
                     Vsync = VSyncMode.On,
-                });*/
+                });
 
-            var _window = new ImGui_Sample();
+            //var _window = new ImGui_Sample();
 
             _window.UpdateFrequency = 60;
             _window.RenderFrequency = 60;

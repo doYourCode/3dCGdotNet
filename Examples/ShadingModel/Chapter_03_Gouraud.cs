@@ -6,7 +6,7 @@ using OpenTK.Windowing.Desktop;
 
 namespace _3dCG.Examples.ShadingModel
 {
-    internal class Chapter_02_Gouraud : GameWindow
+    internal class Chapter_03_Gouraud : GameWindow
     {
         private float _tick = 0.0f;
 
@@ -22,7 +22,7 @@ namespace _3dCG.Examples.ShadingModel
         int _lightColorLocation;
         int _viewPositionLocation;
 
-        public Chapter_02_Gouraud(
+        public Chapter_03_Gouraud(
             GameWindowSettings gameWindowSettings,
             NativeWindowSettings nativeWindowSettings) :
             base(gameWindowSettings, nativeWindowSettings)
@@ -36,7 +36,7 @@ namespace _3dCG.Examples.ShadingModel
 
             GL.Enable(EnableCap.DepthTest);
 
-            _shader = new Shader("Flat");
+            _shader = new Shader("Gouraud");
 
             _mesh = new BasicMesh("Resources/Mesh/ShaderBall.obj");
 

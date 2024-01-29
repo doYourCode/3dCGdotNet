@@ -2,7 +2,9 @@
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using _3dCG.Examples.Basics;
+using _3dCG.Examples.ShadingModel;
 using System;
+using _3dCG.Examples.ImGuiImpl;
 
 namespace _3dCG
 {

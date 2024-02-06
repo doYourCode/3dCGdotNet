@@ -96,7 +96,7 @@ namespace _3dCG.Examples.Basics
             _shader.SetMatrix4("view", _camera.GetViewMatrix());
             _shader.SetMatrix4("projection", _camera.GetProjectionMatrix());
 
-            _tick += 0.0001f;
+            _tick += 0.0001f * 100;
 
             _cameraController.Update(args, KeyboardState, MouseState);
         }

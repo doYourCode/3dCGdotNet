@@ -40,9 +40,10 @@ namespace _3dCG.Examples.Basics
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            // Bind em textura e shader
             _texture.Use(TextureUnit.Texture0);
             _shader.Use();
-
+            // Dizer quais buffers vão ser desenhados c/ esse conjunto textura/shader
             _mesh.Draw();
 
             SwapBuffers();

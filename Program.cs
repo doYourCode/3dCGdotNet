@@ -16,7 +16,7 @@ namespace _3dCG
             // TODO: Permitir a seleção dos diferentes exemplos / casos de uso a partir de uma janela central,
             // através de uma lista ou pelos seus nomes.
             // HACK: A configuração da resolução de tela poderia ser carregada diferentemente para namespaces diferentes. Podemos usar json + namespace para rever isso.
-            var _window = new Chapter_01_HelloWindow(
+            var _window = new Chapter_12_HelloLight(
                 GameWindowSettings.Default,
                 new NativeWindowSettings()
                 {
@@ -33,7 +33,7 @@ namespace _3dCG
             _window.RenderFrequency = 60;
 
             // HACK: Precisa pensar numa forma de configurar esse caminho automaticamente para os exemplos, de repente, utilzar o json + namespace de alguma forma para organizar isso.
-            Shader.SetRootPath("Resources/Shader/ShadingModel/");     // Pasta raiz para procurar arquivos de Shader -> O que é shader? Veja no cap 4.
+            Shader.SetRootPath("Resources/Shader/Basics/");     // Pasta raiz para procurar arquivos de Shader -> O que é shader? Veja no cap 4.
 
             // Executa a aplicação
             _window.Run(); // Executa a janela

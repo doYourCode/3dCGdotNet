@@ -16,6 +16,7 @@ namespace _3dCG.Examples.Basics
 
         private Shader _shader;
 
+        // Que para criar uma uniform são necessárias 2 variáveis (1 p valor e outra p/ endereço na vram)
         private int _tickUniformLocation;
         private float _tick = 0.0f;
 

@@ -13,5 +13,5 @@ void main(void)
 {
     vUv = aUv;
     vColor = aColor;
-    gl_Position = vec4(aPosition, 1.0) * model;
+    gl_Position = vec4(aPosition, 1.0) * model; // Multiplica pelo matriz model
 }

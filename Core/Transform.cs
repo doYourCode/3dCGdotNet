@@ -2,7 +2,7 @@
 
 namespace _3dCG.Core
 {
-    public class Transform
+    public class Transform // Necessário p/ otimizar animações de rotação, escala e tanslação
     {
         private Vector3 position;
         private Vector3 rotation;

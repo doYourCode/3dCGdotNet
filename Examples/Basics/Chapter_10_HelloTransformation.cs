@@ -8,7 +8,7 @@ namespace _3dCG.Examples.Basics
     internal class Chapter_10_HelloTransformation : GameWindow
     {
         private float _tick = 0.0f;
-        private float _speed = 10.0f;
+        private float _speed = 100.0f;
 
         private Shader _shader;
         private Texture _texture;
@@ -59,8 +59,12 @@ namespace _3dCG.Examples.Basics
         {
             base.OnUpdateFrame(args);
 
-            // Rotate the model matrix
-            _transform.SetRotationY(_tick);
+            // Rotate the model matrix (experimente alterar esses valores)
+            _transform.SetRotationY((float)System.Math.Cos(_tick));
+            // P/ rotacionar nos outros eixos descomente as linhas abaixo
+            //_transform.SetRotationX(_tick);
+            //_transform.SetRotationZ(_tick);
+
             // Identity matrix (per object)
             _shader.SetMatrix4("model", _transform.GetModelMatrix());
 

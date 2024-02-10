@@ -37,9 +37,12 @@ namespace Examples
 
             meshes = new Dictionary<String, BasicMesh>();
 
-            meshes.Add("Cube", new BasicMesh("Resources/Mesh/Cube.obj", true));
-            meshes.Add("Monkey", new BasicMesh("Resources/Mesh/Suzanne.obj"));
-            meshes.Add("Teapot", new BasicMesh("Resources/Mesh/Teapot.obj"));
+            meshes.Add("Cube", new BasicMesh("Resources/Mesh/Cube.fbx", true));
+            meshes.Add("Icosahedron", new BasicMesh("Resources/Mesh/Icosahedron.fbx"));
+            meshes.Add("Monkey", new BasicMesh("Resources/Mesh/Monkey.fbx"));
+            meshes.Add("Sphere", new BasicMesh("Resources/Mesh/Sphere.fbx"));
+            meshes.Add("Teapot", new BasicMesh("Resources/Mesh/Teapot.fbx"));
+            meshes.Add("Torus", new BasicMesh("Resources/Mesh/Torus.fbx", true));
 
             view.SetList(meshes.Keys.ToArray());
 

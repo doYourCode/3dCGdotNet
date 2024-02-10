@@ -35,7 +35,7 @@ namespace Examples
 
             _texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
 
-            _mesh = new BasicMesh("Resources/Mesh/Suzanne.obj");
+            _mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
 
             _transform = new Transform();
 

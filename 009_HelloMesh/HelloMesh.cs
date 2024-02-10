@@ -29,7 +29,7 @@ namespace Examples
 
             _texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
 
-            _mesh = new BasicMesh("Resources/Mesh/Suzanne.obj");
+            _mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         }

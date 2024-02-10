@@ -35,7 +35,7 @@ namespace Examples
 
             _texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
 
-            _mesh = new BasicMesh("Resources/Mesh/Suzanne.obj");
+            _mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
 
             _transform = new Transform();
 
@@ -77,7 +77,7 @@ namespace Examples
             _shader.SetMatrix4("view", _camera.GetViewMatrix());
             _shader.SetMatrix4("projection", _camera.GetProjectionMatrix());
 
-            _tick += 0.0001f;
+            _tick += 0.01f;
 
             _cameraController.Update(args, KeyboardState, MouseState);
         }

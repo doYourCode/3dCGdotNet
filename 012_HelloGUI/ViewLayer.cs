@@ -1,5 +1,4 @@
-﻿using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
+﻿using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
 using ImGuiNET;
@@ -51,7 +50,7 @@ namespace Examples
 
         public void UnLoad()
         {
-            
+            _controller.Dispose();
         }
 
         public void Resize(int width, int height)

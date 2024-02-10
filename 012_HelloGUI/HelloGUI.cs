@@ -101,6 +101,16 @@ namespace Examples
             shader.SetMatrix4("model", transform.GetModelMatrix());
         }
 
+        protected override void OnUnload()
+        {
+            base.OnUnload();
+
+            foreach (var mesh in meshes)
+            {
+                mesh.Value.Delete();
+            }
+        }
+
         protected override void OnTextInput(TextInputEventArgs e)
         {
             base.OnTextInput(e);

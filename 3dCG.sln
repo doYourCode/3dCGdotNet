@@ -27,11 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "008_HelloIndex", "008_Hello
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "009_HelloMesh", "009_HelloMesh\009_HelloMesh.csproj", "{4D9A7E86-9BE2-4F90-87FE-5C015F15C4AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_HelloTransformation", "010_HelloTransformation\010_HelloTransformation.csproj", "{DCE49CBF-49FB-4D4C-A74C-61F890ED7DC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "010_HelloTransformation", "010_HelloTransformation\010_HelloTransformation.csproj", "{DCE49CBF-49FB-4D4C-A74C-61F890ED7DC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "011_HelloCamera", "011_HelloCamera\011_HelloCamera.csproj", "{1A99A883-7F9A-42BF-A2FA-F6D19F0B94DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "011_HelloCamera", "011_HelloCamera\011_HelloCamera.csproj", "{1A99A883-7F9A-42BF-A2FA-F6D19F0B94DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "012_HelloGUI", "012_HelloGUI\012_HelloGUI.csproj", "{5FFB7D45-E521-46FA-B805-CD72C604E6B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "012_HelloGUI", "012_HelloGUI\012_HelloGUI.csproj", "{5FFB7D45-E521-46FA-B805-CD72C604E6B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -78,18 +78,18 @@ namespace Examples
             GL.ClearColor(new Color4(0, 32, 48, 255));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
-            GL.Disable(EnableCap.DepthTest);
-            ShowGUI();
-
-            _controller.Render();
-            GL.Enable(EnableCap.DepthTest);
-
             shader.Use();
 
             texture.Use(OpenTK.Graphics.OpenGL.TextureUnit.Texture0);
 
             if(currentMesh != null)
                 currentMesh.Draw();
+
+            GL.Disable(EnableCap.DepthTest);
+            ShowGUI();
+
+            _controller.Render();
+            GL.Enable(EnableCap.DepthTest);
 
             ImGuiController.CheckGLError("End of frame");
 
@@ -165,7 +165,7 @@ namespace Examples
 
                 ImGui.LabelText("", "X         Y         Z");
 
-                ImGui.SliderFloat3("Rotation speed", ref rotationSpeed, -1.0f, 1.0f);
+                ImGui.DragFloat3("Rotation speed", ref rotationSpeed, 0.01f, -1.0f, 1.0f);
 
                 if(ImGui.Button("Reset rotation"))
                 {

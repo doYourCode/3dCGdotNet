@@ -318,6 +318,7 @@ void main()
             int prevActiveTexture = GL.GetInteger(GetPName.ActiveTexture);
             GL.ActiveTexture(TextureUnit.Texture0);
             int prevTexture2D = GL.GetInteger(GetPName.TextureBinding2D);
+
             Span<int> prevScissorBox = stackalloc int[4];
             unsafe
             {
@@ -326,6 +327,7 @@ void main()
                     GL.GetInteger(GetPName.ScissorBox, iptr);
                 }
             }
+
             Span<int> prevPolygonMode = stackalloc int[2];
             unsafe
             {

@@ -15,17 +15,12 @@ namespace Examples
         readonly System.Numerics.Vector2 modalInitSize = new System.Numerics.Vector2(330, 200);
 
         private String[] items;
-        private String currentItem = "";
-        private String previousItem = "";
-
         private bool rotate;
         private System.Numerics.Vector3 rotationSpeed;
 
-        private float tick = 0.0f;
-
-        public string CurrentItem { get => currentItem; set => currentItem = value; }
-        public string PreviousItem { get => previousItem; set => previousItem = value; }
-        public float Tick { get => tick; set => tick = value; }
+        public string CurrentItem { get; set; } = "";
+        public string PreviousItem { get; set; } = "";
+        public float Tick { get; set; } = 0.0f;
         public bool Rotate { get => rotate; set => rotate = value; }
         public System.Numerics.Vector3 RotationSpeed { get => rotationSpeed; set => rotationSpeed = value; }
 

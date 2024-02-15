@@ -112,6 +112,8 @@ namespace Examples
             {
                 mesh.Value.Delete();
             }
+
+            view.UnLoad();
         }
 
         protected override void OnTextInput(TextInputEventArgs e)

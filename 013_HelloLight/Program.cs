@@ -10,11 +10,11 @@ namespace Examples
     {
         static void Main(string[] args)
         {
-            var window = new HelloTransformation(
+            var window = new HelloLight(
                 GameWindowSettings.Default,
                 new NativeWindowSettings()
                 {
-                    Title = "Hello Transformation",
+                    Title = "Hello Light",
                     ClientSize = new Vector2i(800, 800),
                     WindowBorder = WindowBorder.Fixed,
                     WindowState = WindowState.Normal,

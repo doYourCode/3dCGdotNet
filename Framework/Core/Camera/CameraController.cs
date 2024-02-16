@@ -8,29 +8,29 @@ namespace Framework.Core.Camera
 {
     public class CameraController
     {
-        PerspectiveCamera _camera;
-        GameWindow _window;
+        PerspectiveCamera camera;
+        GameWindow window;
 
-        private bool _firstMove = true;
+        private bool firstMove = true;
 
-        private Vector2 _lastPos;
+        private Vector2 lastPos;
 
         public CameraController(PerspectiveCamera camera, GameWindow window)
         {
-            _camera = camera;
-            _window = window;
+            camera = camera;
+            window = window;
         }
 
         public void Update(FrameEventArgs e, KeyboardState input, MouseState mouse)
         {
-            if (!_window.IsFocused) // Check to see if the window is focused
+            if (!window.IsFocused) // Check to see if the window is focused
             {
                 return;
             }
 
             if (input.IsKeyDown(Keys.Escape))
             {
-                _window.Close();
+                window.Close();
             }
 
             const float cameraSpeed = 1.5f;
@@ -38,51 +38,51 @@ namespace Framework.Core.Camera
 
             if (input.IsKeyDown(Keys.W))
             {
-                _camera.Position += _camera.Front * cameraSpeed * (float)e.Time; // Forward
+                camera.Position += camera.Front * cameraSpeed * (float)e.Time; // Forward
             }
 
             if (input.IsKeyDown(Keys.S))
             {
-                _camera.Position -= _camera.Front * cameraSpeed * (float)e.Time; // Backwards
+                camera.Position -= camera.Front * cameraSpeed * (float)e.Time; // Backwards
             }
             if (input.IsKeyDown(Keys.A))
             {
-                _camera.Position -= _camera.Right * cameraSpeed * (float)e.Time; // Left
+                camera.Position -= camera.Right * cameraSpeed * (float)e.Time; // Left
             }
             if (input.IsKeyDown(Keys.D))
             {
-                _camera.Position += _camera.Right * cameraSpeed * (float)e.Time; // Right
+                camera.Position += camera.Right * cameraSpeed * (float)e.Time; // Right
             }
             if (input.IsKeyDown(Keys.Space))
             {
-                _camera.Position += _camera.Up * cameraSpeed * (float)e.Time; // Up
+                camera.Position += camera.Up * cameraSpeed * (float)e.Time; // Up
             }
             if (input.IsKeyDown(Keys.LeftShift))
             {
-                _camera.Position -= _camera.Up * cameraSpeed * (float)e.Time; // Down
+                camera.Position -= camera.Up * cameraSpeed * (float)e.Time; // Down
             }
 
-            if (_firstMove) // This bool variable is initially set to true.
+            if (firstMove) // This bool variable is initially set to true.
             {
-                _lastPos = new Vector2(mouse.X, mouse.Y);
-                _firstMove = false;
+                lastPos = new Vector2(mouse.X, mouse.Y);
+                firstMove = false;
             }
             else
             {
                 // Calculate the offset of the mouse position
-                var deltaX = mouse.X - _lastPos.X;
-                var deltaY = mouse.Y - _lastPos.Y;
-                _lastPos = new Vector2(mouse.X, mouse.Y);
+                var deltaX = mouse.X - lastPos.X;
+                var deltaY = mouse.Y - lastPos.Y;
+                lastPos = new Vector2(mouse.X, mouse.Y);
 
                 // Apply the camera pitch and yaw (we clamp the pitch in the camera class)
-                _camera.Yaw += deltaX * sensitivity;
-                _camera.Pitch -= deltaY * sensitivity; // Reversed since y-coordinates range from bottom to top
+                camera.Yaw += deltaX * sensitivity;
+                camera.Pitch -= deltaY * sensitivity; // Reversed since y-coordinates range from bottom to top
             }
         }
 
         public void MouseUpdate(MouseWheelEventArgs e)
         {
-            _camera.Fov -= e.OffsetY;
+            camera.Fov -= e.OffsetY;
         }
     }
 }

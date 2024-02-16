@@ -6,10 +6,13 @@ using OpenTK.Graphics.OpenGL4;
 using Framework.Utils.Common;
 using Framework.Utils.Common.Mesh;
 using Framework.Core;
+using Framework.Utils.View;
+using Framework.Core.Light;
+using Framework.Core.Camera;
 
 namespace Examples
 {
-    public class HelloGUI : GameWindow
+    public class HelloLight : GameWindow
     {
         ViewLayer view;
 
@@ -20,10 +23,16 @@ namespace Examples
         Shader shader;
         Transform transform;
 
-        public HelloGUI(
+        Light light;
+        LightView lightView;
+
+        private PerspectiveCamera camera;
+
+        public HelloLight(
             GameWindowSettings gameWindowSettings,
             NativeWindowSettings nativeWindowSettings) :
-            base(gameWindowSettings, nativeWindowSettings) { }
+            base(gameWindowSettings, nativeWindowSettings)
+        { }
 
         protected override void OnLoad()
         {
@@ -46,9 +55,19 @@ namespace Examples
 
             texture = Texture.LoadFromFile("Resources/Texture/Uv_checker_01.png", TextureUnit.Texture0);
 
-            shader = new Shader("HelloTransformation");
+            shader = new Shader("HelloLight");
 
             transform = new Transform();
+
+            light = new Light(
+                new System.Numerics.Vector3(2.0f, 2.0f, 2.0f));
+            light.GetUniformLocations(shader);
+
+            lightView = new LightView(light);
+            view.LightView = lightView;
+
+            camera = new PerspectiveCamera(Vector3.UnitZ * 1.5f, Size.X / (float)Size.Y);
+            camera.GetUniformLocations(shader);
         }
 
         protected override void OnResize(ResizeEventArgs e)
@@ -71,10 +90,12 @@ namespace Examples
 
             texture.Use(TextureUnit.Texture0);
 
-            if(currentMesh != null)
+            if (currentMesh != null)
                 currentMesh.Draw();
 
             view.Render();
+
+            lightView.DrawControl();
 
             ImGuiController.CheckGLError("End of frame");
 
@@ -99,7 +120,14 @@ namespace Examples
                 view.Tick += 0.01f;
             }
 
+            light.UpdateUniforms();
+
+            camera.UpdateUniforms();
+
             shader.SetMatrix4("model", transform.GetModelMatrix());
+
+            shader.SetMatrix4("view", camera.GetViewMatrix());
+            shader.SetMatrix4("projection", camera.GetProjectionMatrix());
         }
 
         protected override void OnUnload()

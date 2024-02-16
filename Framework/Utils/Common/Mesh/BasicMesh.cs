@@ -18,11 +18,11 @@ namespace Framework.Utils.Common.Mesh
         private static readonly byte POSITION_SIZE = (byte)(POSITION_COUNT * sizeof(float));
         private static readonly byte DATA_SIZE = (byte)((COLOR_COUNT + UV_COUNT + NORMAL_COUNT) * sizeof(float));
 
-        private int _vao;
-        private int _vertexBuffer;
-        private int _colorUVNormalBuffer;
-        private int _indexBuffer;
-        private int _indexCount; // Total amount of triangles in the object
+        private int vao;
+        private int vertexBuffer;
+        private int colorUVNormalBuffer;
+        private int indexBuffer;
+        private int indexCount; // Total amount of triangles in the object
 
         public BasicMesh(string filePath, bool invertUv = false)
         {
@@ -67,7 +67,7 @@ namespace Framework.Utils.Common.Mesh
                 }
             }
 
-            _indexCount = indices.Count;
+            indexCount = indices.Count;
 
             // Create interleaved buffer for colors, uvs and normals
             var interleaved = new List<float>();
@@ -79,21 +79,21 @@ namespace Framework.Utils.Common.Mesh
             }
 
             // Create and bind VAO
-            _vao = GL.GenVertexArray();
-            GL.BindVertexArray(_vao);
+            vao = GL.GenVertexArray();
+            GL.BindVertexArray(vao);
 
             // Buffers p/ guardar copia dos dados na RAM
 
             // Create and bind vertex position buffer
-            _vertexBuffer = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
+            vertexBuffer = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBuffer);
             GL.BufferData(BufferTarget.ArrayBuffer, POSITION_SIZE * positions.Count, positions.ToArray(), BufferUsageHint.StaticDraw);
             GL.VertexAttribPointer(POSITION, POSITION_COUNT, VertexAttribPointerType.Float, false, 0, OFFSET[POSITION]);
             GL.EnableVertexAttribArray(POSITION);
 
             // Create and bind color/uv/normal buffer
-            _colorUVNormalBuffer = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _colorUVNormalBuffer);
+            colorUVNormalBuffer = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, colorUVNormalBuffer);
             GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * interleaved.Count, interleaved.ToArray(), BufferUsageHint.StaticDraw);
             GL.VertexAttribPointer(COLOR, COLOR_COUNT, VertexAttribPointerType.Float, false, DATA_SIZE, OFFSET[COLOR]);
             GL.EnableVertexAttribArray(COLOR);
@@ -103,9 +103,9 @@ namespace Framework.Utils.Common.Mesh
             GL.EnableVertexAttribArray(NORMAL);
 
             // Create and bind index buffer (information about the faces triangulation)
-            _indexBuffer = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _indexBuffer);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * _indexCount, indices.ToArray(), BufferUsageHint.StaticDraw);
+            indexBuffer = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexBuffer);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * indexCount, indices.ToArray(), BufferUsageHint.StaticDraw);
 
             // Unbind VAO
             GL.BindVertexArray(0);
@@ -113,8 +113,8 @@ namespace Framework.Utils.Common.Mesh
 
         public void Draw()
         {
-            GL.BindVertexArray(_vao);
-            GL.DrawElements(BeginMode.Triangles, _indexCount, DrawElementsType.UnsignedInt, 0);
+            GL.BindVertexArray(vao);
+            GL.DrawElements(BeginMode.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
             GL.BindVertexArray(0);
         }
 
@@ -122,10 +122,10 @@ namespace Framework.Utils.Common.Mesh
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
-            GL.DeleteBuffer(_vertexBuffer);
-            GL.DeleteBuffer(_colorUVNormalBuffer);
-            GL.DeleteBuffer(_indexBuffer);
-            GL.DeleteVertexArray(_vao);
+            GL.DeleteBuffer(vertexBuffer);
+            GL.DeleteBuffer(colorUVNormalBuffer);
+            GL.DeleteBuffer(indexBuffer);
+            GL.DeleteVertexArray(vao);
         }
     }
 

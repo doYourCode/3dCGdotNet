@@ -1,4 +1,4 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
@@ -15,14 +15,14 @@ namespace Examples
         private readonly int[] OFFSET = { 0, 12, 24 };
         private const int VERTEX_SIZE = 8 * sizeof(float);
 
-        private int _indexCount = 0;
+        private int indexCount = 0;
 
-        private int _vertexBufferObject;
-        private int _vertexArrayObject;
-        private int _indexBuffer;
+        private int vertexBufferObject;
+        private int vertexArrayObject;
+        private int indexBuffer;
 
-        private Shader _shader;
-        private Texture _texture;
+        private Shader shader;
+        private Texture texture;
 
         public HelloIndex(
             GameWindowSettings gameWindowSettings,
@@ -33,7 +33,7 @@ namespace Examples
         {
             base.OnLoad();
 
-            float[] _data =
+            float[] data =
             {  
                 // Position			                // Color			                // Uv coords		
                 -0.125000f, 0.083333f,  -0.000050f, 0.000000f,  1.000000f,  0.000000f,  1.000000f,  -0.000000f,	//
@@ -91,7 +91,7 @@ namespace Examples
 
             };
 
-            int[] _indices =
+            int[] indices =
             {
                 0, 1, 2, // Triangle
                 3, 4, 5, 5, 6, 3, // Square
@@ -99,19 +99,19 @@ namespace Examples
                 13, 14, 15, 13, 15, 16, 13, 16, 17, 13, 17, 18, 13, 18, 19, 13, 19, 20,13, 20, 21, 13, 21, 22, 13, 22, 23, 13, 23, 24, 13, 24, 25, 13, 25, 26, 13, 26, 27, 13, 27, 28, 13, 28, 29, 13, 29, 30, 13, 30, 31, 13, 31, 32, 13, 32, 33, 13, 33, 34, 13, 34, 35, 13, 35, 36, 13, 36, 37, 13, 37, 38, 13, 38, 39, 13, 39, 40, 13, 40, 41, 13, 41, 42, 13, 42, 43, 13, 43, 44, 13, 44, 45, 13, 45, 46, 13, 46, 47, 13, 47, 48 // Circle
             };
 
-            _indexCount = _indices.Length;
+            indexCount = indices.Length;
 
             // Generate the array object buffer
-            _vertexArrayObject = GL.GenVertexArray();
+            vertexArrayObject = GL.GenVertexArray();
             // Points to the array object
-            GL.BindVertexArray(_vertexArrayObject);
+            GL.BindVertexArray(vertexArrayObject);
 
             // Generate the buffer
-            _vertexBufferObject = GL.GenBuffer();
+            vertexBufferObject = GL.GenBuffer();
             // Points to the active buffer
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
             // Insert the data into the buffer
-            GL.BufferData(BufferTarget.ArrayBuffer, _data.Length * sizeof(float), _data, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, data.Length * sizeof(float), data, BufferUsageHint.StaticDraw);
 
             // Position attribute
             GL.VertexAttribPointer(POSITION, 3, VertexAttribPointerType.Float, false, VERTEX_SIZE, OFFSET[POSITION]);
@@ -124,13 +124,13 @@ namespace Examples
             GL.EnableVertexAttribArray(UV);
 
             // Create and bind index buffer (information about the faces triangulation)
-            _indexBuffer = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _indexBuffer);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * _indexCount, _indices, BufferUsageHint.StaticDraw);
+            indexBuffer = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexBuffer);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * indexCount, indices, BufferUsageHint.StaticDraw);
 
-            _shader = new Shader("HelloIndex");
+            shader = new Shader("HelloIndex");
 
-            _texture = Texture.LoadFromFile("Resources/Texture/Uv_checker_01.png", TextureUnit.Texture0);
+            texture = Texture.LoadFromFile("Resources/Texture/Uv_checker_01.png", TextureUnit.Texture0);
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         }
@@ -141,11 +141,11 @@ namespace Examples
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            _texture.Use(TextureUnit.Texture0);
-            _shader.Use();
+            texture.Use(TextureUnit.Texture0);
+            shader.Use();
 
-            GL.BindVertexArray(_vertexArrayObject);
-            GL.DrawElements(BeginMode.Triangles, _indexCount, DrawElementsType.UnsignedInt, 0);
+            GL.BindVertexArray(vertexArrayObject);
+            GL.DrawElements(BeginMode.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
             GL.BindVertexArray(0);
 
             SwapBuffers();
@@ -157,8 +157,8 @@ namespace Examples
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
-            GL.DeleteBuffer(_vertexBufferObject);
-            GL.DeleteVertexArray(_vertexArrayObject);
+            GL.DeleteBuffer(vertexBufferObject);
+            GL.DeleteVertexArray(vertexArrayObject);
         }
     }
 }

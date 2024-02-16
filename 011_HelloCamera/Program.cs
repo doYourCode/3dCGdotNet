@@ -10,7 +10,7 @@ namespace Examples
     {
         static void Main(string[] args)
         {
-            var _window = new HelloCamera(
+            var window = new HelloCamera(
                 GameWindowSettings.Default,
                 new NativeWindowSettings()
                 {
@@ -24,7 +24,7 @@ namespace Examples
 
             Shader.SetRootPath("Resources/Shader/");
 
-            _window.Run();
+            window.Run();
         }
     }
 }

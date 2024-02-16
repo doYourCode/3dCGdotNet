@@ -11,7 +11,7 @@ namespace Examples
         static void Main(string[] args)
         {
             // Instancia e configura a janela da aplicação
-            var _window = new HelloWindow(
+            var window = new HelloWindow(
                 GameWindowSettings.Default,
                 new NativeWindowSettings()
                 {
@@ -27,7 +27,7 @@ namespace Examples
             Shader.SetRootPath("Resources/Shader/");     
 
             // Executa a aplicação
-            _window.Run();
+            window.Run();
         }
     }
 }

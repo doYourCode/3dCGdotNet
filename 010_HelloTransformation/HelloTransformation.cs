@@ -1,6 +1,6 @@
 ﻿using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 using Framework.Core;
 using Framework.Utils.Common.Mesh;
@@ -9,13 +9,13 @@ namespace Examples
 {
     internal class HelloTransformation : GameWindow
     {
-        private float _tick = 0.0f;
-        private float _speed = 100.0f;
+        private float tick = 0.0f;
+        private float speed = 100.0f;
 
-        private Shader _shader;
-        private Texture _texture;
-        private BasicMesh _mesh;
-        private Transform _transform;
+        private Shader shader;
+        private Texture texture;
+        private BasicMesh mesh;
+        private Transform transform;
 
         public HelloTransformation(
             GameWindowSettings gameWindowSettings,
@@ -31,13 +31,13 @@ namespace Examples
 
             GL.Enable(EnableCap.DepthTest);
 
-            _shader = new Shader("HelloTransformation");
+            shader = new Shader("HelloTransformation");
 
-            _texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
+            texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
 
-            _mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
+            mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
 
-            _transform = new Transform();
+            transform = new Transform();
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         }
@@ -49,10 +49,10 @@ namespace Examples
             // Limpar a tela antes de desenhar (usando a clear color)
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            _texture.Use(TextureUnit.Texture0);
-            _shader.Use();
+            texture.Use(TextureUnit.Texture0);
+            shader.Use();
 
-            _mesh.Draw();
+            mesh.Draw();
 
             SwapBuffers();
         }
@@ -62,22 +62,22 @@ namespace Examples
             base.OnUpdateFrame(args);
 
             // Rotate the model matrix (experimente alterar esses valores)
-            _transform.SetRotationY((float)System.Math.Cos(_tick));
+            transform.SetRotationY((float)System.Math.Cos(tick));
             // P/ rotacionar nos outros eixos descomente as linhas abaixo
             //_transform.SetRotationX(_tick);
             //_transform.SetRotationZ(_tick);
 
             // Identity matrix (per object)
-            _shader.SetMatrix4("model", _transform.GetModelMatrix());
+            shader.SetMatrix4("model", transform.GetModelMatrix());
 
-            _tick += 0.0001f * _speed;
+            tick += 0.0001f * speed;
         }
 
         protected override void OnUnload()
         {
             base.OnUnload();
 
-            _mesh.Delete();
+            mesh.Delete();
         }
     }
 }

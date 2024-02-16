@@ -1,6 +1,6 @@
 ﻿using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 using Framework.Core;
@@ -11,14 +11,14 @@ namespace Examples
 {
     internal class HelloCamera : GameWindow
     {
-        private float _tick = 0.0f;
+        private float tick = 0.0f;
 
-        private Shader _shader;
-        private Texture _texture;
-        private BasicMesh _mesh;
-        private Transform _transform;
-        private PerspectiveCamera _camera;
-        private CameraController _cameraController;
+        private Shader shader;
+        private Texture texture;
+        private BasicMesh mesh;
+        private Transform transform;
+        private PerspectiveCamera camera;
+        private CameraController cameraController;
 
         public HelloCamera(
             GameWindowSettings gameWindowSettings,
@@ -31,19 +31,19 @@ namespace Examples
 
             GL.Enable(EnableCap.DepthTest);
 
-            _shader = new Shader("HelloCamera");
+            shader = new Shader("HelloCamera");
 
-            _texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
+            texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
 
-            _mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
+            mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
 
-            _transform = new Transform();
+            transform = new Transform();
 
             // We initialize the camera so that it is 3 units back from where the rectangle is.
             // We also give it the proper aspect ratio.
-            _camera = new PerspectiveCamera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
+            camera = new PerspectiveCamera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
 
-            _cameraController = new CameraController(_camera, this);
+            cameraController = new CameraController(camera, this);
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
 
@@ -57,10 +57,10 @@ namespace Examples
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            _texture.Use(TextureUnit.Texture0);
-            _shader.Use();
+            texture.Use(TextureUnit.Texture0);
+            shader.Use();
 
-            _mesh.Draw();
+            mesh.Draw();
 
             SwapBuffers();
         }
@@ -70,30 +70,30 @@ namespace Examples
             base.OnUpdateFrame(args);
 
             // Rotate the model matrix
-            _transform.SetRotationY(_tick);
+            transform.SetRotationY(tick);
             // Identity matrix (per object)
-            _shader.SetMatrix4("model", _transform.GetModelMatrix());
+            shader.SetMatrix4("model", transform.GetModelMatrix());
             // Camera matrices
-            _shader.SetMatrix4("view", _camera.GetViewMatrix());
-            _shader.SetMatrix4("projection", _camera.GetProjectionMatrix());
+            shader.SetMatrix4("view", camera.GetViewMatrix());
+            shader.SetMatrix4("projection", camera.GetProjectionMatrix());
 
-            _tick += 0.01f;
+            tick += 0.01f;
 
-            _cameraController.Update(args, KeyboardState, MouseState);
+            cameraController.Update(args, KeyboardState, MouseState);
         }
 
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
 
-            _cameraController.MouseUpdate(e);
+            cameraController.MouseUpdate(e);
         }
 
         protected override void OnUnload()
         {
             base.OnUnload();
 
-            _mesh.Delete();
+            mesh.Delete();
         }
     }
 }

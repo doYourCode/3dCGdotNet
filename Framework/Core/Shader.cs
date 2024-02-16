@@ -5,11 +5,11 @@ namespace Framework.Core
 {
     public class Shader
     {
-        public static string _rootPath = "";
+        public static string rootPath = "";
 
         public readonly int Handle;
 
-        private readonly Dictionary<string, int> _uniformLocations;
+        private readonly Dictionary<string, int> uniformLocations;
 
         public Shader(string vertPath, string fragPath)
         {
@@ -37,21 +37,21 @@ namespace Framework.Core
 
             GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
 
-            _uniformLocations = new Dictionary<string, int>();
+            uniformLocations = new Dictionary<string, int>();
 
             for (var i = 0; i < numberOfUniforms; i++)
             {
                 var key = GL.GetActiveUniform(Handle, i, out _, out _);
                 var location = GL.GetUniformLocation(Handle, key);
-                _uniformLocations.Add(key, location);
+                uniformLocations.Add(key, location);
             }
         }
 
-        public Shader(string shaderName) : this(_rootPath + shaderName + ".vert", _rootPath + shaderName + ".frag") { }
+        public Shader(string shaderName) : this(rootPath + shaderName + ".vert", rootPath + shaderName + ".frag") { }
 
         public static void SetRootPath(string path)
         {
-            _rootPath = path;
+            rootPath = path;
         }
 
         private static void CompileShader(int shader)
@@ -90,24 +90,24 @@ namespace Framework.Core
         public void SetInt(string name, int data)
         {
             GL.UseProgram(Handle);
-            GL.Uniform1(_uniformLocations[name], data);
+            GL.Uniform1(uniformLocations[name], data);
         }
 
         public void SetFloat(string name, float data)
         {
             GL.UseProgram(Handle);
-            GL.Uniform1(_uniformLocations[name], data);
+            GL.Uniform1(uniformLocations[name], data);
         }
 
         public void SetMatrix4(string name, Matrix4 data)
         {
             GL.UseProgram(Handle);
-            GL.UniformMatrix4(_uniformLocations[name], true, ref data);
+            GL.UniformMatrix4(uniformLocations[name], true, ref data);
         }
         public void SetVector3(string name, Vector3 data)
         {
             GL.UseProgram(Handle);
-            GL.Uniform3(_uniformLocations[name], data);
+            GL.Uniform3(uniformLocations[name], data);
         }
     }
 }

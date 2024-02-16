@@ -4,12 +4,15 @@ using OpenTK.Graphics.OpenGL4;
 using ImGuiNET;
 
 using Framework.Utils.Common;
+using Framework.Utils.View;
 
 namespace Examples
 {
     internal class ViewLayer
     {
         ImGuiController controller;
+
+        public LightView LightView { get; set; }
 
         readonly System.Numerics.Vector2 modalInitPos = new System.Numerics.Vector2(16, 16);
         readonly System.Numerics.Vector2 modalInitSize = new System.Numerics.Vector2(330, 200);
@@ -38,6 +41,7 @@ namespace Examples
             GL.Disable(EnableCap.DepthTest);
 
             ShowGUI();
+            LightView.DrawControl();
             controller.Render();
 
             GL.Enable(EnableCap.DepthTest);

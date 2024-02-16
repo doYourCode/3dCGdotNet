@@ -14,10 +14,10 @@ namespace Examples
         private readonly int[] OFFSET = { 0, 12 };
         private const int VERTEX_SIZE = 6 * sizeof(float);
 
-        private int _vertexBufferObject;
-        private int _vertexArrayObject;
+        private int vertexBufferObject;
+        private int vertexArrayObject;
 
-        private Shader _shader;
+        private Shader shader;
 
         public HelloAttribute(
             GameWindowSettings gameWindowSettings,
@@ -28,7 +28,7 @@ namespace Examples
         {
             base.OnLoad();
 
-            float[] _data =
+            float[] data =
             {  // Position          // Color RGB
                 -0.75f, -0.75f, 0.0f, 1.0f, 0.0f, 0.0f,
                 0.75f , -0.75f, 0.0f, 0.0f, 1.0f, 0.0f,
@@ -36,15 +36,15 @@ namespace Examples
             };
 
             // Generate the buffer
-            _vertexBufferObject = GL.GenBuffer();
+            vertexBufferObject = GL.GenBuffer();
             // Points to the active buffer
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
             // Insert the data into the buffer
-            GL.BufferData(BufferTarget.ArrayBuffer, _data.Length * sizeof(float), _data, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, data.Length * sizeof(float), data, BufferUsageHint.StaticDraw);
             // Generate the array object buffer
-            _vertexArrayObject = GL.GenVertexArray();
+            vertexArrayObject = GL.GenVertexArray();
             // Points to the array object
-            GL.BindVertexArray(_vertexArrayObject);
+            GL.BindVertexArray(vertexArrayObject);
             // Position attribute
             GL.VertexAttribPointer(POSITION, 3, VertexAttribPointerType.Float, false, VERTEX_SIZE, OFFSET[POSITION]);
             GL.EnableVertexAttribArray(POSITION);
@@ -52,7 +52,7 @@ namespace Examples
             GL.VertexAttribPointer(COLOR, 3, VertexAttribPointerType.Float, false, VERTEX_SIZE, OFFSET[COLOR]);
             GL.EnableVertexAttribArray(COLOR);
 
-            _shader = new Shader("HelloAttribute");
+            shader = new Shader("HelloAttribute");
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         }
@@ -63,9 +63,9 @@ namespace Examples
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            _shader.Use();
+            shader.Use();
 
-            GL.BindVertexArray(_vertexArrayObject);
+            GL.BindVertexArray(vertexArrayObject);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
             GL.BindVertexArray(0);
 
@@ -78,8 +78,8 @@ namespace Examples
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
-            GL.DeleteBuffer(_vertexBufferObject);
-            GL.DeleteVertexArray(_vertexArrayObject);
+            GL.DeleteBuffer(vertexBufferObject);
+            GL.DeleteVertexArray(vertexArrayObject);
         }
     }
 }

@@ -12,14 +12,14 @@ namespace Examples
         private readonly int[] OFFSET = { 0 };
         private const int VERTEX_SIZE = 3 * sizeof(float);
 
-        private int _vertexBufferObject;
-        private int _vertexArrayObject;
+        private int vertexBufferObject;
+        private int vertexArrayObject;
 
-        private Shader _shader;
+        private Shader shader;
 
         // Que para criar uma uniform são necessárias 2 variáveis (1 p valor e outra p/ endereço na vram)
-        private int _tickUniformLocation;
-        private float _tick = 0.0f;
+        private int tickUniformLocation;
+        private float tick = 0.0f;
 
         public HelloUniform(
             GameWindowSettings gameWindowSettings,
@@ -30,7 +30,7 @@ namespace Examples
         {
             base.OnLoad();
 
-            float[] _data =
+            float[] data =
             {
                 -0.75f, -0.75f, 0.0f,
                 0.75f , -0.75f, 0.0f,
@@ -38,22 +38,22 @@ namespace Examples
             };
 
             // Generate the buffer
-            _vertexBufferObject = GL.GenBuffer();
+            vertexBufferObject = GL.GenBuffer();
             // Points to the active buffer
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
             // Insert the data into the buffer
-            GL.BufferData(BufferTarget.ArrayBuffer, _data.Length * sizeof(float), _data, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, data.Length * sizeof(float), data, BufferUsageHint.StaticDraw);
             // Generate the array object buffer
-            _vertexArrayObject = GL.GenVertexArray();
+            vertexArrayObject = GL.GenVertexArray();
             // Points to the array object
-            GL.BindVertexArray(_vertexArrayObject);
+            GL.BindVertexArray(vertexArrayObject);
             // Creates an attribute pointer
             GL.VertexAttribPointer(POSITION, 3, VertexAttribPointerType.Float, false, VERTEX_SIZE, OFFSET[POSITION]);
             GL.EnableVertexAttribArray(POSITION);
 
-            _shader = new Shader("HelloUniform");
+            shader = new Shader("HelloUniform");
 
-            _tickUniformLocation = GL.GetUniformLocation(_shader.Handle, "tick");
+            tickUniformLocation = GL.GetUniformLocation(shader.Handle, "tick");
 
             GL.ClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         }
@@ -64,11 +64,11 @@ namespace Examples
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            _shader.Use();
+            shader.Use();
 
-            GL.Uniform1(_tickUniformLocation, _tick);
+            GL.Uniform1(tickUniformLocation, tick);
 
-            GL.BindVertexArray(_vertexArrayObject);
+            GL.BindVertexArray(vertexArrayObject);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
             GL.BindVertexArray(0);
 
@@ -79,7 +79,7 @@ namespace Examples
         {
             base.OnUpdateFrame(args);
 
-            _tick += 0.01f;
+            tick += 0.01f;
         }
 
         protected override void OnUnload()
@@ -88,8 +88,8 @@ namespace Examples
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
-            GL.DeleteBuffer(_vertexBufferObject);
-            GL.DeleteVertexArray(_vertexArrayObject);
+            GL.DeleteBuffer(vertexBufferObject);
+            GL.DeleteVertexArray(vertexArrayObject);
         }
     }
 }

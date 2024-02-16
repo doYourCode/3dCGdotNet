@@ -1,6 +1,6 @@
 ﻿using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 using Framework.Core;
 using Framework.Utils.Common.Mesh;
@@ -10,9 +10,9 @@ namespace Examples
     internal class HelloMesh : GameWindow
     {
 
-        private Shader _shader;
-        private Texture _texture;
-        private BasicMesh _mesh;
+        private Shader shader;
+        private Texture texture;
+        private BasicMesh mesh;
 
         public HelloMesh(
             GameWindowSettings gameWindowSettings,
@@ -25,11 +25,11 @@ namespace Examples
 
             GL.Enable(EnableCap.DepthTest);
 
-            _shader = new Shader("HelloMesh");
+            shader = new Shader("HelloMesh");
 
-            _texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
+            texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
 
-            _mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
+            mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         }
@@ -41,10 +41,10 @@ namespace Examples
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Bind em textura e shader
-            _texture.Use(TextureUnit.Texture0);
-            _shader.Use();
+            texture.Use(TextureUnit.Texture0);
+            shader.Use();
             // Dizer quais buffers vão ser desenhados c/ esse conjunto textura/shader
-            _mesh.Draw();
+            mesh.Draw();
 
             SwapBuffers();
         }
@@ -53,7 +53,7 @@ namespace Examples
         {
             base.OnUnload();
 
-            _mesh.Delete();
+            mesh.Delete();
         }
     }
 }

@@ -31,9 +31,9 @@ namespace Framework.Core.Light
             this.castShadow = CastShadow;
         }
 
-        public Light() : this(Vector3.Zero, Vector3.Zero, Vector3.One) { }
-        public Light(Vector3 Position, float Intensity = 1.0f, bool CastShadow = false) : this(Position, Vector3.Zero, Vector3.One, Intensity, CastShadow) { }
-        public Light(Vector3 Position, Vector3 Color, float Intensity = 1.0f, bool CastShadow = false) : this(Position, Vector3.Zero, Color, Intensity, CastShadow) { }
+        public Light() : this(Vector3.Zero, Vector3.One, Vector3.Zero) { }
+        public Light(Vector3 Position, float Intensity = 1.0f, bool CastShadow = false) : this(Position, Vector3.One, Vector3.Zero, Intensity, CastShadow) { }
+        public Light(Vector3 Position, Vector3 Color, float Intensity = 1.0f, bool CastShadow = false) : this(Position, Color, Vector3.Zero, Intensity, CastShadow) { }
 
         public void GetUniformLocations(Shader shader)
         {

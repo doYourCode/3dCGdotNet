@@ -24,6 +24,7 @@ namespace Examples
         Transform transform;
 
         Light light;
+        AmbientLight ambientLight;
         LightView lightView;
 
         private PerspectiveCamera camera;
@@ -44,26 +45,33 @@ namespace Examples
 
             meshes = new Dictionary<String, BasicMesh>();
 
-            meshes.Add("Cube", new BasicMesh("Resources/Mesh/Cube.fbx", true));
-            meshes.Add("Icosahedron", new BasicMesh("Resources/Mesh/Icosahedron.fbx"));
             meshes.Add("Monkey", new BasicMesh("Resources/Mesh/Monkey.fbx"));
-            meshes.Add("Sphere", new BasicMesh("Resources/Mesh/Sphere.fbx"));
-            meshes.Add("Teapot", new BasicMesh("Resources/Mesh/Teapot.fbx"));
-            meshes.Add("Torus", new BasicMesh("Resources/Mesh/Torus.fbx", true));
 
             view.SetList(meshes.Keys.ToArray());
 
-            texture = Texture.LoadFromFile("Resources/Texture/Uv_checker_01.png", TextureUnit.Texture0);
+            texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
 
             shader = new Shader("HelloLight");
 
             transform = new Transform();
+            transform.SetRotationY(3.14f);
 
             light = new Light(
-                new System.Numerics.Vector3(2.0f, 2.0f, 2.0f));
+                new System.Numerics.Vector3(2.0f, 2.0f, 2.0f),
+                new System.Numerics.Vector3(1.0f, 1.0f, 1.0f),
+                new System.Numerics.Vector3(0.0f, 0.0f, 0.0f),
+                1.0f,
+                false
+                );
             light.GetUniformLocations(shader);
 
-            lightView = new LightView(light);
+            ambientLight = new AmbientLight(
+                new System.Numerics.Vector3(0.0f, 0.0f, 0.0f),
+                1.0f
+                );
+            ambientLight.GetUniformLocations(shader);
+
+            lightView = new LightView(light, ambientLight);
             view.LightView = lightView;
 
             camera = new PerspectiveCamera(Vector3.UnitZ * 1.5f, Size.X / (float)Size.Y);
@@ -121,6 +129,8 @@ namespace Examples
             }
 
             light.UpdateUniforms();
+
+            ambientLight.UpdateUniforms();
 
             camera.UpdateUniforms();
 

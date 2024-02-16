@@ -12,21 +12,41 @@ uniform sampler2D texture0;
 uniform vec3 lightPosition;
 uniform vec3 lightDirection;
 uniform vec3 lightColor;
+uniform float lightIntensity;
+uniform vec3 ambientColor;
+uniform float ambientIntensity;
 uniform vec3 viewPosition;
+
+vec3 DiffuseLighting(vec3 normal);
+float SpecularLighting(vec3 normal);
 
 void main()
 {
+    vec3 normal = normalize(vNormal.xyz);
 
-    // Diffuse lighting
-    vec3 norm = normalize(vNormal.xyz);
+    vec3 diffuseLight = DiffuseLighting(normal);
+
+    float specularLight = SpecularLighting(normal);
+
+    vec3 textureColor = texture(texture0, vUv).xyz;
+
+    vec3 diffuseFinalColor = (diffuseLight + ambientColor * ambientIntensity) * textureColor + specularLight;
+
+    outputColor = vec4(diffuseFinalColor, 1.0);
+}
+
+vec3 DiffuseLighting(vec3 normal)
+{
     vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
-    float diffuse = max(dot(norm, lightDir), 0.0);
+    float diffuseTerm = max(dot(normal, lightDir), 0.0);
+    return diffuseTerm * lightColor * lightIntensity;
+}
 
-    // Specular lighting
+float SpecularLighting(vec3 normal)
+{
     float specularStrength = 0.24;
+    vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
     vec3 viewDir = normalize(-viewPosition - fragPosition.xyz);
-    vec3 reflectDir = reflect(lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 9);
-
-    outputColor = texture(texture0, vUv) * diffuse + spec * specularStrength;
+    vec3 reflectDir = reflect(lightDir, normal);
+    return pow(max(dot(viewDir, reflectDir), 0.0), 9) * specularStrength;
 }

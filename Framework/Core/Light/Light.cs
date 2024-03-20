@@ -3,6 +3,13 @@ using System.Numerics;
 
 namespace Framework.Core.Light
 {
+    enum LightType
+    {
+        Directional,
+        Spot,
+        Point,
+        Area
+    }
     public class Light
     {
         private int positionUniformLocation;

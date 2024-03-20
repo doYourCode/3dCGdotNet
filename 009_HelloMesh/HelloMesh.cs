@@ -4,6 +4,8 @@ using OpenTK.Graphics.OpenGL4;
 
 using Framework.Core;
 using Framework.Utils.Common.Mesh;
+using Assimp;
+using OpenTK.Mathematics;
 
 namespace Examples
 {
@@ -30,6 +32,8 @@ namespace Examples
             texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
 
             mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
+
+            MeshPrinter mp = new MeshPrinter("Resources/Mesh/hedra.dae");
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         }

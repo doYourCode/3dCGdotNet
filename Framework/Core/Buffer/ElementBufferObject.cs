@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Framework.Utils;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Framework.Core.Buffer
 {
@@ -13,12 +14,24 @@ namespace Framework.Core.Buffer
     /// </summary>
     public class ElementBufferObject
     {
+        /* ----------------------------------------- Variáveis de classe ----------------------------------------- */
+#if DEBUG
+        /// <summary>
+        /// Representa o quantitativo de EBOs existentes na VRAM.
+        /// </summary>
+        public static UInt32 Count { get { return count; } private set { } }
+
+        private static UInt32 count = 0;
+#endif
+
         /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
 
         /// <summary>
         /// Id que reflete o endereço do buffer na VRAM
         /// </summary>
-        public UInt32 ID;
+        public UInt32 ID { get { return id; } private set { } }
+
+        private UInt32 id;
 
 
         /* ---------------------------------------------- Interface pública ---------------------------------------------- */
@@ -33,7 +46,7 @@ namespace Framework.Core.Buffer
         /// </param>
         /// <param name="usage"> Indicativo de para que os dados do buffer serão usados.
         /// <br />
-        /// Valores comuns: BufferUsageHint.StaticDraw / BufferUsageHint.DynamicDraw / BufferUsageHint.StreamDraw.
+        /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
         /// Há outros valores possíveis, verifique as referências da API.
         /// </param>
         public ElementBufferObject(int[] indices, BufferUsageHint usage = BufferUsageHint.StaticDraw)
@@ -41,22 +54,39 @@ namespace Framework.Core.Buffer
             ID = (UInt32)GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ID);
             GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * indices.Length, indices, usage);
+#if DEBUG
+            ElementBufferObject.count++;
+#endif
         }
 
+        /// <summary>
+        /// Vincula o buffer para alteração ou desenho.
+        /// </summary>
         public void Bind()
         {
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ID);
         }
 
+        /// <summary>
+        /// Desvincula o buffer.
+        /// </summary>
         public void Unbind()
         {
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, CONSTANTS.NONE);
         }
 
+        /// <summary>
+        /// Apaga os dados do buffer da VRAM.
+        /// <br />
+        /// ATENÇÃO: esta ação também desvincula o buffer.
+        /// </summary>
         public void Delete()
         {
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, CONSTANTS.NONE);
             GL.DeleteBuffer(ID);
+#if DEBUG
+            ElementBufferObject.count--;
+#endif
         }
     }
 }

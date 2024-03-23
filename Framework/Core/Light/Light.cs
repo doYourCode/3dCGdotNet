@@ -9,7 +9,7 @@ namespace Framework.Core.Light
     enum LightType
     {
         Directional,    // TODO: implementar essas diferenças na classe Light e uma forma de refletir essa
-        Spot,           // mudança nos shaders (shaders modulares? hot loading? precisa pesquisar)
+        Spot,           // mudança nos shaders (shaders modulares? hot-loading? precisa pesquisar)
         Point,
         Area
     }
@@ -58,8 +58,8 @@ namespace Framework.Core.Light
 
         /// <summary>
         /// Liga ou desliga a projeção de sombras pela fonte de luz.
-        /// < /br>
-        /// ATENÇÃO: este efeito tem forte influência sobre o desempenho do render, use-o com caltela.
+        /// <br />
+        /// ATENÇÃO: este efeito tem forte influência sobre o desempenho do render, use-o com cautela.
         /// </summary>
         public bool CastShadow { get => castShadow; set => castShadow = value; } // TODO: implementar os efeitos de sombra
 

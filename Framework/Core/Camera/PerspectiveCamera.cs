@@ -11,7 +11,7 @@ namespace Framework.Core.Camera
         /* -------------------------------------------- Variáveis de classe -------------------------------------------- */
 #if DEBUG
         /// <summary>
-        /// Representa o quantitativo de objetos do tipo Luz.
+        /// Representa o quantitativo de objetos do tipo câmera com perspectiva.
         /// </summary>
         public static UInt32 Count { get { return count; } private set { } }
 
@@ -112,6 +112,9 @@ namespace Framework.Core.Camera
         {
             Position = position;
             AspectRatio = aspectRatio;
+#if DEBUG
+            PerspectiveCamera.count++;
+#endif
         }
 
         /// <summary>
@@ -171,6 +174,16 @@ namespace Framework.Core.Camera
         public void GetUniformLocations(Shader shader)
         {
             this.positionUniformLocation = GL.GetUniformLocation(shader.ID, "viewPosition");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Delete()
+        {
+#if DEBUG
+            PerspectiveCamera.count--;
+#endif
         }
     }
 }

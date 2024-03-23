@@ -1,20 +1,33 @@
 ﻿using ImGuiNET;
-
 using Framework.Core.Light;
 
 namespace Framework.Utils.View
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class LightView
     {
+        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
         private Light light;
         private AmbientLight ambientLight;
 
+        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="light"></param>
+        /// <param name="ambientLight"></param>
         public LightView(Light light, AmbientLight ambientLight)
         {
             this.light = light;
             this.ambientLight = ambientLight;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void DrawControl()
         {
             ImGui.Begin("Light");
@@ -52,6 +65,9 @@ namespace Framework.Utils.View
             ImGui.End();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void DrawGuismo()
         {
             // TODO: Draw a textured point to represent the light bulb and it's target

@@ -1,26 +1,44 @@
-﻿using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
 
 namespace Framework.Core.Camera
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CameraController
     {
-        PerspectiveCamera camera;
-        GameWindow window;
+        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
+
+        private PerspectiveCamera camera;
+
+        private GameWindow window;
 
         private bool firstMove = true;
 
         private Vector2 lastPos;
 
+        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="camera"></param>
+        /// <param name="window"></param>
         public CameraController(PerspectiveCamera camera, GameWindow window)
         {
-            camera = camera;
-            window = window;
+            this.camera = camera;
+            this.window = window;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="input"></param>
+        /// <param name="mouse"></param>
         public void Update(FrameEventArgs e, KeyboardState input, MouseState mouse)
         {
             if (!window.IsFocused) // Check to see if the window is focused
@@ -80,6 +98,10 @@ namespace Framework.Core.Camera
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         public void MouseUpdate(MouseWheelEventArgs e)
         {
             camera.Fov -= e.OffsetY;

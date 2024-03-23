@@ -1,5 +1,4 @@
 ﻿using Assimp;
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 namespace Framework.Utils.Common.Mesh

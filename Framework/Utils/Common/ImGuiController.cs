@@ -2,8 +2,6 @@
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using OpenTK.Graphics.OpenGL4;
@@ -11,6 +9,9 @@ using ErrorCode = OpenTK.Graphics.OpenGL4.ErrorCode;
 
 namespace Framework.Utils.Common
 {
+    /// <summary>
+    /// Adaptação de imediate mode GUI para a plataforma .Net. Essa classe é necessária para as view layers.
+    /// </summary>
     public class ImGuiController : IDisposable
     {
         private bool frameBegun;

@@ -3,111 +3,193 @@ using OpenTK.Mathematics;
 
 namespace Framework.Core
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Shader
     {
-        public static string rootPath = "";
+        /* -------------------------------------------- Variáveis de classe -------------------------------------------- */
+#if DEBUG
+        /// <summary>
+        /// Representa o quantitativo de shaders carregados na VRAM.
+        /// </summary>
+        public static UInt32 Count { get { return count; } private set { } }
 
-        public readonly int Handle;
+        private static UInt32 count = 0;
+#endif
+
+        /// <summary>
+        /// Caminho para a pasta raiz para carregar arquivos de Shader.
+        /// </summary>
+        public static string RootPath { get { return rootPath; } private set { } }
+
+        private static string rootPath = "";
+
+
+        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
+
+        /// <summary>
+        /// Id que reflete o endereço do programa de shader na VRAM
+        /// </summary>
+        public UInt32 ID { get { return id; } private set { } }
+
+
+        private UInt32 id;
 
         private readonly Dictionary<string, int> uniformLocations;
 
-        public Shader(string vertPath, string fragPath)
+
+        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VertPath"></param>
+        /// <param name="FragPath"></param>
+        public Shader(string VertPath, string FragPath)
         {
-            var shaderSource = File.ReadAllText(vertPath);
+            var shaderSource = File.ReadAllText(VertPath);
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
-            shaderSource = File.ReadAllText(fragPath);
+            shaderSource = File.ReadAllText(FragPath);
             var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);
 
-            Handle = GL.CreateProgram();
+            id = (UInt32)GL.CreateProgram();
 
-            GL.AttachShader(Handle, vertexShader);
-            GL.AttachShader(Handle, fragmentShader);
+            GL.AttachShader((Int32)id, vertexShader);
+            GL.AttachShader((Int32)id, fragmentShader);
 
-            LinkProgram(Handle);
+            LinkProgram((Int32)id);
 
-            GL.DetachShader(Handle, vertexShader);
-            GL.DetachShader(Handle, fragmentShader);
+            GL.DetachShader((Int32)id, vertexShader);
+            GL.DetachShader((Int32)id, fragmentShader);
             GL.DeleteShader(fragmentShader);
             GL.DeleteShader(vertexShader);
 
-            GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
+            GL.GetProgram(id, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
 
             uniformLocations = new Dictionary<string, int>();
 
             for (var i = 0; i < numberOfUniforms; i++)
             {
-                var key = GL.GetActiveUniform(Handle, i, out _, out _);
-                var location = GL.GetUniformLocation(Handle, key);
+                var key = GL.GetActiveUniform((Int32)id, i, out _, out _);
+                var location = GL.GetUniformLocation(id, key);
                 uniformLocations.Add(key, location);
             }
         }
 
-        public Shader(string shaderName) : this(rootPath + shaderName + ".vert", rootPath + shaderName + ".frag") { }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ShaderName"></param>
+        public Shader(string ShaderName) : this(rootPath + ShaderName + ".vert", rootPath + ShaderName + ".frag") { }
 
-        public static void SetRootPath(string path)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Path"></param>
+        public static void SetRootPath(string Path)
         {
-            rootPath = path;
+            rootPath = Path;
         }
 
-        private static void CompileShader(int shader)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Shader"></param>
+        /// <exception cref="Exception"></exception>
+        private static void CompileShader(int Shader)
         {
-            GL.CompileShader(shader);
+            GL.CompileShader(Shader);
 
-            GL.GetShader(shader, ShaderParameter.CompileStatus, out var code);
+            GL.GetShader(Shader, ShaderParameter.CompileStatus, out var code);
             if (code != (int)All.True)
             {
-                var infoLog = GL.GetShaderInfoLog(shader);
-                throw new Exception($"Error occurred whilst compiling Shader({shader}).\n\n{infoLog}");
+                var infoLog = GL.GetShaderInfoLog(Shader);
+                throw new Exception($"Error occurred whilst compiling Shader({Shader}).\n\n{infoLog}");
             }
         }
 
-        private static void LinkProgram(int program)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Program"></param>
+        /// <exception cref="Exception"></exception>
+        private static void LinkProgram(int Program)
         {
-            GL.LinkProgram(program);
+            GL.LinkProgram(Program);
 
-            GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
+            GL.GetProgram(Program, GetProgramParameterName.LinkStatus, out var code);
             if (code != (int)All.True)
             {
-                throw new Exception($"Error occurred whilst linking Program({program})");
+                throw new Exception($"Error occurred whilst linking Program({Program})");
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Use()
         {
-            GL.UseProgram(Handle);
+            GL.UseProgram(id);
         }
 
-        public int GetAttribLocation(string attribName)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="AttribName"></param>
+        /// <returns></returns>
+        public int GetAttribLocation(string AttribName)
         {
-            return GL.GetAttribLocation(Handle, attribName);
+            return GL.GetAttribLocation(id, AttribName);
         }
 
-        public void SetInt(string name, int data)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="Data"></param>
+        public void SetInt(string Name, int Data)
         {
-            GL.UseProgram(Handle);
-            GL.Uniform1(uniformLocations[name], data);
+            GL.UseProgram(id);
+            GL.Uniform1(uniformLocations[Name], Data);
         }
 
-        public void SetFloat(string name, float data)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="Data"></param>
+        public void SetFloat(string Name, float Data)
         {
-            GL.UseProgram(Handle);
-            GL.Uniform1(uniformLocations[name], data);
+            GL.UseProgram(id);
+            GL.Uniform1(uniformLocations[Name], Data);
         }
 
-        public void SetMatrix4(string name, Matrix4 data)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="Data"></param>
+        public void SetMatrix4(string Name, Matrix4 Data)
         {
-            GL.UseProgram(Handle);
-            GL.UniformMatrix4(uniformLocations[name], true, ref data);
+            GL.UseProgram(id);
+            GL.UniformMatrix4(uniformLocations[Name], true, ref Data);
         }
-        public void SetVector3(string name, Vector3 data)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="Data"></param>
+        public void SetVector3(string Name, Vector3 Data)
         {
-            GL.UseProgram(Handle);
-            GL.Uniform3(uniformLocations[name], data);
+            GL.UseProgram(id);
+            GL.Uniform3(uniformLocations[Name], Data);
         }
     }
 }

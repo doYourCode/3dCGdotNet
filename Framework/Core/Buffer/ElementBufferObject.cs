@@ -21,6 +21,7 @@ namespace Framework.Core.Buffer
         /// </summary>
         public static UInt32 Count { get { return count; } private set { } }
 
+
         private static UInt32 count = 0;
 #endif
 
@@ -31,6 +32,7 @@ namespace Framework.Core.Buffer
         /// </summary>
         public UInt32 ID { get { return id; } private set { } }
 
+
         private UInt32 id;
 
 
@@ -39,21 +41,21 @@ namespace Framework.Core.Buffer
         /// <summary>
         /// Construtor
         /// </summary>
-        /// <param name="indices"> Array de índices contendo os dados a serem enviados ao buffer.¹²
+        /// <param name="Indices"> Array de índices contendo os dados a serem enviados ao buffer.¹²
         /// <br />
         /// ATENÇÃO: ¹ certifique-se de que o array não é nulo. ² Na implementação atual só é permitido utilizar
         /// números inteiros como índices.
         /// </param>
-        /// <param name="usage"> Indicativo de para que os dados do buffer serão usados.
+        /// <param name="Usage"> Indicativo de para que os dados do buffer serão usados.
         /// <br />
         /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
         /// Há outros valores possíveis, verifique as referências da API.
         /// </param>
-        public ElementBufferObject(int[] indices, BufferUsageHint usage = BufferUsageHint.StaticDraw)
+        public ElementBufferObject(int[] Indices, BufferUsageHint Usage = BufferUsageHint.StaticDraw)
         {
             ID = (UInt32)GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ID);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * indices.Length, indices, usage);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * Indices.Length, Indices, Usage);
 #if DEBUG
             ElementBufferObject.count++;
 #endif

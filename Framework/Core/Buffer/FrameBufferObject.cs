@@ -9,6 +9,7 @@
         /// </summary>
         public static UInt32 Count { get { return count; } private set { } }
 
+
         private static UInt32 count = 0;
 #endif
 
@@ -19,18 +20,16 @@
         /// </summary>
         public UInt32 ID { get { return id; } private set { } }
 
+        
         private UInt32 id;
 
-        // Variáveis membro privadas (não são disponibilizadas pela interface pública da classe)
+        private UInt32 textureID;       // Endereço da textura interna do FBO
+                                        // TODO: trocar para a versão POO de textura que já está implementada (requer alterações)
+        private UInt16 width, height;   // Altura e largura da textura produzida
 
-        UInt32 textureID;       // Endereço da textura interna do FBO
-                                // TODO: trocar para a versão POO de textura que já está implementada (requer alterações)
+        private UInt16 numSamples;        // Número de amostras para FBOs com anti-aliasing
 
-        UInt16 width, height;   // Altura e largura da textura produzida
-
-        UInt16 numSamples;        // Número de amostras para FBOs com anti-aliasing
-
-        float gamma;
+        private float gamma;
 
 
         /* ---------------------------------------------- Interface pública ---------------------------------------------- */

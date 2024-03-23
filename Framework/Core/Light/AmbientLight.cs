@@ -24,8 +24,8 @@ namespace Framework.Core.Light
 
         public void GetUniformLocations(Shader shader)
         {
-            this.colorUniformLocation = GL.GetUniformLocation(shader.Handle, "ambientColor");
-            this.intensityUniformLocation = GL.GetUniformLocation(shader.Handle, "ambientIntensity");
+            this.colorUniformLocation = GL.GetUniformLocation(shader.ID, "ambientColor");
+            this.intensityUniformLocation = GL.GetUniformLocation(shader.ID, "ambientIntensity");
         }
 
         public void UpdateUniforms()

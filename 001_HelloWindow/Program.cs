@@ -23,7 +23,7 @@ namespace Examples
                     Vsync = VSyncMode.On                    // Limita o FPS à freq. do monitor
                 });
 
-            // Pasta raiz para arquivos de Shader  O que é shader? Ver 004_HelloShader)
+            // Pasta raiz para carregar arquivos de Shader ( O que é shader? Ver 004_HelloShader )
             Shader.SetRootPath("Resources/Shader/");     
 
             // Executa a aplicação

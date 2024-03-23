@@ -18,6 +18,7 @@ namespace Framework.Core.Buffer
         /// </summary>
         public static UInt32 Count { get { return count; } private set { } }
 
+
         private static UInt32 count = 0;
 #endif
 
@@ -27,6 +28,7 @@ namespace Framework.Core.Buffer
         /// Id que reflete o endereço do buffer na VRAM
         /// </summary>
         public UInt32 ID { get { return id; } private set { } }
+
 
         private UInt32 id;
 
@@ -41,14 +43,22 @@ namespace Framework.Core.Buffer
 #endif
         }
 
-        public void LinkVBO(VertexBufferObject vbo, int layout, int stride, int offset)
+        /// <summary>
+        /// Associa um VBO arbitrário a um atributo relacionado ao VAO atual. Obs: esta é a maneira atual de anexar 
+        /// VBOs a VAOs. Não é o único jeito, talvez não seja o melhor mas é fácil de aprender.
+        /// </summary>
+        /// <param name="Vbo"></param>
+        /// <param name="Layout"></param>   // TODO: fornecer outras interfaces públicas para essa mesma tarefa
+        /// <param name="Stride"></param>
+        /// <param name="Offset"></param>
+        public void LinkVBO(VertexBufferObject Vbo, int Layout, int Stride, int Offset)
         {
-            vbo.Bind();
+            Vbo.Bind();
 
-            GL.VertexAttribPointer(layout, 3, VertexAttribPointerType.Float, false, stride, offset);
-            GL.EnableVertexAttribArray(layout);
+            GL.VertexAttribPointer(Layout, 3, VertexAttribPointerType.Float, false, Stride, Offset);
+            GL.EnableVertexAttribArray(Layout);
 
-            vbo.Unbind();
+            Vbo.Unbind();
         }
 
         /// <summary>

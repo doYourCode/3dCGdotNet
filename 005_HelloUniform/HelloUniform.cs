@@ -53,7 +53,7 @@ namespace Examples
 
             shader = new Shader("HelloUniform");
 
-            tickUniformLocation = GL.GetUniformLocation(shader.Handle, "tick");
+            tickUniformLocation = GL.GetUniformLocation(shader.ID, "tick");
 
             GL.ClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         }

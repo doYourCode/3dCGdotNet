@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+
 using Framework.Core.Light;
 
 namespace Framework.Utils.View
@@ -10,7 +11,9 @@ namespace Framework.Utils.View
     {
         /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
         private Light light;
+
         private AmbientLight ambientLight;
+
 
         /* ---------------------------------------------- Interface pública ---------------------------------------------- */
 

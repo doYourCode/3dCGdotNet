@@ -10,17 +10,17 @@ namespace Examples
     {
         static void Main(string[] args)
         {
-            var window = new HelloTransformation(
-                GameWindowSettings.Default,
-                new NativeWindowSettings()
-                {
-                    Title = "Hello Transformation",
-                    ClientSize = new Vector2i(800, 800),
-                    WindowBorder = WindowBorder.Fixed,
-                    WindowState = WindowState.Normal,
-                    APIVersion = new Version(3, 3),
-                    Vsync = VSyncMode.On
-                });
+            NativeWindowSettings settings = new NativeWindowSettings()
+            {
+                Title = "Hello Transformation",
+                ClientSize = new Vector2i(800, 800),
+                WindowBorder = WindowBorder.Fixed,
+                WindowState = WindowState.Normal,
+                APIVersion = new Version(3, 3),
+                Vsync = VSyncMode.On
+            };
+
+            var window = new HelloTransformation(GameWindowSettings.Default, settings);
 
             Shader.SetRootPath("Resources/Shader/");
 

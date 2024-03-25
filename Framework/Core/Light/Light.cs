@@ -29,6 +29,7 @@ namespace Framework.Core.Light
         /// </summary>
         public static UInt32 Count { get { return count; } private set { } }
 
+
         private static UInt32 count = 0;
 #endif
 

@@ -35,7 +35,7 @@ namespace Framework.Core.Vertex
             VertexAttribPointerType.Float,              // TexCoord_0
             VertexAttribPointerType.Float,              // Normal
             VertexAttribPointerType.Float,              // Tangent
-            VertexAttribPointerType.UnsignedByte,       // Color
+            VertexAttribPointerType.Float,              // Color
             VertexAttribPointerType.Float,              // TexCoord_1
 
             // TODO: BlendWeight = Float, BlendIndices = Int
@@ -65,7 +65,7 @@ namespace Framework.Core.Vertex
             sizeof(float),                          // TexCoord_0
             sizeof(float),                          // Normal
             sizeof(float),                          // Tangent
-            sizeof(byte),                           // Color
+            sizeof(float),                           // Color
             sizeof(float),                          // TexCoord_1
 
             // TODO: BlendWeight = sizeof(float), BlendIndices = sizeof(int)

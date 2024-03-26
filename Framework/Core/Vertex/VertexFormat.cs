@@ -68,22 +68,27 @@ namespace Framework.Core.Vertex
         /// </summary>
         /// <param name="Vbo"></param>
         /// <param name="attribs"></param>
-        public void AddAttributeGroup(VertexBufferObject Vbo, params VertexAttributeType[] Attribs)
+        public void AddAttributesGroup(VertexBufferObject Vbo, params VertexAttributeType[] Attribs)
         {
-            uint temp = 0;
-
             foreach(VertexAttributeType attribType in Attribs)
             {
+#if DEBUG
+                Console.WriteLine("- Attribute: " + attribType.ToString());
+                Console.WriteLine("offset: " + this.interleavedStride);
+#endif
                 Attribute attribute = new Attribute(attribType);
 
                 this.interleavedVertexAttributes.Add(attribute, Vbo);
 
-                this.interleavedOffsets.Add(attribute, temp);
+                this.interleavedOffsets.Add(attribute, this.interleavedStride);
 
                 this.interleavedStride += attribute.SizeInBytes;
 
-                temp += attribute.SizeInBytes;
+                //temp += attribute.SizeInBytes;
             }
+#if DEBUG
+            Console.WriteLine("- Vertex stride: " + this.interleavedStride);
+#endif
         }
     }
 }

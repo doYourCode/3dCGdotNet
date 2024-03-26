@@ -58,11 +58,13 @@ namespace Framework.Core.Buffer
         /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
         /// Há outros valores possíveis, verifique as referências da API.
         /// </param>
-        public ElementBufferObject(int[] Indices, BufferUsageHint Usage = BufferUsageHint.StaticDraw)
+        public ElementBufferObject(int[] Indices, VertexArrayObject vao, BufferUsageHint Usage = BufferUsageHint.StaticDraw)
         {
+            vao.Bind();
+
             ID = (UInt32)GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ID);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * Indices.Length, Indices, Usage);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(uint) * Indices.Length, Indices, Usage);
 
             this.indexSize = Indices.Length;
 #if DEBUG

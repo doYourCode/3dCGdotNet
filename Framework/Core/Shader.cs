@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using Framework.Utils;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
 namespace Framework.Core
@@ -136,6 +137,12 @@ namespace Framework.Core
         public void Use()
         {
             GL.UseProgram(id);
+        }
+
+        public void Delete()
+        {
+            GL.UseProgram(CONSTANTS.NONE);
+            GL.DeleteProgram(id);
         }
 
         /// <summary>

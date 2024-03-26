@@ -41,7 +41,7 @@ namespace Framework.Utils
 
         public static void Elements(VertexArrayObject Vao, int indexCount)
         {
-            Vao.Bind();
+            Vao.Bind(); Console.WriteLine("INDEX SIZE: " + indexCount);
 
             GL.DrawElements(BeginMode.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
 

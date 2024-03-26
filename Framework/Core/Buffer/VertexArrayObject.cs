@@ -136,7 +136,7 @@ namespace Framework.Core.Buffer
                 }
             }
 
-            this.Unbind();
+            //this.Unbind();
         }
     }
 }

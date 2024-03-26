@@ -3,28 +3,23 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
 using Framework.Core;
+using Framework.Core.Buffer;
+using Framework.Core.Vertex;
+using Framework.Utils;
 
 namespace Examples
 {
-    internal class HelloTests : GameWindow
+    internal class HelloIndexOOP : GameWindow
     {
-
-        private const int POSITION = 0;
-        private const int COLOR = 1;
-        private const int UV = 2;
-        private readonly int[] OFFSET = { 0, 12, 24 };
-        private const int VERTEX_SIZE = 8 * sizeof(float);
-
-        private int indexCount = 0;
-
-        private int vertexBufferObject;
-        private int vertexArrayObject;
-        private int indexBuffer;
+        VertexBufferObject vbo;
+        VertexArrayObject vao;
+        ElementBufferObject ebo;
 
         private Shader shader;
+
         private Texture texture;
 
-        public HelloTests(
+        public HelloIndexOOP(
             GameWindowSettings gameWindowSettings,
             NativeWindowSettings nativeWindowSettings) :
             base(gameWindowSettings, nativeWindowSettings)
@@ -105,34 +100,14 @@ namespace Examples
                 13, 46, 47, 13, 47, 48                                                                          //
             };
 
-            indexCount = indices.Length;
+            vbo = new VertexBufferObject(data);
 
-            // Generate the array object buffer
-            vertexArrayObject = GL.GenVertexArray();
-            // Points to the array object
-            GL.BindVertexArray(vertexArrayObject);
+            VertexFormat vertexFormat = new VertexFormat();
+            vertexFormat.AddAttributesGroup(vbo, VertexAttributeType.Position, VertexAttributeType.Color, VertexAttributeType.TexCoord_0);
 
-            // Generate the buffer
-            vertexBufferObject = GL.GenBuffer();
-            // Points to the active buffer
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
-            // Insert the data into the buffer
-            GL.BufferData(BufferTarget.ArrayBuffer, data.Length * sizeof(float), data, BufferUsageHint.StaticDraw);
+            vao = new VertexArrayObject(vertexFormat);
 
-            // Position attribute
-            GL.VertexAttribPointer(POSITION, 3, VertexAttribPointerType.Float, false, VERTEX_SIZE, OFFSET[POSITION]);
-            GL.EnableVertexAttribArray(POSITION);
-            // Color attribute
-            GL.VertexAttribPointer(COLOR, 3, VertexAttribPointerType.Float, false, VERTEX_SIZE, OFFSET[COLOR]);
-            GL.EnableVertexAttribArray(COLOR);
-            // Texture coordinates attribute
-            GL.VertexAttribPointer(UV, 2, VertexAttribPointerType.Float, false, VERTEX_SIZE, OFFSET[UV]);
-            GL.EnableVertexAttribArray(UV);
-
-            // Create and bind index buffer (information about the faces triangulation)
-            indexBuffer = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexBuffer);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * indexCount, indices, BufferUsageHint.StaticDraw);
+            ebo = new ElementBufferObject(indices, vao);
 
             shader = new Shader("HelloIndex");
 
@@ -148,11 +123,10 @@ namespace Examples
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             texture.Use(TextureUnit.Texture0);
+
             shader.Use();
 
-            GL.BindVertexArray(vertexArrayObject);
-            GL.DrawElements(BeginMode.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
-            GL.BindVertexArray(0);
+            Draw.Elements(vao, ebo.IndexSize);
 
             SwapBuffers();
         }
@@ -161,12 +135,11 @@ namespace Examples
         {
             base.OnUnload();
 
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
-            GL.BindVertexArray(0);
-            GL.DeleteBuffer(vertexBufferObject);
-            GL.DeleteBuffer(indexBuffer);
-            GL.DeleteVertexArray(vertexArrayObject);
+            vao.Delete();
+            vbo.Delete();
+            ebo.Delete();
+            shader.Delete();
+            texture.Delete();
         }
     }
 }

@@ -4,8 +4,6 @@ using OpenTK.Graphics.OpenGL4;
 
 using Framework.Core;
 using Framework.Utils.Common.Mesh;
-using Assimp;
-using OpenTK.Mathematics;
 
 namespace Examples
 {

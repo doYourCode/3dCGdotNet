@@ -35,12 +35,12 @@ namespace Framework.Core.Buffer
         /// <summary>
         /// 
         /// </summary>
-        public int IndexSize { get { return indexSize; } private set { } }
+        public int IndexCount { get { return indexCount; } private set { } }
 
 
         private UInt32 id;
 
-        private int indexSize = 0;
+        private int indexCount = 0;
 
 
         /* ---------------------------------------------- Interface pública ---------------------------------------------- */
@@ -58,15 +58,13 @@ namespace Framework.Core.Buffer
         /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
         /// Há outros valores possíveis, verifique as referências da API.
         /// </param>
-        public ElementBufferObject(int[] Indices, VertexArrayObject vao, BufferUsageHint Usage = BufferUsageHint.StaticDraw)
+        public ElementBufferObject(int[] Indices, BufferUsageHint Usage = BufferUsageHint.StaticDraw)
         {
-            vao.Bind();
-
-            ID = (UInt32)GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ID);
+            id = (UInt32)GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, id);
             GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(uint) * Indices.Length, Indices, Usage);
 
-            this.indexSize = Indices.Length;
+            this.indexCount = Indices.Length;
 #if DEBUG
             ElementBufferObject.count++;
 #endif

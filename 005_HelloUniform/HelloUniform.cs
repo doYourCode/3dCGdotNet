@@ -39,7 +39,7 @@ namespace Examples
             vbo = new VertexBufferObject(data);
 
             VertexFormat vertexFormat = new VertexFormat();
-            vertexFormat.AddAttribute(VertexAttributeType.Position, vbo);
+            vertexFormat.AddAttribute(vbo, VertexAttributeType.Position);
 
             vao = new VertexArrayObject(vertexFormat);
 

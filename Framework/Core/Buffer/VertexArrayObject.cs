@@ -44,6 +44,8 @@ namespace Framework.Core.Buffer
         {
             id = (UInt32)GL.GenVertexArray();
 
+            this.Bind();
+
             this.Setup(vertexFormat);
 #if DEBUG
             VertexArrayObject.count++;
@@ -64,8 +66,6 @@ namespace Framework.Core.Buffer
 
             GL.VertexAttribPointer(Layout, (int)Size, DataType, false, Stride, Offset);
             GL.EnableVertexAttribArray(Layout);
-
-            Vbo.Unbind();
         }
 
         /// <summary>
@@ -106,12 +106,10 @@ namespace Framework.Core.Buffer
         /// <param name="vertexFormat"></param>
         private void Setup(VertexFormat vertexFormat)
         {
-            this.Bind();
-
             // Associa todos os buffera de atributos únicos, se existirem
             if (vertexFormat.UniqueVertexAttributes.Count > 0)
             {
-                foreach (Vertex.Attribute attrib in vertexFormat.UniqueVertexAttributes.Keys)
+                foreach (VertexAttribute attrib in vertexFormat.UniqueVertexAttributes.Keys)
                 {
                     LinkVBO(vertexFormat.UniqueVertexAttributes.GetValueOrDefault(attrib),
                         attrib.Layout,
@@ -124,7 +122,7 @@ namespace Framework.Core.Buffer
             // Associa todos os buffera de atributos entrelaçados, se existirem
             if (vertexFormat.InterleavedVertexAttributes.Count > 0)
             {
-                foreach (Vertex.Attribute attrib in vertexFormat.InterleavedVertexAttributes.Keys)
+                foreach (VertexAttribute attrib in vertexFormat.InterleavedVertexAttributes.Keys)
                 {
                     LinkVBO(vertexFormat.InterleavedVertexAttributes.GetValueOrDefault(attrib),
                         attrib.Layout,

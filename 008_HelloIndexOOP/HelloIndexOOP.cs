@@ -107,7 +107,7 @@ namespace Examples
 
             vao = new VertexArrayObject(vertexFormat);
 
-            ebo = new ElementBufferObject(indices, vao);
+            ebo = new ElementBufferObject(indices);
 
             shader = new Shader("HelloIndex");
 
@@ -126,7 +126,7 @@ namespace Examples
 
             shader.Use();
 
-            Draw.Elements(vao, ebo.IndexSize);
+            Draw.Elements(vao, ebo.IndexCount);
 
             SwapBuffers();
         }

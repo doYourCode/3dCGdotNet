@@ -10,24 +10,20 @@ namespace Framework.Utils
     {
         public static void Points(VertexArrayObject Vao, int first, int count, int pointSize)
         {
-            Vao.Bind();
-
             GL.PointSize(pointSize);
 
-            GL.DrawArrays(PrimitiveType.Points, first, count);
+            Vao.Bind();
 
-            Vao.Unbind();
+            GL.DrawArrays(PrimitiveType.Points, first, count);
         }
 
         public static void Lines(VertexArrayObject Vao, int first, int count, int thickness)
         {
-            Vao.Bind();
-
             GL.LineWidth(thickness);
 
-            GL.DrawArrays(PrimitiveType.LineLoop, first, count);
+            Vao.Bind();
 
-            Vao.Unbind();
+            GL.DrawArrays(PrimitiveType.LineLoop, first, count);
         }
 
         public static void Triangles(VertexArrayObject Vao, int first, int count)
@@ -35,17 +31,13 @@ namespace Framework.Utils
             Vao.Bind();
 
             GL.DrawArrays(PrimitiveType.Triangles, first, count);
-
-            Vao.Unbind();
         }
 
         public static void Elements(VertexArrayObject Vao, int indexCount)
         {
-            Vao.Bind(); Console.WriteLine("INDEX SIZE: " + indexCount);
+            Vao.Bind();
 
             GL.DrawElements(BeginMode.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
-
-            Vao.Unbind();
         }
     }
 }

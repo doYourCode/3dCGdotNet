@@ -12,17 +12,17 @@ namespace Framework.Core.Vertex
         /// <summary>
         /// Conjunto de atributos associados ao formato.
         /// </summary>
-        public Dictionary<Attribute, VertexBufferObject> UniqueVertexAttributes { get => uniqueVertexAttributes; private set { } }
+        public Dictionary<VertexAttribute, VertexBufferObject> UniqueVertexAttributes { get => uniqueVertexAttributes; private set { } }
 
         /// <summary>
         /// 
         /// </summary>
-        public Dictionary<Attribute, VertexBufferObject> InterleavedVertexAttributes { get => interleavedVertexAttributes; private set { } }
+        public Dictionary<VertexAttribute, VertexBufferObject> InterleavedVertexAttributes { get => interleavedVertexAttributes; private set { } }
 
         /// <summary>
         /// 
         /// </summary>
-        public Dictionary<Attribute, uint> InterleavedOffsets { get => interleavedOffsets; private set { } }
+        public Dictionary<VertexAttribute, uint> InterleavedOffsets { get => interleavedOffsets; private set { } }
 
         /// <summary>
         /// 
@@ -30,11 +30,11 @@ namespace Framework.Core.Vertex
         public uint InterleavedStride { get => interleavedStride; private set { } }
 
 
-        private Dictionary<Attribute, VertexBufferObject> uniqueVertexAttributes;
+        private Dictionary<VertexAttribute, VertexBufferObject> uniqueVertexAttributes;
 
-        private Dictionary<Attribute, VertexBufferObject> interleavedVertexAttributes;
+        private Dictionary<VertexAttribute, VertexBufferObject> interleavedVertexAttributes;
 
-        private Dictionary<Attribute, UInt32> interleavedOffsets;
+        private Dictionary<VertexAttribute, UInt32> interleavedOffsets;
 
         private UInt32 interleavedStride = 0;
 
@@ -46,11 +46,11 @@ namespace Framework.Core.Vertex
         /// </summary>
         public VertexFormat()
         {
-            uniqueVertexAttributes = new Dictionary<Attribute, VertexBufferObject>();
+            uniqueVertexAttributes = new Dictionary<VertexAttribute, VertexBufferObject>();
 
-            interleavedVertexAttributes = new Dictionary<Attribute, VertexBufferObject>();
+            interleavedVertexAttributes = new Dictionary<VertexAttribute, VertexBufferObject>();
 
-            interleavedOffsets = new Dictionary<Attribute, UInt32>();
+            interleavedOffsets = new Dictionary<VertexAttribute, UInt32>();
         }
 
         /// <summary>
@@ -58,9 +58,9 @@ namespace Framework.Core.Vertex
         /// </summary>
         /// <param name="AttribType"></param>
         /// <param name="Vbo"></param>
-        public void AddAttribute(VertexAttributeType AttribType, VertexBufferObject Vbo)
+        public void AddAttribute(VertexBufferObject Vbo, VertexAttributeType AttribType)
         {
-            this.uniqueVertexAttributes.Add(new Attribute(AttribType), Vbo);
+            this.uniqueVertexAttributes.Add(new VertexAttribute(AttribType), Vbo);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Framework.Core.Vertex
                 Console.WriteLine("- Attribute: " + attribType.ToString());
                 Console.WriteLine("offset: " + this.interleavedStride);
 #endif
-                Attribute attribute = new Attribute(attribType);
+                VertexAttribute attribute = new VertexAttribute(attribType);
 
                 this.interleavedVertexAttributes.Add(attribute, Vbo);
 

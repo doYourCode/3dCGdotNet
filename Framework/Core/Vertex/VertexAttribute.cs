@@ -22,7 +22,7 @@ namespace Framework.Core.Vertex
     /// <summary>
     /// Fornece os dados necessários para adicionar suporte aos atributos listados.
     /// </summary>
-    public class Attribute
+    public class VertexAttribute
     {
         /* ----------------------------------------- Variáveis de classe ----------------------------------------- */
 
@@ -110,7 +110,7 @@ namespace Framework.Core.Vertex
 
         /* ---------------------------------------------- Interface pública ---------------------------------------------- */
 
-        public Attribute(VertexAttributeType type)
+        public VertexAttribute(VertexAttributeType type)
         {
             this.layout = (int)type;
 

@@ -38,7 +38,7 @@ namespace Examples
 
             VertexFormat vertexFormat = new VertexFormat();
             // Adiciona atributo "Position" e o associa ao VBO
-            vertexFormat.AddAttribute(VertexAttributeType.Position, vbo);
+            vertexFormat.AddAttribute(vbo, VertexAttributeType.Position);
 
             vao = new VertexArrayObject(vertexFormat);
 

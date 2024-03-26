@@ -32,8 +32,15 @@ namespace Framework.Core.Buffer
         /// </summary>
         public UInt32 ID { get { return id; } private set { } }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public int IndexSize { get { return indexSize; } private set { } }
+
 
         private UInt32 id;
+
+        private int indexSize = 0;
 
 
         /* ---------------------------------------------- Interface pública ---------------------------------------------- */
@@ -56,6 +63,8 @@ namespace Framework.Core.Buffer
             ID = (UInt32)GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ID);
             GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * Indices.Length, Indices, Usage);
+
+            this.indexSize = Indices.Length;
 #if DEBUG
             ElementBufferObject.count++;
 #endif

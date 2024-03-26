@@ -33,17 +33,17 @@ namespace Examples
                 0.0f  , 0.75f , 0.0f
             };
 
-            // Generate the buffer
+
             vertexBufferObject = GL.GenBuffer();
-            // Points to the active buffer
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
-            // Insert the data into the buffer
+
             GL.BufferData(BufferTarget.ArrayBuffer, data.Length * sizeof(float), data, BufferUsageHint.StaticDraw);
-            // Generate the array object buffer
+
             vertexArrayObject = GL.GenVertexArray();
-            // Points to the array object
+
             GL.BindVertexArray(vertexArrayObject);
-            // Creates an attribute pointer
+
             GL.VertexAttribPointer(POSITION, 3, VertexAttribPointerType.Float, false, VERTEX_SIZE, OFFSET[POSITION]);
             GL.EnableVertexAttribArray(POSITION);
 

@@ -45,11 +45,13 @@ namespace Framework.Core.Buffer
         /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
         /// Há outros valores possíveis, verifique as referências da API.
         /// </param>
-        public VertexBufferObject(float[] Vertices, BufferUsageHint Usage = BufferUsageHint.StaticDraw)
+        public VertexBufferObject(float[] Data, BufferUsageHint Usage = BufferUsageHint.StaticDraw)
         {
             id = (UInt32)GL.GenBuffer();
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, id);
-            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * Vertices.Length, Vertices, Usage);
+
+            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * Data.Length, Data, Usage);
 #if DEBUG
             VertexBufferObject.count++;
 #endif

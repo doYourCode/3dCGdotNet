@@ -156,8 +156,10 @@ namespace Examples
             base.OnUnload();
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
             GL.BindVertexArray(0);
             GL.DeleteBuffer(vertexBufferObject);
+            GL.DeleteBuffer(indexBuffer);
             GL.DeleteVertexArray(vertexArrayObject);
         }
     }

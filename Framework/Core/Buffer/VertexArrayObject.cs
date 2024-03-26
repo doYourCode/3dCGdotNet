@@ -1,4 +1,5 @@
-﻿using Framework.Utils;
+﻿using Framework.Core.Vertex;
+using Framework.Utils;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Framework.Core.Buffer
@@ -35,9 +36,15 @@ namespace Framework.Core.Buffer
 
         /* ---------------------------------------------- Interface pública ---------------------------------------------- */
 
-        public VertexArrayObject()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vertexFormat"></param>
+        public VertexArrayObject(VertexFormat vertexFormat)
         {
             id = (UInt32)GL.GenVertexArray();
+
+            this.Setup(vertexFormat);
 #if DEBUG
             VertexArrayObject.count++;
 #endif
@@ -51,11 +58,11 @@ namespace Framework.Core.Buffer
         /// <param name="Layout"></param>   // TODO: fornecer outras interfaces públicas para essa mesma tarefa
         /// <param name="Stride"></param>
         /// <param name="Offset"></param>
-        public void LinkVBO(VertexBufferObject Vbo, int Layout, int Stride, int Offset)
+        public void LinkVBO(VertexBufferObject Vbo, int Layout, UInt32 Size, VertexAttribPointerType DataType, int Stride, int Offset)
         {
             Vbo.Bind();
 
-            GL.VertexAttribPointer(Layout, 3, VertexAttribPointerType.Float, false, Stride, Offset);
+            GL.VertexAttribPointer(Layout, (int)Size, DataType, false, Stride, Offset);
             GL.EnableVertexAttribArray(Layout);
 
             Vbo.Unbind();
@@ -89,6 +96,47 @@ namespace Framework.Core.Buffer
 #if DEBUG
             VertexArrayObject.count--;
 #endif
+        }
+
+        /* ---------------------------------------------- Métodos privados ---------------------------------------------- */
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vertexFormat"></param>
+        private void Setup(VertexFormat vertexFormat)
+        {
+            this.Bind();
+
+            // Associa todos os buffera de atributos únicos, se existirem
+            if (vertexFormat.UniqueVertexAttributes.Count > 0)
+            {
+                foreach (Vertex.Attribute attrib in vertexFormat.UniqueVertexAttributes.Keys)
+                {
+                    LinkVBO(vertexFormat.UniqueVertexAttributes.GetValueOrDefault(attrib),
+                        attrib.Layout,
+                        attrib.Size,
+                        attrib.DataType,
+                        0, 0);
+                }
+            }
+
+            // Associa todos os buffera de atributos entrelaçados, se existirem
+            if (vertexFormat.InterleavedVertexAttributes.Count > 0)
+            {
+                foreach (Vertex.Attribute attrib in vertexFormat.InterleavedVertexAttributes.Keys)
+                {
+                    LinkVBO(vertexFormat.InterleavedVertexAttributes.GetValueOrDefault(attrib),
+                        attrib.Layout,
+                        attrib.Size,
+                        attrib.DataType,
+                        (int)vertexFormat.InterleavedStride,
+                        (int)vertexFormat.InterleavedOffsets.GetValueOrDefault(attrib)
+                    );
+                }
+            }
+
+            this.Unbind();
         }
     }
 }

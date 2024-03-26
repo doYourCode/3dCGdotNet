@@ -31,8 +31,6 @@ namespace Examples
 
             mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
 
-            MeshPrinter mp = new MeshPrinter("Resources/Mesh/hedra.dae");
-
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         }
 

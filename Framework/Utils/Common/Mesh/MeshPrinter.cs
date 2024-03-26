@@ -1,7 +1,7 @@
 ﻿using Assimp;
 using OpenTK.Mathematics;
 
-namespace Framework.Utils.Common.Mesh
+/*namespace Framework.Utils.Common.Mesh
 {
     /// <summary>
     /// Expõe os dados de vértices para o formato de texto.
@@ -67,4 +67,4 @@ namespace Framework.Utils.Common.Mesh
             }
         }
     }
-}
+}*/

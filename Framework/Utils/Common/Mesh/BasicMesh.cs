@@ -1,29 +1,22 @@
 ﻿using Assimp;
+using Framework.Core.Buffer;
+using Framework.Core.Vertex;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 
 namespace Framework.Utils.Common.Mesh
 {
     public class BasicMesh
     {
-        private static readonly byte POSITION = 0;
-        private static readonly byte COLOR = 1;
-        private static readonly byte UV = 2;
-        private static readonly byte NORMAL = 3;
-        private static readonly byte[] OFFSET = { 0, 0, 16, 24 };
-        private static readonly byte POSITION_COUNT = 3;
-        private static readonly byte COLOR_COUNT = 4;
-        private static readonly byte UV_COUNT = 2;
-        private static readonly byte NORMAL_COUNT = 3;
-        private static readonly byte POSITION_SIZE = (byte)(POSITION_COUNT * sizeof(float));
-        private static readonly byte DATA_SIZE = (byte)((COLOR_COUNT + UV_COUNT + NORMAL_COUNT) * sizeof(float));
+        private VertexArrayObject vao;
+        private VertexBufferObject positionVbo;
+        private VertexBufferObject colorNormalTexCoordVbo;
+        private ElementBufferObject ebo;
 
-        private int vao;
-        private int vertexBuffer;
-        private int colorUVNormalBuffer;
-        private int indexBuffer;
-        private int indexCount; // Total amount of triangles in the object
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="invertUv"></param>
         public BasicMesh(string filePath, bool invertUv = false)
         {
             // Create assimp context (vertex data saved into the 3d model)
@@ -32,10 +25,10 @@ namespace Framework.Utils.Common.Mesh
             var scene = context.ImportFile(filePath, PostProcessSteps.Triangulate | PostProcessSteps.GenerateSmoothNormals | PostProcessSteps.FlipUVs);
 
             // Arrays p/ guardar copia dos dados na RAM
-            var positions = new List<Vector3>();
-            var colors = new List<Color4>();
-            var uvs = new List<Vector2>();
-            var normals = new List<Vector3>();
+            var positions = new List<float>();
+            var colors = new List<Color3D>();
+            var uvs = new List<Vector2D>();
+            var normals = new List<Vector3D>();
             var indices = new List<int>();
 
             // Loads the vertex data into the lists
@@ -43,120 +36,67 @@ namespace Framework.Utils.Common.Mesh
             {
                 for (int i = 0; i < mesh.VertexCount; i++)
                 {
-                    positions.Add(mesh.Vertices[i].ToOpenTK());
+                    positions.AddRange(new[] { mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z });
 
                     if (mesh.HasVertexColors(0))
-                        colors.Add(mesh.VertexColorChannels[0][i].ToOpenTK());
+                        colors.Add(new Color3D(mesh.VertexColorChannels[0][i].R, mesh.VertexColorChannels[0][i].G, mesh.VertexColorChannels[0][i].B));
                     else
-                        colors.Add(Color4.White);
+                        colors.Add(new Color3D(1.0f ,1.0f ,1.0f));
 
                     if (mesh.HasTextureCoords(0))
-                        uvs.Add(mesh.TextureCoordinateChannels[0][i].ToOpenTK_UV(invertUv));
+                        uvs.Add(new Vector2D(mesh.TextureCoordinateChannels[0][i].X, mesh.TextureCoordinateChannels[0][i].Y));
                     else
-                        uvs.Add(Vector2.Zero);
+                        uvs.Add(new Vector2D(0.0f ,0.0f));
 
-                    normals.Add(mesh.Normals[i].ToOpenTK());
+                    normals.Add(mesh.Normals[i]);
                 }
 
                 for (int i = 0; i < mesh.FaceCount; i++)
                 {
                     var face = mesh.Faces[i];
-                    indices.Add(face.Indices[0]);
-                    indices.Add(face.Indices[1]);
-                    indices.Add(face.Indices[2]);
+                    indices.AddRange(new[] { face.Indices[0], face.Indices[1], face.Indices[2] });
                 }
             }
 
-            indexCount = indices.Count;
-
             // Create interleaved buffer for colors, uvs and normals
             var interleaved = new List<float>();
-            for (int i = 0; i < positions.Count; i++)
+            for (int i = 0; i < positions.Count / 3; i++)
             {
-                interleaved.AddRange(new[] { colors[i].R, colors[i].G, colors[i].B, colors[i].A });
+                interleaved.AddRange(new[] { colors[i].R, colors[i].G, colors[i].B });
                 interleaved.AddRange(new[] { uvs[i].X, uvs[i].Y });
                 interleaved.AddRange(new[] { normals[i].X, normals[i].Y, normals[i].Z });
             }
 
-            // Create and bind VAO
-            vao = GL.GenVertexArray();
-            GL.BindVertexArray(vao);
+            positionVbo = new VertexBufferObject(positions.ToArray());
+            colorNormalTexCoordVbo = new VertexBufferObject(interleaved.ToArray());
 
-            // Buffers p/ guardar copia dos dados na RAM
+            VertexFormat format = new VertexFormat();
+            format.AddAttribute(positionVbo, VertexAttributeType.Position);
+            format.AddAttributesGroup(colorNormalTexCoordVbo, VertexAttributeType.Color, VertexAttributeType.TexCoord_0, VertexAttributeType.Normal);
 
-            // Create and bind vertex position buffer
-            vertexBuffer = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBuffer);
-            GL.BufferData(BufferTarget.ArrayBuffer, POSITION_SIZE * positions.Count, positions.ToArray(), BufferUsageHint.StaticDraw);
-            GL.VertexAttribPointer(POSITION, POSITION_COUNT, VertexAttribPointerType.Float, false, 0, OFFSET[POSITION]);
-            GL.EnableVertexAttribArray(POSITION);
+            vao = new VertexArrayObject(format);
 
-            // Create and bind color/uv/normal buffer
-            colorUVNormalBuffer = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, colorUVNormalBuffer);
-            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * interleaved.Count, interleaved.ToArray(), BufferUsageHint.StaticDraw);
-            GL.VertexAttribPointer(COLOR, COLOR_COUNT, VertexAttribPointerType.Float, false, DATA_SIZE, OFFSET[COLOR]);
-            GL.EnableVertexAttribArray(COLOR);
-            GL.VertexAttribPointer(UV, UV_COUNT, VertexAttribPointerType.Float, false, DATA_SIZE, OFFSET[UV]);
-            GL.EnableVertexAttribArray(UV);
-            GL.VertexAttribPointer(NORMAL, NORMAL_COUNT, VertexAttribPointerType.Float, false, DATA_SIZE, OFFSET[NORMAL]);
-            GL.EnableVertexAttribArray(NORMAL);
-
-            // Create and bind index buffer (information about the faces triangulation)
-            indexBuffer = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, indexBuffer);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(int) * indexCount, indices.ToArray(), BufferUsageHint.StaticDraw);
-
-            // Unbind VAO
-            GL.BindVertexArray(0);
+            ebo = new ElementBufferObject(indices.ToArray());
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Draw()
         {
-            GL.BindVertexArray(vao);
-            GL.DrawElements(BeginMode.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
-            GL.BindVertexArray(0);
+            GL.BindVertexArray(vao.ID);
+            GL.DrawElements(BeginMode.Triangles, ebo.IndexCount, DrawElementsType.UnsignedInt, 0);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Delete()
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            GL.BindVertexArray(0);
-            GL.DeleteBuffer(vertexBuffer);
-            GL.DeleteBuffer(colorUVNormalBuffer);
-            GL.DeleteBuffer(indexBuffer);
-            GL.DeleteVertexArray(vao);
-        }
-    }
-
-    static class AssimpExtensions
-    {
-        public static Vector3 ToOpenTK(this Vector3D v)
-        {
-            return new Vector3(v.X, v.Y, v.Z);
-        }
-
-        public static Vector2 ToOpenTK(this Vector2D v)
-        {
-            return new Vector2(v.X, v.Y);
-        }
-
-        public static Vector2 ToOpenTK_UV(this Vector3D v, bool invertY = false)
-        {
-            if (invertY)
-                return new Vector2(v.X, v.Y * -1.0f); // Probably not the most efficient way since it tests invert Y for each vertex
-
-            return new Vector2(v.X, v.Y);
-        }
-
-        public static Color4 ToOpenTK(this Color4D c)
-        {
-            return new Color4(c.R, c.G, c.B, c.A);
-        }
-
-        public static Vector3 ToOpenTK(this Color3D c)
-        {
-            return new Vector3(c.R, c.G, c.B);
+            vao.Delete();
+            positionVbo.Delete();
+            colorNormalTexCoordVbo.Delete();
+            ebo.Delete();
         }
     }
 }

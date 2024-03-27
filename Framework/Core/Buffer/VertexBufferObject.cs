@@ -35,7 +35,7 @@ namespace Framework.Core.Buffer
         /// <summary>
         /// Construtor
         /// </summary>
-        /// <param name="Vertices"> Array de vértices contendo os dados a serem enviados ao buffer.¹²
+        /// <param name="Data"> Array de vértices contendo os dados a serem enviados ao buffer.¹²
         /// <br />
         /// ATENÇÃO: ¹ certifique-se de que o array não é nulo. ² Na implementação atual só é permitido utilizar
         /// números reais de precisão simples (float).

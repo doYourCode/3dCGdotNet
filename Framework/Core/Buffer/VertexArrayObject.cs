@@ -115,7 +115,8 @@ namespace Framework.Core.Buffer
                         attrib.Layout,
                         attrib.Size,
                         attrib.DataType,
-                        0, 0);
+                        0, 0
+                    );
                 }
             }
 
@@ -133,8 +134,6 @@ namespace Framework.Core.Buffer
                     );
                 }
             }
-
-            //this.Unbind();
         }
     }
 }

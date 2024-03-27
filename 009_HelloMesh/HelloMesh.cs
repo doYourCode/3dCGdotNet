@@ -9,7 +9,6 @@ namespace Examples
 {
     internal class HelloMesh : GameWindow
     {
-
         private Shader shader;
         private Texture texture;
         private BasicMesh mesh;

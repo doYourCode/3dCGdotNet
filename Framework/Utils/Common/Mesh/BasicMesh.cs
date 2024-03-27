@@ -5,12 +5,23 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Framework.Utils.Common.Mesh
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BasicMesh
     {
+        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
+
         private VertexArrayObject vao;
+
         private VertexBufferObject positionVbo;
+
         private VertexBufferObject colorNormalTexCoordVbo;
+
         private ElementBufferObject ebo;
+
+
+        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
 
         /// <summary>
         /// 

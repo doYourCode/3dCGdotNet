@@ -5,6 +5,9 @@ using Framework.Utils;
 
 namespace Framework.Core
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Texture
     {
         /* -------------------------------------------- Variáveis de classe -------------------------------------------- */

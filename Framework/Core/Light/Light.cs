@@ -152,6 +152,9 @@ namespace Framework.Core.Light
             GL.Uniform1(this.intensityUniformLocation, this.intensity);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Delete()
         {
 #if DEBUG

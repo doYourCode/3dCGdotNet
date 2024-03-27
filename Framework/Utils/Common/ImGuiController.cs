@@ -14,12 +14,18 @@ namespace Framework.Utils.Common
     /// </summary>
     public class ImGuiController : IDisposable
     {
+        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
+
         private bool frameBegun;
 
         private int vertexArray;
+
         private int vertexBuffer;
+
         private int vertexBufferSize;
+
         private int indexBuffer;
+
         private int indexBufferSize;
 
         //private Texture fontTexture;
@@ -27,10 +33,13 @@ namespace Framework.Utils.Common
         private int fontTexture;
 
         private int shader;
+
         private int shaderFontTextureLocation;
+
         private int shaderProjectionMatrixLocation;
 
         private int windowWidth;
+
         private int windowHeight;
 
         private System.Numerics.Vector2 scaleFactor = System.Numerics.Vector2.One;
@@ -38,7 +47,11 @@ namespace Framework.Utils.Common
         private static bool KHRDebugAvailable = false;
 
         private int GLVersion;
+
         private bool CompatibilityProfile;
+
+
+        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
 
         /// <summary>
         /// Constructs a new ImGuiController.
@@ -73,17 +86,28 @@ namespace Framework.Utils.Common
             frameBegun = true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public void WindowResized(int width, int height)
         {
             windowWidth = width;
             windowHeight = height;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void DestroyDeviceObjects()
         {
             Dispose();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void CreateDeviceResources()
         {
             vertexBufferSize = 10000;
@@ -242,8 +266,12 @@ void main()
             io.DeltaTime = deltaSeconds; // DeltaTime is in seconds.
         }
 
-        readonly List<char> PressedChars = new List<char>();
+        readonly List<char> PressedChars = new List<char>(); // TODO: reorganizar
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="wnd"></param>
         private void UpdateImGuiInput(GameWindow wnd)
         {
             ImGuiIOPtr io = ImGui.GetIO();
@@ -282,11 +310,19 @@ void main()
             io.KeySuper = KeyboardState.IsKeyDown(Keys.LeftSuper) || KeyboardState.IsKeyDown(Keys.RightSuper);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyChar"></param>
         public void PressChar(char keyChar)
         {
             PressedChars.Add(keyChar);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="offset"></param>
         public void MouseScroll(Vector2 offset)
         {
             ImGuiIOPtr io = ImGui.GetIO();
@@ -295,6 +331,11 @@ void main()
             io.MouseWheelH = offset.X;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="draw_data"></param>
+        /// <exception cref="NotImplementedException"></exception>
         private void RenderImDrawData(ImDrawDataPtr draw_data)
         {
             if (draw_data.CmdListsCount == 0)
@@ -491,12 +532,23 @@ void main()
             GL.DeleteProgram(shader);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objLabelIdent"></param>
+        /// <param name="glObject"></param>
+        /// <param name="name"></param>
         public static void LabelObject(ObjectLabelIdentifier objLabelIdent, int glObject, string name)
         {
             if (KHRDebugAvailable)
                 GL.ObjectLabel(objLabelIdent, glObject, name.Length, name);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         static bool IsExtensionSupported(string name)
         {
             int n = GL.GetInteger(GetPName.NumExtensions);
@@ -509,6 +561,13 @@ void main()
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="vertexSource"></param>
+        /// <param name="fragmentSoruce"></param>
+        /// <returns></returns>
         public static int CreateProgram(string name, string vertexSource, string fragmentSoruce)
         {
             int program = GL.CreateProgram();
@@ -538,6 +597,13 @@ void main()
             return program;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
         private static int CompileShader(string name, ShaderType type, string source)
         {
             int shader = GL.CreateShader(type);
@@ -556,6 +622,10 @@ void main()
             return shader;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="title"></param>
         public static void CheckGLError(string title)
         {
             ErrorCode error;
@@ -566,6 +636,11 @@ void main()
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static ImGuiKey TranslateKey(Keys key)
         {
             if (key >= Keys.D0 && key <= Keys.D9)

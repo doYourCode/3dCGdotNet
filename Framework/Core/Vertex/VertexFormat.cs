@@ -83,8 +83,6 @@ namespace Framework.Core.Vertex
                 this.interleavedOffsets.Add(attribute, this.interleavedStride);
 
                 this.interleavedStride += attribute.SizeInBytes;
-
-                //temp += attribute.SizeInBytes;
             }
 #if DEBUG
             Console.WriteLine("- Vertex stride: " + this.interleavedStride);

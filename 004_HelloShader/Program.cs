@@ -22,7 +22,8 @@ namespace Examples
 
             var window = new HelloShader(GameWindowSettings.Default, settings);
 
-            Shader.SetRootPath("Resources/Shader/");
+            // Configura uma pasta raiz para carregar os arquivos de Shader
+            Shader.RootPath = "Resources/Shader/";
 
             window.Run();
         }

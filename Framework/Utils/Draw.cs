@@ -78,18 +78,9 @@ namespace Framework.Utils
         /// 
         /// </summary>
         /// <param name="mesh"></param>
-        public static void Mesh(BasicMesh mesh)
+        public static void Mesh(BasicMesh Mesh)
         {
-            // TODO
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Fbo"></param>
-        public static void ScreenRectangle(FrameBufferObject Fbo)
-        {
-            ScreenRectangle(Fbo, Draw.screenRectangle);
+            Mesh.Draw();
         }
 
         /// <summary>
@@ -106,6 +97,15 @@ namespace Framework.Utils
             GL.BindTexture(TextureTarget.Texture2D, Fbo.TextureId);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Fbo"></param>
+        public static void ScreenRectangle(FrameBufferObject Fbo)
+        {
+            ScreenRectangle(Fbo, Draw.screenRectangle);
         }
     }
 }

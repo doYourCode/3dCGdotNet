@@ -45,11 +45,11 @@ namespace Examples
 
             meshes = new Dictionary<String, BasicMesh>();
 
-            meshes.Add("Monkey", new BasicMesh("Resources/Mesh/Monkey.fbx"));
+            meshes.Add("Monkey", new BasicMesh("Monkey.fbx"));
 
             view.SetList(meshes.Keys.ToArray());
 
-            texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
+            texture = Texture.LoadFromFile("Suzanne.png", TextureUnit.Texture0);
 
             shader = new Shader("HelloLight");
 

@@ -26,9 +26,9 @@ namespace Examples
 
             shader = new Shader("HelloMesh");
 
-            texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
+            texture = Texture.LoadFromFile("Suzanne.png", TextureUnit.Texture0);
 
-            mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
+            mesh = new BasicMesh("Monkey.fbx");
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         }

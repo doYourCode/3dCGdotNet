@@ -22,7 +22,8 @@ namespace Examples
 
             var window = new HelloIndexOOP_PositionNonInterleaved(GameWindowSettings.Default, settings);
 
-            Shader.SetRootPath("Resources/Shader/");
+            Shader.RootPath = "Resources/Shader/";
+            Texture.RootPath = "Resources/Texture/";
 
             window.Run();
         }

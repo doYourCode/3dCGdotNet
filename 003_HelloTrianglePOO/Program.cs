@@ -22,8 +22,6 @@ namespace Examples
 
             var window = new HelloTriangleOOP(GameWindowSettings.Default, settings);
 
-            Shader.SetRootPath("Resources/Shader/");
-
             window.Run();
         }
     }

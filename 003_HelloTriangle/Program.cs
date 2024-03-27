@@ -3,6 +3,8 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 
 using Framework.Core;
+using Assimp;
+using Framework.Utils.Common.Mesh;
 
 namespace Examples
 {
@@ -22,7 +24,9 @@ namespace Examples
 
             var window = new HelloTriangle(GameWindowSettings.Default, settings);
 
-            Shader.SetRootPath("Resources/Shader/");
+            Shader.RootPath = "Resources/Shader/";
+            Texture.RootPath = "Resources/Texture/";
+            BasicMesh.RootPath = "Resources/Mesh/";
 
             window.Run();
         }

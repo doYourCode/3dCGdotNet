@@ -172,7 +172,7 @@ namespace Examples
 
             shader = new Shader("HelloIndex");
 
-            texture = Texture.LoadFromFile("Resources/Texture/Uv_checker_01.png", TextureUnit.Texture0);
+            texture = Texture.LoadFromFile("Uv_checker_01.png", TextureUnit.Texture0);
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         }

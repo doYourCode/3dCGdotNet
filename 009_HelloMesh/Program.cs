@@ -3,6 +3,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 
 using Framework.Core;
+using Framework.Utils.Common.Mesh;
 
 namespace Examples
 {
@@ -22,7 +23,10 @@ namespace Examples
 
             var window = new HelloMesh(GameWindowSettings.Default, settings);
 
-            Shader.SetRootPath("Resources/Shader/");
+            Shader.RootPath = "Resources/Shader/";
+            Texture.RootPath = "Resources/Texture/";
+            // Configura uma pasta raiz para carregar arquivos de modelos 3d (mesh)
+            BasicMesh.RootPath = "Resources/Mesh/";
 
             window.Run();
         }

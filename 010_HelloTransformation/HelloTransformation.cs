@@ -33,9 +33,9 @@ namespace Examples
 
             shader = new Shader("HelloTransformation");
 
-            texture = Texture.LoadFromFile("Resources/Texture/Suzanne.png", TextureUnit.Texture0);
+            texture = Texture.LoadFromFile("Suzanne.png", TextureUnit.Texture0);
 
-            mesh = new BasicMesh("Resources/Mesh/Monkey.fbx");
+            mesh = new BasicMesh("Monkey.fbx");
 
             transform = new Transform();
 

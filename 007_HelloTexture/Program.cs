@@ -3,6 +3,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 
 using Framework.Core;
+using Framework.Utils.Common.Mesh;
 
 namespace Examples
 {
@@ -22,7 +23,9 @@ namespace Examples
 
             var window = new HelloTexture(GameWindowSettings.Default, settings);
 
-            Shader.SetRootPath("Resources/Shader/");
+            Shader.RootPath = "Resources/Shader/";
+            // Configura uma pasta raiz para carregar os arquivos de textura (a exemplo do que é feito com os Shaders)
+            Texture.RootPath = "Resources/Texture/";
 
             window.Run();
         }

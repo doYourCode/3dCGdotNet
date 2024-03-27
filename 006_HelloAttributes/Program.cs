@@ -22,7 +22,7 @@ namespace Examples
 
             var window = new HelloAttribute(GameWindowSettings.Default, settings);
 
-            Shader.SetRootPath("Resources/Shader/");
+            Shader.RootPath = "Resources/Shader/";
 
             window.Run();
         }

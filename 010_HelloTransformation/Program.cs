@@ -3,6 +3,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 
 using Framework.Core;
+using Framework.Utils.Common.Mesh;
 
 namespace Examples
 {
@@ -22,7 +23,9 @@ namespace Examples
 
             var window = new HelloTransformation(GameWindowSettings.Default, settings);
 
-            Shader.SetRootPath("Resources/Shader/");
+            Shader.RootPath = "Resources/Shader/";
+            Texture.RootPath = "Resources/Texture/";
+            BasicMesh.RootPath = "Resources/Mesh/";
 
             window.Run();
         }

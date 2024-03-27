@@ -27,9 +27,6 @@ namespace Examples
             // Instanciação da janela
             var appWindow = new HelloWindow(GameWindowSettings.Default, settings);
 
-            // Configura a pasta raiz para carregar arquivos de Shader ( O que é shader? Ver projeto 004_HelloShader )
-            Shader.SetRootPath("Resources/Shader/");
-
             // Executa a aplicação
             appWindow.Run();
         }

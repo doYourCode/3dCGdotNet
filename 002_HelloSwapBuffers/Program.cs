@@ -22,8 +22,6 @@ namespace Examples
 
             var window = new HelloSwapBuffers(GameWindowSettings.Default, settings);
 
-            Shader.SetRootPath("Resources/Shader/");
-
             window.Run();
         }
     }

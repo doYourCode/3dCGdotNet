@@ -21,6 +21,13 @@ namespace Framework.Core
         private static UInt32 count = 0;
 #endif
 
+        /// <summary>
+        /// Caminho para a pasta raiz para carregar arquivos de Shader.
+        /// </summary>
+        public static string RootPath { get { return rootPath; } set { rootPath = value; } }
+
+        private static string rootPath = "";
+
 
         /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
 
@@ -43,6 +50,8 @@ namespace Framework.Core
         /// <returns></returns>
         public static Texture LoadFromFile(string path, TextureUnit unit, bool invertY = false)
         {
+            path = rootPath + path;
+
             UInt32 handle = (UInt32)GL.GenTexture();
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, handle);

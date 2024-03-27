@@ -35,16 +35,16 @@ namespace Examples
 
             meshes = new Dictionary<String, BasicMesh>();
 
-            meshes.Add("Cube", new BasicMesh("Resources/Mesh/Cube.fbx", true));
-            meshes.Add("Icosahedron", new BasicMesh("Resources/Mesh/Icosahedron.fbx"));
-            meshes.Add("Monkey", new BasicMesh("Resources/Mesh/Monkey.fbx"));
-            meshes.Add("Sphere", new BasicMesh("Resources/Mesh/Sphere.fbx"));
-            meshes.Add("Teapot", new BasicMesh("Resources/Mesh/Teapot.fbx"));
-            meshes.Add("Torus", new BasicMesh("Resources/Mesh/Torus.fbx", true));
+            meshes.Add("Cube", new BasicMesh("Cube.fbx", true));
+            meshes.Add("Icosahedron", new BasicMesh("Icosahedron.fbx"));
+            meshes.Add("Monkey", new BasicMesh("Monkey.fbx"));
+            meshes.Add("Sphere", new BasicMesh("Sphere.fbx"));
+            meshes.Add("Teapot", new BasicMesh("Teapot.fbx"));
+            meshes.Add("Torus", new BasicMesh("Torus.fbx", true));
 
             view.SetList(meshes.Keys.ToArray());
 
-            texture = Texture.LoadFromFile("Resources/Texture/Uv_checker_01.png", TextureUnit.Texture0);
+            texture = Texture.LoadFromFile("Uv_checker_01.png", TextureUnit.Texture0);
 
             shader = new Shader("HelloTransformation");
 

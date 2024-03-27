@@ -22,7 +22,7 @@ namespace Framework.Core
         /// <summary>
         /// Caminho para a pasta raiz para carregar arquivos de Shader.
         /// </summary>
-        public static string RootPath { get { return rootPath; } private set { } }
+        public static string RootPath { get { return rootPath; } set { rootPath = value; } }
 
         private static string rootPath = "";
 

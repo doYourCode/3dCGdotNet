@@ -10,6 +10,25 @@ namespace Framework.Utils.Common.Mesh
     /// </summary>
     public class BasicMesh
     {
+        /* -------------------------------------------- Variáveis de classe -------------------------------------------- */
+
+#if DEBUG
+        /// <summary>
+        /// Representa o quantitativo de texturas existentes na VRAM.
+        /// </summary>
+        public static UInt32 Count { get { return count; } private set { } }
+
+        private static UInt32 count = 0;
+#endif
+
+        /// <summary>
+        /// Caminho para a pasta raiz para carregar arquivos de Shader.
+        /// </summary>
+        public static string RootPath { get { return rootPath; } set { rootPath = value; } }
+
+        private static string rootPath = "";
+
+
         /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
 
         private VertexArrayObject vao;
@@ -30,6 +49,7 @@ namespace Framework.Utils.Common.Mesh
         /// <param name="invertUv"></param>
         public BasicMesh(string filePath, bool invertUv = false)
         {
+            filePath = rootPath + filePath;
             // Create assimp context (vertex data saved into the 3d model)
             var context = new AssimpContext();
             // Loads the data into a "scene"

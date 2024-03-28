@@ -166,6 +166,9 @@ namespace Examples
             GL.DeleteBuffer(vertexBufferObject);
             GL.DeleteBuffer(indexBuffer);
             GL.DeleteVertexArray(vertexArrayObject);
+
+            texture.Dispose();
+            shader.Dispose();
         }
     }
 }

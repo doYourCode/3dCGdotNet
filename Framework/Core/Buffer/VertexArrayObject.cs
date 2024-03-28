@@ -19,7 +19,7 @@ namespace Framework.Core.Buffer
         /// 
         /// </summary>
         /// <param name="VertexFormat"></param>
-        public VertexArrayObject(VertexFormat VertexFormat) : base("VertexArrayObject", (UInt32)GL.GenVertexArray())
+        public VertexArrayObject(VertexFormat VertexFormat) : base("VertexArrayObject ", (UInt32)GL.GenVertexArray())
         {
             this.Bind();
 

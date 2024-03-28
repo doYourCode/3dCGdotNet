@@ -94,7 +94,7 @@ namespace Framework.Utils
 
             GL.Disable(EnableCap.DepthTest);                        // Desligamos o "Depth testing" para garantir que o desenho
                                                                     // será feito sobre qualquer outro elemento da tela
-            GL.BindTexture(TextureTarget.Texture2D, Fbo.TextureId);
+            GL.BindTexture(TextureTarget.Texture2D, Fbo.Texture.ID);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }

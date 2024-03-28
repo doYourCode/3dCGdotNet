@@ -149,6 +149,9 @@ namespace Examples
                 mesh.Value.Delete();
             }
 
+            shader.Dispose();
+            texture.Dispose();
+
             view.UnLoad();
         }
 

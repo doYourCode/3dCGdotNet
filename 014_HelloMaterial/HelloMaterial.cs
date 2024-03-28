@@ -11,6 +11,7 @@ using Framework.Core.Light;
 using Framework.Core.Camera;
 using Framework.Utils.Common.Material;
 using ShaderType = Framework.Utils.Common.Material.ShaderType;
+using Framework.Core.Buffer;
 
 namespace Examples
 {
@@ -41,6 +42,8 @@ namespace Examples
         protected override void OnLoad()
         {
             base.OnLoad();
+
+            FrameBufferObject fbo = new FrameBufferObject();
 
             // Change the shader type here to change the material type
             basicMaterial = new BasicMaterial(ShaderType.Lambertian);
@@ -152,6 +155,9 @@ namespace Examples
             {
                 mesh.Value.Delete();
             }
+
+            texture.Dispose();
+            basicMaterial.Delete();
 
             view.UnLoad();
         }

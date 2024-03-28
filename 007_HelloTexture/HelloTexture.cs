@@ -71,8 +71,8 @@ namespace Examples
 
             vbo.Dispose();
             vao.Dispose();
-            shader.Delete();
-            texture.Delete();
+            shader.Dispose();
+            texture.Dispose();
         }
     }
 }

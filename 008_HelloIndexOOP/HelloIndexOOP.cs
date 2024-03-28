@@ -138,8 +138,8 @@ namespace Examples
             vao.Dispose();
             vbo.Dispose();
             ebo.Dispose();
-            shader.Delete();
-            texture.Delete();
+            shader.Dispose();
+            texture.Dispose();
         }
     }
 }

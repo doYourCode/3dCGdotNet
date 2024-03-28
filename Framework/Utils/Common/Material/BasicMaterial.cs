@@ -8,16 +8,8 @@ namespace Framework.Utils.Common.Material
     /// </summary>
     public class BasicMaterial
     {
-        /* ----------------------------------------- Variáveis de classe ----------------------------------------- */
-#if DEBUG
-        /// <summary>
-        /// Representa o quantitativo de EBOs existentes na VRAM.
-        /// </summary>
-        public static UInt32 Count { get { return count; } private set { } }
+        #region (Data Fields)
 
-
-        private static UInt32 count = 0;
-#endif
         private static Dictionary<ShaderType, UInt32> instancesCount = new Dictionary<ShaderType, UInt32>()
             {
                 { ShaderType.Oren_Nayar_Blinn, 0 },
@@ -30,7 +22,26 @@ namespace Framework.Utils.Common.Material
 
         private ShaderType shaderType;
 
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
+        #endregion
+
+        #region (Constructors)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public BasicMaterial(ShaderType ShaderType)
+        {
+            if(this.AddInstance(ShaderType))
+            {
+                Console.WriteLine(ShaderType.ToString());
+                Shader = new Shader(ShaderType.ToString());
+            }
+            
+        }
+
+        #endregion
+
+        #region (Properties)
 
         /// <summary>
         /// 
@@ -72,36 +83,25 @@ namespace Framework.Utils.Common.Material
         /// </summary>
         public Vector3 SpecularColor { get; set; }
 
+        #endregion
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public BasicMaterial(ShaderType ShaderType)
-        {
-            if(this.AddInstance(ShaderType))
-            {
-                Console.WriteLine(ShaderType.ToString());
-                Shader = new Shader(ShaderType.ToString());
-            }
-            
-        }
+        #region (Public Methods)
 
         public void Delete()
         {
             if (!RemoveInstance(this.shaderType))
-                Shader.Delete();
+                Shader.Dispose();
 
-            AlbedoMap.Delete();
-            SpecularMap.Delete();
-            AmbientocclusionMap.Delete();
-            NormalMap.Delete();
-            HeightMap.Delete();
+            AlbedoMap.Dispose();
+            SpecularMap.Dispose();
+            AmbientocclusionMap.Dispose();
+            NormalMap.Dispose();
+            HeightMap.Dispose();
         }
 
+        #endregion
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Other Methods)
 
         private bool AddInstance(ShaderType ShaderType)
         {
@@ -128,7 +128,11 @@ namespace Framework.Utils.Common.Material
 #endif
             return false;
         }
+
+        #endregion
     }
+
+    #region (Enums)
 
     /// <summary>
     /// 
@@ -142,4 +146,6 @@ namespace Framework.Utils.Common.Material
         Gouraud,                //
         Cell_Shading,           //
     }
+
+    #endregion
 }

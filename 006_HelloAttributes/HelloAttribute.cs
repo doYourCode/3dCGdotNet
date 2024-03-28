@@ -65,7 +65,7 @@ namespace Examples
 
             vbo.Dispose();
             vao.Dispose();
-            shader.Delete();
+            shader.Dispose();
         }
     }
 }

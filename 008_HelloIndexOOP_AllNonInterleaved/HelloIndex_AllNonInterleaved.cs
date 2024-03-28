@@ -263,8 +263,8 @@ namespace Examples
             posVbo.Dispose();
             texcoordVbo.Dispose();
             ebo.Dispose();
-            shader.Delete();
-            texture.Delete();
+            shader.Dispose();
+            texture.Dispose();
         }
     }
 }

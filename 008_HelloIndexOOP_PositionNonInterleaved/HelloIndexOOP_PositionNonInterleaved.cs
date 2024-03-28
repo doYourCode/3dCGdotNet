@@ -200,8 +200,8 @@ namespace Examples
             vbo.Dispose();
             posVbo.Dispose();
             ebo.Dispose();
-            shader.Delete();
-            texture.Delete();
+            shader.Dispose();
+            texture.Dispose();
         }
     }
 }

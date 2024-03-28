@@ -24,7 +24,7 @@ namespace Framework.Core.Buffer
         /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
         /// Há outros valores possíveis, verifique as referências da API.
         /// </param>
-        public VertexBufferObject(float[] Data, BufferUsageHint Usage = BufferUsageHint.StaticDraw) : base("VertexBufferObject", (UInt32)GL.GenBuffer())
+        public VertexBufferObject(float[] Data, BufferUsageHint Usage = BufferUsageHint.StaticDraw) : base("VertexBufferObject ", (UInt32)GL.GenBuffer())
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, id);
 

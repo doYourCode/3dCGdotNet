@@ -8,34 +8,7 @@ namespace Framework.Core
     /// </summary>
     public class Transform // Necessário p/ otimizar animações de rotação, escala e tanslação
     {
-        /* -------------------------------------------- Variáveis de classe -------------------------------------------- */
-#if DEBUG
-        /// <summary>
-        /// Representa o quantitativo de objetos do tipo Luz.
-        /// </summary>
-        public static UInt32 Count { get { return count; } private set { } }
-
-
-        private static UInt32 count = 0;
-#endif
-
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Vector3 Position { get => position; set => position = value; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Vector3 Rotation { get => rotation; set => rotation = value; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Vector3 Scale { get => scale; set => scale = value; }
-
+        #region (Data Fields)
 
         internal Vector3 position;
 
@@ -43,8 +16,9 @@ namespace Framework.Core
 
         internal Vector3 scale;
 
+        #endregion
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Constructors)
 
         /// <summary>
         /// Construtor padrão, com todos os parâmetros
@@ -73,6 +47,29 @@ namespace Framework.Core
         /// Construtor com posição e rotação, inicializa a escala 1:1
         /// </summary>
         public Transform(Vector3 Position, Vector3 Rotation) : this(Position, Rotation, Vector3.One) { }
+
+        #endregion
+
+        #region (Properties)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Vector3 Position { get => position; set => position = value; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Vector3 Rotation { get => rotation; set => rotation = value; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Vector3 Scale { get => scale; set => scale = value; }
+
+        #endregion
+
+        #region (Public Methods)
 
         /// <summary>
         /// Gets an object space matrix of a transformed model.
@@ -153,5 +150,7 @@ namespace Framework.Core
             this.scale.Y = Y;
             this.scale.Z = Z;
         }
+
+        #endregion
     }
 }

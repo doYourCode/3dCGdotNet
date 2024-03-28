@@ -1,4 +1,5 @@
-﻿using Framework.Utils;
+﻿using Framework.Core.Base;
+using Framework.Utils;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
@@ -7,17 +8,9 @@ namespace Framework.Core
     /// <summary>
     /// 
     /// </summary>
-    public class Shader
+    public class Shader : ResourceObject
     {
-        /* -------------------------------------------- Variáveis de classe -------------------------------------------- */
-#if DEBUG
-        /// <summary>
-        /// Representa o quantitativo de shaders carregados na VRAM.
-        /// </summary>
-        public static UInt32 Count { get { return count; } private set { } }
-
-        private static UInt32 count = 0;
-#endif
+        #region (Data Fields)
 
         /// <summary>
         /// Caminho para a pasta raiz para carregar arquivos de Shader.
@@ -26,28 +19,18 @@ namespace Framework.Core
 
         private static string rootPath = "";
 
-
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
-
-        /// <summary>
-        /// Id que reflete o endereço do programa de shader na VRAM
-        /// </summary>
-        public UInt32 ID { get { return id; } private set { } }
-
-
-        private UInt32 id;
-
         private readonly Dictionary<string, int> uniformLocations;
 
+        #endregion
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Constructors)
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="VertPath"></param>
         /// <param name="FragPath"></param>
-        public Shader(string VertPath, string FragPath)
+        public Shader(string VertPath, string FragPath) : base((UInt32)GL.CreateProgram())
         {
             var shaderSource = File.ReadAllText(VertPath);
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
@@ -59,7 +42,6 @@ namespace Framework.Core
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);
 
-            id = (UInt32)GL.CreateProgram();
 
             GL.AttachShader((Int32)id, vertexShader);
             GL.AttachShader((Int32)id, fragmentShader);
@@ -89,6 +71,10 @@ namespace Framework.Core
         /// <param name="ShaderName"></param>
         public Shader(string ShaderName) : this(rootPath + ShaderName + ".vert", rootPath + ShaderName + ".frag") { }
 
+        #endregion
+
+        #region (Public Methods)
+
         /// <summary>
         /// 
         /// </summary>
@@ -101,48 +87,9 @@ namespace Framework.Core
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Shader"></param>
-        /// <exception cref="Exception"></exception>
-        private static void CompileShader(int Shader)
-        {
-            GL.CompileShader(Shader);
-
-            GL.GetShader(Shader, ShaderParameter.CompileStatus, out var code);
-            if (code != (int)All.True)
-            {
-                var infoLog = GL.GetShaderInfoLog(Shader);
-                throw new Exception($"Error occurred whilst compiling Shader({Shader}).\n\n{infoLog}");
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Program"></param>
-        /// <exception cref="Exception"></exception>
-        private static void LinkProgram(int Program)
-        {
-            GL.LinkProgram(Program);
-
-            GL.GetProgram(Program, GetProgramParameterName.LinkStatus, out var code);
-            if (code != (int)All.True)
-            {
-                throw new Exception($"Error occurred whilst linking Program({Program})");
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public void Use()
         {
             GL.UseProgram(id);
-        }
-
-        public void Delete()
-        {
-            GL.UseProgram(CONSTANTS.NONE);
-            GL.DeleteProgram(id);
         }
 
         /// <summary>
@@ -198,5 +145,55 @@ namespace Framework.Core
             GL.UseProgram(id);
             GL.Uniform3(uniformLocations[Name], Data);
         }
+
+        #endregion
+
+        #region (Other Methods)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Shader"></param>
+        /// <exception cref="Exception"></exception>
+        private static void CompileShader(int Shader)
+        {
+            GL.CompileShader(Shader);
+
+            GL.GetShader(Shader, ShaderParameter.CompileStatus, out var code);
+            if (code != (int)All.True)
+            {
+                var infoLog = GL.GetShaderInfoLog(Shader);
+                throw new Exception($"Error occurred whilst compiling Shader({Shader}).\n\n{infoLog}");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Program"></param>
+        /// <exception cref="Exception"></exception>
+        private static void LinkProgram(int Program)
+        {
+            GL.LinkProgram(Program);
+
+            GL.GetProgram(Program, GetProgramParameterName.LinkStatus, out var code);
+            if (code != (int)All.True)
+            {
+                throw new Exception($"Error occurred whilst linking Program({Program})");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isManualDispose"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        protected override void Dispose(bool isManualDispose)
+        {
+            GL.UseProgram(CONSTANTS.NONE);
+            GL.DeleteProgram(id);
+        }
+
+        #endregion
     }
 }

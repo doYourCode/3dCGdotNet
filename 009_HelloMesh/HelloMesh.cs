@@ -53,6 +53,8 @@ namespace Examples
             base.OnUnload();
 
             mesh.Delete();
+            shader.Dispose();
+            texture.Dispose();
         }
     }
 }

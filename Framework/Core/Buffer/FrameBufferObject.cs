@@ -1,40 +1,18 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using Framework.Utils;
 using OpenTK.Mathematics;
+using Framework.Core.Base;
 
 namespace Framework.Core.Buffer
 {
     /// <summary>
     /// 
     /// </summary>
-    public class FrameBufferObject
+    public class FrameBufferObject : ResourceObject
     {
-        /* -------------------------------------------- Variáveis de classe -------------------------------------------- */
-#if DEBUG
-        /// <summary>
-        /// Representa o quantitativo de EBOs existentes na VRAM.
-        /// </summary>
-        public static UInt32 Count { get { return count; } private set { } }
+        #region (Data Fields)
 
-
-        private static UInt32 count = 0;
-
-        private readonly Color4 defaultBackgroundColor = new Color4(0.0f, 0.0f, 0.0f, 1.0f);
-#endif
-
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
-
-        /// <summary>
-        /// Id que reflete o endereço do buffer na VRAM
-        /// </summary>
-        public UInt32 ID { get { return id; } private set { } }
-
-        public uint TextureId { get => textureId; private set { } }
-
-
-        private UInt32 id;
-
-        private UInt32 textureId;       // Endereço da textura interna do FBO
+        private Texture texture;       // Endereço da textura interna do FBO
                                         // TODO: trocar para a versão POO de textura que já está implementada (requer alterações)
         private UInt16 width, height;   // Altura e largura da textura produzida
 
@@ -42,6 +20,11 @@ namespace Framework.Core.Buffer
 
         private float gamma;
 
+        private readonly Color4 defaultBackgroundColor = new Color4(0.0f, 0.0f, 0.0f, 1.0f);
+
+        #endregion
+
+        #region (Constructors)
 
         /* ---------------------------------------------- Interface pública ---------------------------------------------- */
 
@@ -53,7 +36,7 @@ namespace Framework.Core.Buffer
         /// <param name="IsMultisample"></param>
         /// <param name="NumSamples"></param>
         /// <param name="Gamma"></param>
-        public FrameBufferObject(ushort Width = 512, ushort Height = 512, bool IsMultisample = false, ushort NumSamples = 1, float Gamma = 1.0f)
+        public FrameBufferObject(ushort Width = 512, ushort Height = 512, bool IsMultisample = false, ushort NumSamples = 1, float Gamma = 1.0f) : base("FrameBufferObject ", (UInt32)GL.GenBuffer())
         {
             this.width = Width;
             this.height = Height;
@@ -61,17 +44,15 @@ namespace Framework.Core.Buffer
             this.gamma = Gamma;
 
 
-            // Gera um endereço para um FrameBufferObject
-            id = (UInt32)GL.GenBuffer();
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, id);
 
             // Gera um endereço para uma textura de uso interno
-            textureId = (UInt32)GL.GenTexture();
+            texture = new Texture("FBO (" + id + ") - Texture ", (UInt32)GL.GenTexture());
 
             if (IsMultisample)
             {
                 // Configurar parâmetros para criar textura e framebuffer com multisampling
-                GL.BindTexture(TextureTarget.Texture2DMultisample, this.textureId);
+                GL.BindTexture(TextureTarget.Texture2DMultisample, this.texture.ID);
 
                 GL.TexImage2DMultisample(TextureTargetMultisample.Texture2DMultisample, NumSamples, PixelInternalFormat.Rgb32f , this.width, this.height, true);
 
@@ -81,7 +62,7 @@ namespace Framework.Core.Buffer
                 GL.TexParameter(TextureTarget.Texture2DMultisample, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);   // Previne "edge bleeding"
                 GL.TexParameter(TextureTarget.Texture2DMultisample, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);   //
 
-                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2DMultisample, textureId, 0);
+                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2DMultisample, this.texture.ID, 0);
 
 
                 // É necessário criar e configurar um render buffer nesse caso para fazer o multisampling a partir dele. TODO: implementar um RenderBufferObject para
@@ -98,7 +79,7 @@ namespace Framework.Core.Buffer
             else
             {
                 // Configurar parâmetros para criar textura e framebuffer sem multisampling
-                GL.BindTexture(TextureTarget.Texture2DMultisample, this.textureId);
+                GL.BindTexture(TextureTarget.Texture2DMultisample, this.texture.ID);
 
                 GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb32f, this.width, this.height, 0, PixelFormat.Rgb, PixelType.UnsignedByte, (IntPtr)null);
 
@@ -108,15 +89,33 @@ namespace Framework.Core.Buffer
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);   // Previne "edge bleeding"
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);   //
 
-                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, textureId, 0);
+                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, this.texture.ID, 0);
             }
 
             // Error checking framebuffer
             var fboStatus = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
 
             if (fboStatus != FramebufferErrorCode.FramebufferComplete)
-                Console.WriteLine("Framebuffer " + textureId + " error:" + fboStatus);
+                Console.WriteLine("Framebuffer " + this.texture.ID + " error:" + fboStatus);
         }
+
+        #endregion
+
+        #region (Properties)
+
+        /// <summary>
+        /// Id que reflete o endereço do buffer na VRAM
+        /// </summary>
+        public UInt32 ID { get { return id; } private set { } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Texture Texture { get => this.texture; private set { } }
+
+        #endregion
+
+        #region (Public Methods)
 
         /// <summary>
         /// 
@@ -155,30 +154,28 @@ namespace Framework.Core.Buffer
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-	    public UInt32 GetTexture()
-        {
-            return this.textureId;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        void Delete()
-        {
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, CONSTANTS.NONE);
-            GL.DeleteFramebuffer(this.id);
-
-            GL.BindTexture(TextureTarget.Texture2D, CONSTANTS.NONE);
-            GL.DeleteTexture(this.textureId);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         static void BindDefault()
         {
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, CONSTANTS.NONE);
         }
+
+        #endregion
+
+        #region (Other Methods)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isManualDispose"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        protected override void Dispose(bool isManualDispose)
+        {
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, CONSTANTS.NONE);
+            GL.DeleteFramebuffer(this.id);
+
+            texture.Dispose();
+        }
+
+        #endregion
     }
 }

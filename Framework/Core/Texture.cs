@@ -2,44 +2,47 @@
 using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using StbImageSharp;
 using Framework.Utils;
+using Framework.Core.Base;
 
 namespace Framework.Core
 {
     /// <summary>
     /// 
     /// </summary>
-    public class Texture
+    public class Texture : ResourceObject
     {
-        /* -------------------------------------------- Variáveis de classe -------------------------------------------- */
+        #region (Data Fields)
 
-#if DEBUG
+        private static string rootPath = "";
+
+        #endregion
+
+        #region (Constructors)
+
         /// <summary>
-        /// Representa o quantitativo de texturas existentes na VRAM.
+        /// 
         /// </summary>
-        public static UInt32 Count { get { return count; } private set { } }
+        /// <param name="Id"></param>
+        public Texture(UInt32 Id) : base("Texture ", Id) { }
 
-        private static UInt32 count = 0;
-#endif
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Id"></param>
+        public Texture(string Label, UInt32 Id) : base(Label, Id) { }
+
+        #endregion
+
+        #region (Properties)
 
         /// <summary>
         /// Caminho para a pasta raiz para carregar arquivos de Shader.
         /// </summary>
         public static string RootPath { get { return rootPath; } set { rootPath = value; } }
 
-        private static string rootPath = "";
+        #endregion
 
-
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
-
-        /// <summary>
-        /// Id que reflete o endereço da textura na VRAM
-        /// </summary>
-        public UInt32 ID { get { return id; } private set { } }
-
-        private UInt32 id;
-
-
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Public Methods)
 
         /// <summary>
         /// 
@@ -101,14 +104,7 @@ namespace Framework.Core
             return new Texture(handle);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Id"></param>
-        public Texture(UInt32 Id)
-        {
-            this.id = Id;
-        }
+
 
         /// <summary>
         /// 
@@ -120,13 +116,20 @@ namespace Framework.Core
             GL.BindTexture(TextureTarget.Texture2D, id);
         }
 
+        #endregion
+
+        #region (Other Methods)
+
         /// <summary>
         /// 
         /// </summary>
-        public void Delete()
+        /// <param name="isManualDispose"></param>
+        protected override void Dispose(bool isManualDispose)
         {
             GL.BindTexture(TextureTarget.Texture2D, CONSTANTS.NONE);
             GL.DeleteTexture(id);
         }
+
+        #endregion
     }
 }

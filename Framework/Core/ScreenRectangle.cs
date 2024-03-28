@@ -85,9 +85,9 @@ namespace Framework.Core
         /// </summary>
         public void Delete()
         {
-            vao.Delete();
-            posVbo.Delete();
-            uvVbo.Delete();
+            vao.Dispose();
+            posVbo.Dispose();
+            uvVbo.Dispose();
         }
     }
 }

@@ -135,9 +135,9 @@ namespace Examples
         {
             base.OnUnload();
 
-            vao.Delete();
-            vbo.Delete();
-            ebo.Delete();
+            vao.Dispose();
+            vbo.Dispose();
+            ebo.Dispose();
             shader.Delete();
             texture.Delete();
         }

@@ -110,15 +110,15 @@ namespace Framework.Core.Vertex
 
         /* ---------------------------------------------- Interface pública ---------------------------------------------- */
 
-        public VertexAttribute(VertexAttributeType type)
+        public VertexAttribute(VertexAttributeType Type)
         {
-            this.layout = (int)type;
+            this.layout = (int)Type;
 
-            this.dataType = GetDataType[(int)type];
+            this.dataType = GetDataType[(int)Type];
 
-            this.dataTypeSize = GetDataTypeSize[(int)type];
+            this.dataTypeSize = GetDataTypeSize[(int)Type];
 
-            this.size = GetSize[(int)type];
+            this.size = GetSize[(int)Type];
         }
     }
 }

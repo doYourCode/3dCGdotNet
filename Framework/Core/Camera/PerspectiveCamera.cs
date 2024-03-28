@@ -106,12 +106,12 @@ namespace Framework.Core.Camera
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="aspectRatio"></param>
-        public PerspectiveCamera(Vector3 position, float aspectRatio)
+        /// <param name="Position"></param>
+        /// <param name="AspectRatio"></param>
+        public PerspectiveCamera(Vector3 Position, float AspectRatio)
         {
-            Position = position;
-            AspectRatio = aspectRatio;
+            this.Position = Position;
+            this.AspectRatio = AspectRatio;
 #if DEBUG
             PerspectiveCamera.count++;
 #endif
@@ -170,10 +170,10 @@ namespace Framework.Core.Camera
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="shader"></param>
-        public void GetUniformLocations(Shader shader)
+        /// <param name="Shader"></param>
+        public void GetUniformLocations(Shader Shader)
         {
-            this.positionUniformLocation = GL.GetUniformLocation(shader.ID, "viewPosition");
+            this.positionUniformLocation = GL.GetUniformLocation(Shader.ID, "viewPosition");
         }
 
         /// <summary>

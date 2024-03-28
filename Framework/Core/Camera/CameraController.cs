@@ -25,28 +25,28 @@ namespace Framework.Core.Camera
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="camera"></param>
-        /// <param name="window"></param>
-        public CameraController(PerspectiveCamera camera, GameWindow window)
+        /// <param name="Camera"></param>
+        /// <param name="Window"></param>
+        public CameraController(PerspectiveCamera Camera, GameWindow Window)
         {
-            this.camera = camera;
-            this.window = window;
+            this.camera = Camera;
+            this.window = Window;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="input"></param>
-        /// <param name="mouse"></param>
-        public void Update(FrameEventArgs e, KeyboardState input, MouseState mouse)
+        /// <param name="Event"></param>
+        /// <param name="Input"></param>
+        /// <param name="Mouse"></param>
+        public void Update(FrameEventArgs Event, KeyboardState Input, MouseState Mouse)
         {
             if (!window.IsFocused) // Check to see if the window is focused
             {
                 return;
             }
 
-            if (input.IsKeyDown(Keys.Escape))
+            if (Input.IsKeyDown(Keys.Escape))
             {
                 window.Close();
             }
@@ -54,43 +54,43 @@ namespace Framework.Core.Camera
             const float cameraSpeed = 1.5f;
             const float sensitivity = 0.2f;
 
-            if (input.IsKeyDown(Keys.W))
+            if (Input.IsKeyDown(Keys.W))
             {
-                camera.Position += camera.Front * cameraSpeed * (float)e.Time; // Forward
+                camera.Position += camera.Front * cameraSpeed * (float)Event.Time; // Forward
             }
 
-            if (input.IsKeyDown(Keys.S))
+            if (Input.IsKeyDown(Keys.S))
             {
-                camera.Position -= camera.Front * cameraSpeed * (float)e.Time; // Backwards
+                camera.Position -= camera.Front * cameraSpeed * (float)Event.Time; // Backwards
             }
-            if (input.IsKeyDown(Keys.A))
+            if (Input.IsKeyDown(Keys.A))
             {
-                camera.Position -= camera.Right * cameraSpeed * (float)e.Time; // Left
+                camera.Position -= camera.Right * cameraSpeed * (float)Event.Time; // Left
             }
-            if (input.IsKeyDown(Keys.D))
+            if (Input.IsKeyDown(Keys.D))
             {
-                camera.Position += camera.Right * cameraSpeed * (float)e.Time; // Right
+                camera.Position += camera.Right * cameraSpeed * (float)Event.Time; // Right
             }
-            if (input.IsKeyDown(Keys.Space))
+            if (Input.IsKeyDown(Keys.Space))
             {
-                camera.Position += camera.Up * cameraSpeed * (float)e.Time; // Up
+                camera.Position += camera.Up * cameraSpeed * (float)Event.Time; // Up
             }
-            if (input.IsKeyDown(Keys.LeftShift))
+            if (Input.IsKeyDown(Keys.LeftShift))
             {
-                camera.Position -= camera.Up * cameraSpeed * (float)e.Time; // Down
+                camera.Position -= camera.Up * cameraSpeed * (float)Event.Time; // Down
             }
 
             if (firstMove) // This bool variable is initially set to true.
             {
-                lastPos = new Vector2(mouse.X, mouse.Y);
+                lastPos = new Vector2(Mouse.X, Mouse.Y);
                 firstMove = false;
             }
             else
             {
                 // Calculate the offset of the mouse position
-                var deltaX = mouse.X - lastPos.X;
-                var deltaY = mouse.Y - lastPos.Y;
-                lastPos = new Vector2(mouse.X, mouse.Y);
+                var deltaX = Mouse.X - lastPos.X;
+                var deltaY = Mouse.Y - lastPos.Y;
+                lastPos = new Vector2(Mouse.X, Mouse.Y);
 
                 // Apply the camera pitch and yaw (we clamp the pitch in the camera class)
                 camera.Yaw += deltaX * sensitivity;
@@ -101,10 +101,10 @@ namespace Framework.Core.Camera
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="e"></param>
-        public void MouseUpdate(MouseWheelEventArgs e)
+        /// <param name="Event"></param>
+        public void MouseUpdate(MouseWheelEventArgs Event)
         {
-            camera.Fov -= e.OffsetY;
+            camera.Fov -= Event.OffsetY;
         }
     }
 }

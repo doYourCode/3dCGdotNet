@@ -21,11 +21,11 @@ namespace Framework.Utils.View
         /// 
         /// </summary>
         /// <param name="light"></param>
-        /// <param name="ambientLight"></param>
-        public LightView(Light light, AmbientLight ambientLight)
+        /// <param name="AmbientLight"></param>
+        public LightView(Light light, AmbientLight AmbientLight)
         {
             this.light = light;
-            this.ambientLight = ambientLight;
+            this.ambientLight = AmbientLight;
         }
 
         /// <summary>

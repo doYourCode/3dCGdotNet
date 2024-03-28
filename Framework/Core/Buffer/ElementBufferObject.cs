@@ -1,4 +1,5 @@
-﻿using Framework.Utils;
+﻿using Framework.Core.Base;
+using Framework.Utils;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Framework.Core.Buffer
@@ -12,38 +13,15 @@ namespace Framework.Core.Buffer
     /// ATENÇÃO: esse objeto deve ser sempre vinculado a um VertexArrayObject (VAO), portanto uma chamada à
     /// função Bind() do VAO pretendido deve ser realizada antes de vincular o novo EBO.
     /// </summary>
-    public class ElementBufferObject
+    public class ElementBufferObject : ResourceObject
     {
-        /* ----------------------------------------- Variáveis de classe ----------------------------------------- */
-#if DEBUG
-        /// <summary>
-        /// Representa o quantitativo de EBOs existentes na VRAM.
-        /// </summary>
-        public static UInt32 Count { get { return count; } private set { } }
-
-
-        private static UInt32 count = 0;
-#endif
-
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
-
-        /// <summary>
-        /// Id que reflete o endereço do buffer na VRAM
-        /// </summary>
-        public UInt32 ID { get { return id; } private set { } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public int IndexCount { get { return indexCount; } private set { } }
-
-
-        private UInt32 id;
+        #region (Data Fields)
 
         private int indexCount = 0;
 
+        #endregion
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Constructors)
 
         /// <summary>
         /// Construtor
@@ -58,17 +36,47 @@ namespace Framework.Core.Buffer
         /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
         /// Há outros valores possíveis, verifique as referências da API.
         /// </param>
-        public ElementBufferObject(int[] Indices, BufferUsageHint Usage = BufferUsageHint.StaticDraw)
+        public ElementBufferObject(int[] Indices, BufferUsageHint Usage = BufferUsageHint.StaticDraw) : base("ElementBufferObject", (UInt32)GL.GenBuffer())
         {
-            id = (UInt32)GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, id);
             GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(uint) * Indices.Length, Indices, Usage);
 
             this.indexCount = Indices.Length;
-#if DEBUG
-            ElementBufferObject.count++;
-#endif
         }
+
+        /// <summary>
+        /// Construtor
+        /// </summary>
+        /// <param name="Indices"> Array de índices contendo os dados a serem enviados ao buffer.¹²
+        /// <br />
+        /// ATENÇÃO: ¹ certifique-se de que o array não é nulo. ² Na implementação atual só é permitido utilizar
+        /// números inteiros como índices.
+        /// </param>
+        /// <param name="Usage"> Indicativo de para que os dados do buffer serão usados.
+        /// <br />
+        /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
+        /// Há outros valores possíveis, verifique as referências da API.
+        /// </param>
+        public ElementBufferObject(string Label, int[] Indices, BufferUsageHint Usage = BufferUsageHint.StaticDraw) : base(Label, (UInt32)GL.GenBuffer())
+        {
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, id);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, sizeof(uint) * Indices.Length, Indices, Usage);
+
+            this.indexCount = Indices.Length;
+        }
+
+        #endregion
+
+        #region (Properties)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int IndexCount { get { return indexCount; } private set { } }
+
+        #endregion
+
+        #region (Public Methods)
 
         /// <summary>
         /// Vincula o buffer para alteração ou desenho.
@@ -86,18 +94,21 @@ namespace Framework.Core.Buffer
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, CONSTANTS.NONE);
         }
 
+        #endregion
+
+        #region (Other Methods)
+
         /// <summary>
         /// Apaga os dados do buffer da VRAM.
         /// <br />
         /// ATENÇÃO: esta ação também desvincula o buffer.
         /// </summary>
-        public void Delete()
+        protected override void Dispose(bool isManualDispose)
         {
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, CONSTANTS.NONE);
             GL.DeleteBuffer(ID);
-#if DEBUG
-            ElementBufferObject.count--;
-#endif
         }
+
+        #endregion
     }
 }

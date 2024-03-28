@@ -6,10 +6,15 @@ using OpenTK.Graphics.OpenGL4;
 using Framework.Utils.Common;
 using Framework.Utils.Common.Mesh;
 using Framework.Core;
+using Framework.Utils.View;
+using Framework.Core.Light;
+using Framework.Core.Camera;
+using Framework.Utils.Common.Material;
+using ShaderType = Framework.Utils.Common.Material.ShaderType;
 
 namespace Examples
 {
-    public class HelloGUI : GameWindow
+    public class HelloMaterial : GameWindow
     {
         ViewLayer view;
 
@@ -17,17 +22,28 @@ namespace Examples
         BasicMesh currentMesh;
 
         Texture texture;
-        Shader shader;
         Transform transform;
 
-        public HelloGUI(
+        Light light;
+        AmbientLight ambientLight;
+        LightView lightView;
+
+        BasicMaterial basicMaterial;
+
+        private PerspectiveCamera camera;
+
+        public HelloMaterial(
             GameWindowSettings gameWindowSettings,
             NativeWindowSettings nativeWindowSettings) :
-            base(gameWindowSettings, nativeWindowSettings) { }
+            base(gameWindowSettings, nativeWindowSettings)
+        { }
 
         protected override void OnLoad()
         {
             base.OnLoad();
+
+            // Change the shader type here to change the material type
+            basicMaterial = new BasicMaterial(ShaderType.Lambertian);
 
             view = new ViewLayer();
 
@@ -35,21 +51,36 @@ namespace Examples
 
             meshes = new Dictionary<String, BasicMesh>
             {
-                { "Cube", new BasicMesh("Cube.fbx", true) },
-                { "Icosahedron", new BasicMesh("Icosahedron.fbx") },
-                { "Monkey", new BasicMesh("Monkey.fbx") },
-                { "Sphere", new BasicMesh("Sphere.fbx") },
-                { "Teapot", new BasicMesh("Teapot.fbx") },
-                { "Torus", new BasicMesh("Torus.fbx", true) }
+                { "Monkey", new BasicMesh("Monkey.fbx") }
             };
 
             view.SetList(meshes.Keys.ToArray());
 
-            texture = Texture.LoadFromFile("Uv_checker_01.png", TextureUnit.Texture0);
-
-            shader = new Shader("HelloTransformation");
+            texture = Texture.LoadFromFile("Suzanne.png", TextureUnit.Texture0);
 
             transform = new Transform();
+            transform.SetRotationY(3.14f);
+
+            light = new Light(
+                new System.Numerics.Vector3(2.0f, 2.0f, 2.0f),
+                new System.Numerics.Vector3(1.0f, 1.0f, 1.0f),
+                new System.Numerics.Vector3(0.0f, 0.0f, 0.0f),
+                1.0f,
+                false
+                );
+            light.GetUniformLocations(basicMaterial.Shader);
+
+            ambientLight = new AmbientLight(
+                new System.Numerics.Vector3(0.0f, 0.0f, 0.0f),
+                1.0f
+                );
+            ambientLight.GetUniformLocations(basicMaterial.Shader);
+
+            lightView = new LightView(light, ambientLight);
+            view.LightView = lightView;
+
+            camera = new PerspectiveCamera(Vector3.UnitZ * 1.5f, Size.X / (float)Size.Y);
+            camera.GetUniformLocations(basicMaterial.Shader);
         }
 
         protected override void OnResize(ResizeEventArgs e)
@@ -68,14 +99,16 @@ namespace Examples
             GL.ClearColor(new Color4(0, 32, 48, 255));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
-            shader.Use();
+            basicMaterial.Shader.Use();
 
             texture.Use(TextureUnit.Texture0);
 
-            if(currentMesh != null)
+            if (currentMesh != null)
                 currentMesh.Draw();
 
             view.Render();
+
+            lightView.DrawControl();
 
             ImGuiController.CheckGLError("End of frame");
 
@@ -100,7 +133,15 @@ namespace Examples
                 view.Tick += 0.01f;
             }
 
-            shader.SetMatrix4("model", transform.GetModelMatrix());
+            light.UpdateUniforms();
+
+            ambientLight.UpdateUniforms();
+
+            camera.UpdateUniforms();
+
+            basicMaterial.Shader.SetMatrix4("model", transform.GetModelMatrix());
+            basicMaterial.Shader.SetMatrix4("view", camera.GetViewMatrix());
+            basicMaterial.Shader.SetMatrix4("projection", camera.GetProjectionMatrix());
         }
 
         protected override void OnUnload()

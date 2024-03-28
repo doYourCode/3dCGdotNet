@@ -124,10 +124,10 @@ namespace Framework.Utils.Common.Mesh
         /// </summary>
         public void Delete()
         {
-            vao.Delete();
-            positionVbo.Delete();
-            colorNormalTexCoordVbo.Delete();
-            ebo.Delete();
+            vao.Dispose();
+            positionVbo.Dispose();
+            colorNormalTexCoordVbo.Dispose();
+            ebo.Dispose();
         }
     }
 }

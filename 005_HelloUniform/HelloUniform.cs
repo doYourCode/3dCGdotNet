@@ -76,8 +76,8 @@ namespace Examples
         {
             base.OnUnload();
 
-            vbo.Delete();
-            vao.Delete();
+            vbo.Dispose();
+            vao.Dispose();
             shader.Delete();
         }
     }

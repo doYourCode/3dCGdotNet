@@ -258,11 +258,11 @@ namespace Examples
         {
             base.OnUnload();
 
-            vao.Delete();
-            colorVbo.Delete();
-            posVbo.Delete();
-            texcoordVbo.Delete();
-            ebo.Delete();
+            vao.Dispose();
+            colorVbo.Dispose();
+            posVbo.Dispose();
+            texcoordVbo.Dispose();
+            ebo.Dispose();
             shader.Delete();
             texture.Delete();
         }

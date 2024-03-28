@@ -1,4 +1,5 @@
-﻿using Framework.Core.Vertex;
+﻿using Framework.Core.Base;
+using Framework.Core.Vertex;
 using Framework.Utils;
 using OpenTK.Graphics.OpenGL4;
 
@@ -10,47 +11,35 @@ namespace Framework.Core.Buffer
     /// com diferentes atributos. Ex: renderização de passos de depth requerem apenas posição, enquanto o desenho final
     /// pode requerer outros atributos como UVs, Normal, Color etc.
     /// </summary>
-    public class VertexArrayObject
+    public class VertexArrayObject : ResourceObject
     {
-        /* ----------------------------------------- Variáveis de classe ----------------------------------------- */
-#if DEBUG
-        /// <summary>
-        /// Representa o quantitativo de VAOs existentes na VRAM.
-        /// </summary>
-        public static UInt32 Count { get { return count; } private set { } }
-
-
-        private static UInt32 count = 0;
-#endif
-
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
-
-        /// <summary>
-        /// Id que reflete o endereço do buffer na VRAM
-        /// </summary>
-        public UInt32 ID { get { return id; } private set { } }
-
-
-        private UInt32 id;
-
-
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Constructors)
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="vertexFormat"></param>
-        public VertexArrayObject(VertexFormat vertexFormat)
+        /// <param name="VertexFormat"></param>
+        public VertexArrayObject(VertexFormat VertexFormat) : base("VertexArrayObject", (UInt32)GL.GenVertexArray())
         {
-            id = (UInt32)GL.GenVertexArray();
-
             this.Bind();
 
-            this.Setup(vertexFormat);
-#if DEBUG
-            VertexArrayObject.count++;
-#endif
+            this.Setup(VertexFormat);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="VertexFormat"></param>
+        public VertexArrayObject(string Label, VertexFormat VertexFormat) : base(Label,(UInt32)GL.GenVertexArray())
+        {
+            this.Bind();
+
+            this.Setup(VertexFormat);
+        }
+
+        #endregion
+
+        #region (Public Methods)
 
         /// <summary>
         /// Associa um VBO arbitrário a um atributo relacionado ao VAO atual. Obs: esta é a maneira atual de anexar 
@@ -84,34 +73,20 @@ namespace Framework.Core.Buffer
             GL.BindVertexArray(CONSTANTS.NONE);
         }
 
-        /// <summary>
-        /// Apaga os dados do VAO da VRAM.
-        /// <br />
-        /// ATENÇÃO: esta ação também desvincula o VAO.
-        /// </summary>
-        public void Delete()
-        {
-            GL.BindVertexArray(CONSTANTS.NONE);
-            GL.DeleteVertexArray(id);
-#if DEBUG
-            VertexArrayObject.count--;
-#endif
-        }
-
         /* ---------------------------------------------- Métodos privados ---------------------------------------------- */
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="vertexFormat"></param>
-        private void Setup(VertexFormat vertexFormat)
+        /// <param name="VertexFormat"></param>
+        private void Setup(VertexFormat VertexFormat)
         {
             // Associa todos os buffera de atributos únicos, se existirem
-            if (vertexFormat.UniqueVertexAttributes.Count > 0)
+            if (VertexFormat.UniqueVertexAttributes.Count > 0)
             {
-                foreach (VertexAttribute attrib in vertexFormat.UniqueVertexAttributes.Keys)
+                foreach (VertexAttribute attrib in VertexFormat.UniqueVertexAttributes.Keys)
                 {
-                    LinkVBO(vertexFormat.UniqueVertexAttributes.GetValueOrDefault(attrib),
+                    LinkVBO(VertexFormat.UniqueVertexAttributes.GetValueOrDefault(attrib),
                         attrib.Layout,
                         attrib.Size,
                         attrib.DataType,
@@ -121,19 +96,35 @@ namespace Framework.Core.Buffer
             }
 
             // Associa todos os buffera de atributos entrelaçados, se existirem
-            if (vertexFormat.InterleavedVertexAttributes.Count > 0)
+            if (VertexFormat.InterleavedVertexAttributes.Count > 0)
             {
-                foreach (VertexAttribute attrib in vertexFormat.InterleavedVertexAttributes.Keys)
+                foreach (VertexAttribute attrib in VertexFormat.InterleavedVertexAttributes.Keys)
                 {
-                    LinkVBO(vertexFormat.InterleavedVertexAttributes.GetValueOrDefault(attrib),
+                    LinkVBO(VertexFormat.InterleavedVertexAttributes.GetValueOrDefault(attrib),
                         attrib.Layout,
                         attrib.Size,
                         attrib.DataType,
-                        (int)vertexFormat.InterleavedStride,
-                        (int)vertexFormat.InterleavedOffsets.GetValueOrDefault(attrib)
+                        (int)VertexFormat.InterleavedStride,
+                        (int)VertexFormat.InterleavedOffsets.GetValueOrDefault(attrib)
                     );
                 }
             }
         }
+
+        #endregion
+
+        #region (Other Methods)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isManualDispose"></param>
+        protected override void Dispose(bool isManualDispose)
+        {
+            GL.BindVertexArray(CONSTANTS.NONE);
+            GL.DeleteVertexArray(id);
+        }
+
+        #endregion
     }
 }

@@ -22,56 +22,56 @@ namespace Framework.Utils
         /// </summary>
         /// <param name="Vao"></param>
         /// <param name="First"></param>
-        /// <param name="count"></param>
-        /// <param name="pointSize"></param>
-        public static void Points(VertexArrayObject Vao, int First, int count, int pointSize)
+        /// <param name="Count"></param>
+        /// <param name="PointSize"></param>
+        public static void Points(VertexArrayObject Vao, int First, int Count, int PointSize)
         {
-            GL.PointSize(pointSize);
+            GL.PointSize(PointSize);
 
             Vao.Bind();
 
-            GL.DrawArrays(PrimitiveType.Points, First, count);
+            GL.DrawArrays(PrimitiveType.Points, First, Count);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="Vao"></param>
-        /// <param name="first"></param>
-        /// <param name="count"></param>
-        /// <param name="thickness"></param>
-        public static void Lines(VertexArrayObject Vao, int first, int count, int thickness)
+        /// <param name="First"></param>
+        /// <param name="Count"></param>
+        /// <param name="Thickness"></param>
+        public static void Lines(VertexArrayObject Vao, int First, int Count, int Thickness)
         {
-            GL.LineWidth(thickness);
+            GL.LineWidth(Thickness);
 
             Vao.Bind();
 
-            GL.DrawArrays(PrimitiveType.LineLoop, first, count);
+            GL.DrawArrays(PrimitiveType.LineLoop, First, Count);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="Vao"></param>
-        /// <param name="first"></param>
-        /// <param name="count"></param>
-        public static void Triangles(VertexArrayObject Vao, int first, int count)
+        /// <param name="First"></param>
+        /// <param name="Count"></param>
+        public static void Triangles(VertexArrayObject Vao, int First, int Count)
         {
             Vao.Bind();
 
-            GL.DrawArrays(PrimitiveType.Triangles, first, count);
+            GL.DrawArrays(PrimitiveType.Triangles, First, Count);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="Vao"></param>
-        /// <param name="indexCount"></param>
-        public static void Elements(VertexArrayObject Vao, int indexCount)
+        /// <param name="IndexCount"></param>
+        public static void Elements(VertexArrayObject Vao, int IndexCount)
         {
             Vao.Bind();
 
-            GL.DrawElements(BeginMode.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(BeginMode.Triangles, IndexCount, DrawElementsType.UnsignedInt, 0);
         }
 
         /// <summary>
@@ -92,8 +92,8 @@ namespace Framework.Utils
         {
             ScreenRectangle.Vao.Bind();
 
-            GL.Disable(EnableCap.DepthTest);                        // Desligamos o "Depth testing" para garantir que o desenho será feito sobre qualquer outro elemento da tela
-
+            GL.Disable(EnableCap.DepthTest);                        // Desligamos o "Depth testing" para garantir que o desenho
+                                                                    // será feito sobre qualquer outro elemento da tela
             GL.BindTexture(TextureTarget.Texture2D, Fbo.TextureId);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);

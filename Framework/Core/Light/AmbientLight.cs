@@ -51,11 +51,11 @@ namespace Framework.Core.Light
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="shader"></param>
-        public void GetUniformLocations(Shader shader)
+        /// <param name="Shader"></param>
+        public void GetUniformLocations(Shader Shader)
         {
-            this.colorUniformLocation = GL.GetUniformLocation(shader.ID, "ambientColor");
-            this.intensityUniformLocation = GL.GetUniformLocation(shader.ID, "ambientIntensity");
+            this.colorUniformLocation = GL.GetUniformLocation(Shader.ID, "ambientColor");
+            this.intensityUniformLocation = GL.GetUniformLocation(Shader.ID, "ambientIntensity");
         }
 
         /// <summary>

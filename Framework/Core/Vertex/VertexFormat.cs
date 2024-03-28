@@ -73,7 +73,7 @@ namespace Framework.Core.Vertex
             foreach(VertexAttributeType attribType in Attribs)
             {
 #if DEBUG
-                Console.WriteLine("- Attribute: " + attribType.ToString());
+                Console.WriteLine("- Attribute (layout: " + ((int)attribType) + "): " + attribType.ToString());
                 Console.WriteLine("offset: " + this.interleavedStride);
 #endif
                 VertexAttribute attribute = new VertexAttribute(attribType);

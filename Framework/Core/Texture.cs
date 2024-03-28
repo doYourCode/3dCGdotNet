@@ -44,22 +44,22 @@ namespace Framework.Core
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="unit"></param>
-        /// <param name="invertY"></param>
+        /// <param name="Path"></param>
+        /// <param name="Unit"></param>
+        /// <param name="InvertY"></param>
         /// <returns></returns>
-        public static Texture LoadFromFile(string path, TextureUnit unit, bool invertY = false)
+        public static Texture LoadFromFile(string Path, TextureUnit Unit, bool InvertY = false)
         {
-            path = rootPath + path;
+            Path = rootPath + Path;
 
             UInt32 handle = (UInt32)GL.GenTexture();
-            GL.ActiveTexture(unit);
+            GL.ActiveTexture(Unit);
             GL.BindTexture(TextureTarget.Texture2D, handle);
 
-            if (invertY)
+            if (InvertY)
                 StbImage.stbi_set_flip_vertically_on_load(1);
 
-            using (Stream stream = File.OpenRead(path))
+            using (Stream stream = File.OpenRead(Path))
             {
                 ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
 
@@ -80,17 +80,17 @@ namespace Framework.Core
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="unit"></param>
+        /// <param name="Width"></param>
+        /// <param name="Height"></param>
+        /// <param name="Unit"></param>
         /// <returns></returns>
-        public static Texture CreateInMemory(int width, int height, TextureUnit unit)
+        public static Texture CreateInMemory(int Width, int Height, TextureUnit Unit)
         {
             UInt32 handle = (UInt32)GL.GenTexture();
-            GL.ActiveTexture(unit);
+            GL.ActiveTexture(Unit);
             GL.BindTexture(TextureTarget.Texture2D, handle);
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, (System.IntPtr)0);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, (System.IntPtr)0);
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
@@ -104,19 +104,19 @@ namespace Framework.Core
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
-        public Texture(UInt32 id)
+        /// <param name="Id"></param>
+        public Texture(UInt32 Id)
         {
-            this.id = id;
+            this.id = Id;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="unit"></param>
-        public void Use(TextureUnit unit)
+        /// <param name="Unit"></param>
+        public void Use(TextureUnit Unit)
         {
-            GL.ActiveTexture(unit);
+            GL.ActiveTexture(Unit);
             GL.BindTexture(TextureTarget.Texture2D, id);
         }
 

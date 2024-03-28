@@ -132,13 +132,13 @@ namespace Framework.Core.Light
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="shader"></param>
-        public void GetUniformLocations(Shader shader)
+        /// <param name="Shader"></param>
+        public void GetUniformLocations(Shader Shader)
         {
-            this.positionUniformLocation = GL.GetUniformLocation(shader.ID, "lightPosition");
-            this.directionUniformLocation = GL.GetUniformLocation(shader.ID, "lightDirection");
-            this.colorUniformLocation = GL.GetUniformLocation(shader.ID, "lightColor");
-            this.intensityUniformLocation = GL.GetUniformLocation(shader.ID, "lightIntensity");
+            this.positionUniformLocation = GL.GetUniformLocation(Shader.ID, "lightPosition");
+            this.directionUniformLocation = GL.GetUniformLocation(Shader.ID, "lightDirection");
+            this.colorUniformLocation = GL.GetUniformLocation(Shader.ID, "lightColor");
+            this.intensityUniformLocation = GL.GetUniformLocation(Shader.ID, "lightIntensity");
         }
 
         /// <summary>

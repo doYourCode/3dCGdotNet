@@ -49,14 +49,14 @@ namespace Framework.Core
         /// <summary>
         /// Construtor padrão, com todos os parâmetros
         /// </summary>
-        /// <param name="pos"> Posição </param>
-        /// <param name="rot"> Rotação </param>
-        /// <param name="scl"> Escala </param>
-        public Transform(Vector3 pos, Vector3 rot, Vector3 scl)
+        /// <param name="Position"> Posição </param>
+        /// <param name="Rotation"> Rotação </param>
+        /// <param name="Scale"> Escala </param>
+        public Transform(Vector3 Position, Vector3 Rotation, Vector3 Scale)
         {
-            position = pos;
-            rotation = rot;
-            scale = scl;
+            this.position = Position;
+            this.rotation = Rotation;
+            this.scale = Scale;
         }
 
         /// <summary>
@@ -67,12 +67,12 @@ namespace Framework.Core
         /// <summary>
         /// Construtor com apenas posição, inicializa rotação zerada e escala 1:1
         /// </summary>
-        public Transform(Vector3 pos) : this(pos, Vector3.Zero, Vector3.One) { }
+        public Transform(Vector3 Position) : this(Position, Vector3.Zero, Vector3.One) { }
 
         /// <summary>
         /// Construtor com posição e rotação, inicializa a escala 1:1
         /// </summary>
-        public Transform(Vector3 pos, Vector3 rot) : this(pos, rot, Vector3.One) { }
+        public Transform(Vector3 Position, Vector3 Rotation) : this(Position, Rotation, Vector3.One) { }
 
         /// <summary>
         /// Gets an object space matrix of a transformed model.
@@ -93,65 +93,65 @@ namespace Framework.Core
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="camera"></param>
+        /// <param name="Camera"></param>
         /// <returns></returns>
-        public Matrix4 GetModelViewProjectionMatrix(PerspectiveCamera camera)
+        public Matrix4 GetModelViewProjectionMatrix(PerspectiveCamera Camera)
         {
-            return camera.GetViewMatrix() * camera.GetProjectionMatrix() * GetModelMatrix();
+            return Camera.GetViewMatrix() * Camera.GetProjectionMatrix() * GetModelMatrix();
         }
 
 
         // Getters alternativos
-        public Vector3 GetPosition() { return position; }
-        public Vector3 GetRotation() { return rotation; }
-        public Vector3 GetScale() { return scale; }
+        public Vector3 GetPosition() { return this.position; }
+        public Vector3 GetRotation() { return this.rotation; }
+        public Vector3 GetScale() { return this.scale; }
 
 
         // Setters alternativos (p/ dar maior flexibilidade para a API pública)
 
         // Position
-        public void SetPosition(Vector3 Pos) { position = Pos; }
-        public void SetPositionX(float X) { position.X = X; }
-        public void SetPositionY(float Y) { position.Y = Y; }
-        public void SetPositionZ(float Z) { position.Z = Z; }
+        public void SetPosition(Vector3 Position) { this.position = Position; }
+        public void SetPositionX(float X) { this.position.X = X; }
+        public void SetPositionY(float Y) { this.position.Y = Y; }
+        public void SetPositionZ(float Z) { this.position.Z = Z; }
 
-        public void SetPositionXY(Vector2 Pos)
+        public void SetPositionXY(Vector2 Position)
         {
-            position.X = Pos.X;
-            position.Y = Pos.Y;
+            this.position.X = Position.X;
+            this.position.Y = Position.Y;
         }
 
         public void SetPosition(float X, float Y, float Z)
         {
-            position.X = X;
-            position.Y = Y;
-            position.Z = Z;
+            this.position.X = X;
+            this.position.Y = Y;
+            this.position.Z = Z;
         }
 
         // Rotation
-        public void SetRotation(Vector3 rot) { rotation = rot; }
-        public void SetRotationX(float rot) { rotation.X = rot; }
-        public void SetRotationY(float rot) { rotation.Y = rot; }
-        public void SetRotationZ(float rot) { rotation.Z = rot; }
+        public void SetRotation(Vector3 Rotation) { this.rotation = Rotation; }
+        public void SetRotationX(float rot) { this.rotation.X = rot; }
+        public void SetRotationY(float rot) { this.rotation.Y = rot; }
+        public void SetRotationZ(float rot) { this.rotation.Z = rot; }
 
         public void SetRotation(float X, float Y, float Z)
         {
-            rotation.X = X;
-            rotation.Y = Y;
-            rotation.Z = Z;
+            this.rotation.X = X;
+            this.rotation.Y = Y;
+            this.rotation.Z = Z;
         }
 
         // Scale
-        public void SetScale(Vector3 scl) { scale = scl; }
-        public void SetScaleX(float scl) { scale.X = scl; }
-        public void SetScaleY(float scl) { scale.Y = scl; }
-        public void SetScaleZ(float scl) { scale.Z = scl; }
+        public void SetScale(Vector3 Scale) { this.scale = Scale; }
+        public void SetScaleX(float scl) { this.scale.X = scl; }
+        public void SetScaleY(float scl) { this.scale.Y = scl; }
+        public void SetScaleZ(float scl) { this.scale.Z = scl; }
 
         public void SetScale(float X, float Y, float Z)
         {
-            scale.X = X;
-            scale.Y = Y;
-            scale.Z = Z;
+            this.scale.X = X;
+            this.scale.Y = Y;
+            this.scale.Z = Z;
         }
     }
 }

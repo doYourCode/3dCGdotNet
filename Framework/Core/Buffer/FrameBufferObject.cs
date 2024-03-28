@@ -146,8 +146,8 @@ namespace Framework.Core.Buffer
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="other"></param>
-        public void BlitTexture(FrameBufferObject other)
+        /// <param name="Other"></param>
+        public void BlitTexture(FrameBufferObject Other)
         {
             // TODO
         }

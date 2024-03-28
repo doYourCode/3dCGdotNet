@@ -13,7 +13,7 @@ namespace Examples
         {
             NativeWindowSettings settings = new NativeWindowSettings()
             {
-                Title = "Hello Light",
+                Title = "Hello Material",
                 ClientSize = new Vector2i(1200, 800),
                 WindowBorder = WindowBorder.Fixed,
                 WindowState = WindowState.Normal,
@@ -21,7 +21,7 @@ namespace Examples
                 Vsync = VSyncMode.On
             };
 
-            var window = new HelloLight(GameWindowSettings.Default, settings);
+            var window = new HelloMaterial(GameWindowSettings.Default, settings);
 
             Shader.RootPath = "Resources/Shader/";
             Texture.RootPath = "Resources/Texture/";

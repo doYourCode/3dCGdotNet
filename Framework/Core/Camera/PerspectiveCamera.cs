@@ -8,17 +8,40 @@ namespace Framework.Core.Camera
     /// </summary>
     public class PerspectiveCamera
     {
-        /* -------------------------------------------- Variáveis de classe -------------------------------------------- */
-#if DEBUG
+        #region (Data Fields)
+
+        private int positionUniformLocation;
+
+        private Vector3 front = -Vector3.UnitZ;
+
+        private Vector3 up = Vector3.UnitY;
+
+        private Vector3 right = Vector3.UnitX;
+
+        private float pitch;
+
+        private float yaw = -MathHelper.PiOver2;
+
+        private float fov = MathHelper.PiOver2;
+
+        #endregion
+
+        #region (Constructors)
+
         /// <summary>
-        /// Representa o quantitativo de objetos do tipo câmera com perspectiva.
+        /// 
         /// </summary>
-        public static UInt32 Count { get { return count; } private set { } }
+        /// <param name="Position"></param>
+        /// <param name="AspectRatio"></param>
+        public PerspectiveCamera(Vector3 Position, float AspectRatio)
+        {
+            this.Position = Position;
+            this.AspectRatio = AspectRatio;
+        }
 
-        private static UInt32 count = 0;
-#endif
+        #endregion
 
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
+        #region (Properties)
 
         /// <summary>
         /// 
@@ -85,37 +108,9 @@ namespace Framework.Core.Camera
             }
         }
 
+        #endregion
 
-        private int positionUniformLocation;
-
-        private Vector3 front = -Vector3.UnitZ;
-
-        private Vector3 up = Vector3.UnitY;
-
-        private Vector3 right = Vector3.UnitX;
-
-        private float pitch;
-
-        private float yaw = -MathHelper.PiOver2;
-
-        private float fov = MathHelper.PiOver2;
-
-
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Position"></param>
-        /// <param name="AspectRatio"></param>
-        public PerspectiveCamera(Vector3 Position, float AspectRatio)
-        {
-            this.Position = Position;
-            this.AspectRatio = AspectRatio;
-#if DEBUG
-            PerspectiveCamera.count++;
-#endif
-        }
+        #region (Public Methods)
 
         /// <summary>
         /// 
@@ -144,20 +139,7 @@ namespace Framework.Core.Camera
             return GetViewMatrix() * GetProjectionMatrix();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private void UpdateVectors()
-        {
-            front.X = MathF.Cos(pitch) * MathF.Cos(yaw);
-            front.Y = MathF.Sin(pitch);
-            front.Z = MathF.Cos(pitch) * MathF.Sin(yaw);
 
-            front = Vector3.Normalize(front);
-
-            right = Vector3.Normalize(Vector3.Cross(front, Vector3.UnitY));
-            up = Vector3.Normalize(Vector3.Cross(right, front));
-        }
 
         /// <summary>
         /// 
@@ -176,14 +158,25 @@ namespace Framework.Core.Camera
             this.positionUniformLocation = GL.GetUniformLocation(Shader.ID, "viewPosition");
         }
 
+#endregion
+
+        #region (Other Methods)
+
         /// <summary>
         /// 
         /// </summary>
-        public void Delete()
+        private void UpdateVectors()
         {
-#if DEBUG
-            PerspectiveCamera.count--;
-#endif
+            front.X = MathF.Cos(pitch) * MathF.Cos(yaw);
+            front.Y = MathF.Sin(pitch);
+            front.Z = MathF.Cos(pitch) * MathF.Sin(yaw);
+
+            front = Vector3.Normalize(front);
+
+            right = Vector3.Normalize(Vector3.Cross(front, Vector3.UnitY));
+            up = Vector3.Normalize(Vector3.Cross(right, front));
         }
+
+        #endregion
     }
 }

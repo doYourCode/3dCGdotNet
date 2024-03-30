@@ -1,9 +1,7 @@
 ﻿using OpenTK.Windowing.Desktop;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-
 using Framework.Core;
-using Framework.Utils.Common.Mesh;
 
 namespace Examples
 {

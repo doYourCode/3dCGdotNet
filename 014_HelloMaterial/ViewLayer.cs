@@ -2,10 +2,9 @@
 using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
 using ImGuiNET;
-
-using Framework.Utils.Common;
-using Framework.Utils.View;
 using Framework.Core.Base;
+using Framework.Utils.GUI;
+using Framework.Utils.GUI.ViewLayer;
 
 namespace Examples
 {

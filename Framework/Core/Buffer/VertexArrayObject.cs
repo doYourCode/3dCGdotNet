@@ -11,7 +11,7 @@ namespace Framework.Core.Buffer
     /// com diferentes atributos. Ex: renderização de passos de depth requerem apenas posição, enquanto o desenho final
     /// pode requerer outros atributos como UVs, Normal, Color etc.
     /// </summary>
-    public class VertexArrayObject : ResourceObject
+    public class VertexArrayObject : OpenGLObject
     {
         #region (Constructors)
 

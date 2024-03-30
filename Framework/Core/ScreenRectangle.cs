@@ -1,34 +1,15 @@
-﻿using Framework.Core.Buffer;
+﻿using Framework.Core.Base;
+using Framework.Core.Buffer;
 using Framework.Core.Vertex;
-using OpenTK.Mathematics;
 
 namespace Framework.Core
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ScreenRectangle
+    public class ScreenRectangle : ResourceObject
     {
-        /* -------------------------------------------- Variáveis de classe -------------------------------------------- */
-#if DEBUG
-        /// <summary>
-        /// Representa o quantitativo de EBOs existentes na VRAM.
-        /// </summary>
-        public static UInt32 Count { get { return count; } private set { } }
-
-
-        private static UInt32 count = 0;
-
-        private readonly Color4 defaultBackgroundColor = new Color4(0.0f, 0.0f, 0.0f, 1.0f);
-#endif
-
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public VertexArrayObject Vao { get { return vao; } private set { } }
-
+        #region (Data Fields)
 
         private VertexArrayObject vao;
 
@@ -36,13 +17,14 @@ namespace Framework.Core
 
         private VertexBufferObject uvVbo;
 
+        #endregion
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Constructors)
 
         /// <summary>
         /// 
         /// </summary>
-        public ScreenRectangle()
+        public ScreenRectangle() : base("ScreenRectangle ", 0)
         {
             float[] positionData =
             {
@@ -80,14 +62,29 @@ namespace Framework.Core
             vao = new VertexArrayObject(format);
         }
 
+        #endregion
+
+        #region (Properties)
+
         /// <summary>
         /// 
         /// </summary>
-        public void Delete()
+        public VertexArrayObject Vao { get { return vao; } private set { } }
+
+        #endregion
+
+        #region (Other Methods)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void Dispose(bool isManualDispose)
         {
             vao.Dispose();
             posVbo.Dispose();
             uvVbo.Dispose();
         }
+
+        #endregion
     }
 }

@@ -9,7 +9,7 @@ namespace Framework.Core
     /// <summary>
     /// 
     /// </summary>
-    public class Texture : ResourceObject
+    public class Texture : OpenGLObject
     {
         #region (Data Fields)
 
@@ -22,8 +22,19 @@ namespace Framework.Core
         /// <summary>
         /// 
         /// </summary>
+        public Texture() : base("Texture ", (UInt32)GL.GenTexture()) { }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="Id"></param>
         public Texture(UInt32 Id) : base("Texture ", Id) { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Label"></param>
+        public Texture(string Label) : base(Label, (UInt32)GL.GenTexture()) { }
 
         /// <summary>
         /// 
@@ -103,8 +114,6 @@ namespace Framework.Core
 
             return new Texture(handle);
         }
-
-
 
         /// <summary>
         /// 

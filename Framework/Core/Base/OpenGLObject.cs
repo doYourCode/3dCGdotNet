@@ -5,22 +5,23 @@ using System.Reflection;
 namespace Framework.Core.Base
 {
     /// <summary>
-    /// Represents data resource handles composed of other disposables.<br/>
+    /// Represents an OpenGL handle.<br/>
     /// Must be disposed explicitly, otherwise there will be a memory leak which will be logged as a warning.
     /// </summary>
-    public abstract class ResourceObject : DisposableResource, IEquatable<OpenGLObject>
+    public abstract class OpenGLObject : DisposableResource , IEquatable<OpenGLObject>
     {
         #region (Constructors)
 
         /// <summary>
         /// Construtor para a classe base.
         /// </summary>
+        /// 
         /// <param name="Label"> Rótulo identificador do recurso, pode ser útil
         /// para buscas futuras. </param>
         /// 
         /// <param name="ID"> Deve ser informada a partir das classes base,
         /// geradas com funções GL.GenEtc(...). </param>
-        protected ResourceObject(string Label, UInt32 ID) : base(Label + ID)
+        protected OpenGLObject(string Label, UInt32 ID) : base(Label + ID)
         {
             this.id = ID;
         }
@@ -28,11 +29,13 @@ namespace Framework.Core.Base
         /// <summary>
         /// Construtor alternativo (com rótulo produzido automaticamente)
         /// </summary>
+        /// 
         /// <param name="Label"> Rótulo identificador do recurso, pode ser útil
         /// para buscas futuras. </param>
+        /// 
         /// <param name="ID"> Deve ser informada a partir das classes base,
         /// geradas com funções GL.GenEtc(...). </param>
-        protected ResourceObject(UInt32 ID) : base("ResourceObject" + ID)
+        protected OpenGLObject(UInt32 ID) : base("ResourceObject" + ID)
         {
             this.id = ID;
         }
@@ -40,7 +43,7 @@ namespace Framework.Core.Base
         #endregion  // End of Constructors region
 
         #region (Public Methods)
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -48,7 +51,7 @@ namespace Framework.Core.Base
         /// <returns></returns>
         public bool Equals(OpenGLObject Other)
         {
-            return Other != null && ID.Equals(Other.ID);
+            return Other != null && id.Equals(Other.id);
         }
 
         /// <summary>

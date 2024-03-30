@@ -1,24 +1,26 @@
-﻿using System;
-using System.Reflection;
-using System.Reflection.Emit;
+﻿using System.Reflection;
 using Framework.Utils.Log;
 
 namespace Framework.Core.Base
 {
     /// <summary>
     /// Represents an OpenGL resource.<br/>
-    /// Must be disposed explicitly, otherwise a warning will be logged indicating a memory leak.<br/>
-    /// Can be derived to inherit the dispose pattern.
+    /// Must be disposed explicitly, otherwise a warning will be logged indicating
+    /// a memory leak.<br/> Can be derived to inherit the dispose pattern.
     /// </summary>
     public abstract class DisposableResource : IDisposable
     {
         #region (Data Fields)
 
+        protected UInt32 id;
+
         protected bool isDisposed;
 
-        private static Dictionary<string, DisposableResource> disposableResources = new Dictionary<string, DisposableResource>();
+        private static Dictionary<string, DisposableResource> disposableResources
+            = new Dictionary<string, DisposableResource>();
 
-        private static readonly IFwLogger Logger = LogFactory.GetLogger(typeof(DisposableResource));
+        private static readonly IFwLogger Logger
+            = LogFactory.GetLogger(typeof(DisposableResource));
 
         #endregion
 
@@ -27,7 +29,8 @@ namespace Framework.Core.Base
         /// <summary>
         /// Construtor
         /// </summary>
-        /// <param name="Label"> Este rótulo identificará cada instância de DisposableResource alocada. </param>
+        /// <param name="Label"> Este rótulo identificará cada instância de
+        /// DisposableResource alocada. </param>
         protected DisposableResource(string Label)
         {
             this.isDisposed = false;
@@ -50,8 +53,8 @@ namespace Framework.Core.Base
         #region (Destructors)
 
         /// <summary>
-        /// Called by the garbage collector and an indicator for a resource leak because the manual dispose prevents
-        /// this destructor from being called.
+        /// Called by the garbage collector and an indicator for a resource leak
+        /// because the manual dispose prevents this destructor from being called.
         /// </summary>
         ~DisposableResource()
         {
@@ -65,6 +68,13 @@ namespace Framework.Core.Base
         #endregion
 
         #region (Properties)
+
+        /// <summary>
+        /// A ID representa um endereço de 32 bits de um determinado recurso alocado
+        /// na memória de vídeo. Cada ID é única e seu número é autoincrementado à
+        /// medida em que cria novos recursos de vídeo com esses endereços.
+        /// </summary>
+        public UInt32 ID { get { return this.id; } private set { } }
 
         /// <summary>
         /// Gets a values specifying if this resource has already been disposed.
@@ -96,13 +106,14 @@ namespace Framework.Core.Base
             Dispose(true);
             // prevent the destructor from being called
             GC.SuppressFinalize(this);
-            // make sure the garbage collector does not eat our object before it is properly disposed
+            // make sure the garbage collector does not eat our object before
+            // it is properly disposed
             GC.KeepAlive(this);
         }
 
         /// <summary>
-        /// Automatically calls <see cref="Dispose()"/> on all <see cref="DisposableResource"/> objects found on the
-        /// given object.
+        /// Automatically calls <see cref="Dispose()"/> on all
+        /// <see cref="DisposableResource"/> objects found on the given object.
         /// </summary>
         /// <param name="Object"></param>
         public static void DisposeAll(object Object)
@@ -139,8 +150,9 @@ namespace Framework.Core.Base
         /// <summary>
         /// Releases all OpenGL handles related to this resource.
         /// </summary>
-        /// <param name="isManualDispose">True if the call is performed explicitly and within the OpenGL thread, false
-        /// if it is caused by the garbage collector and therefore from another thread and the result of a resource
+        /// <param name="isManualDispose">True if the call is performed explicitly
+        /// and within the OpenGL thread, false if it is caused by the garbage
+        /// collector and therefore from another thread and the result of a resource
         /// leak.</param>
         protected abstract void Dispose(bool isManualDispose);
 

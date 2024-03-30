@@ -2,16 +2,14 @@
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
-
-using Framework.Utils.Common;
-using Framework.Utils.Common.Mesh;
+using ExamplesCommon;
 using Framework.Core;
-using Framework.Utils.View;
 using Framework.Core.Light;
 using Framework.Core.Camera;
-using Framework.Utils.Common.Material;
-using ShaderType = Framework.Utils.Common.Material.ShaderType;
+using ShaderType = ExamplesCommon.ShaderType;
 using Framework.Core.Buffer;
+using Framework.Utils.GUI;
+using Framework.Utils.GUI.ViewLayer;
 
 namespace Examples
 {
@@ -32,6 +30,7 @@ namespace Examples
         BasicMaterial basicMaterial;
 
         private PerspectiveCamera camera;
+        private CameraController cameraController;
 
         public HelloMaterial(
             GameWindowSettings gameWindowSettings,
@@ -46,7 +45,7 @@ namespace Examples
             FrameBufferObject fbo = new FrameBufferObject();
 
             // Change the shader type here to change the material type
-            basicMaterial = new BasicMaterial(ShaderType.Lambertian);
+            basicMaterial = new BasicMaterial(ShaderType.Phong);
 
             view = new ViewLayer();
 
@@ -84,6 +83,8 @@ namespace Examples
 
             camera = new PerspectiveCamera(Vector3.UnitZ * 1.5f, Size.X / (float)Size.Y);
             camera.GetUniformLocations(basicMaterial.Shader);
+
+            cameraController = new CameraController(camera, this);
         }
 
         protected override void OnResize(ResizeEventArgs e)
@@ -145,6 +146,8 @@ namespace Examples
             basicMaterial.Shader.SetMatrix4("model", transform.GetModelMatrix());
             basicMaterial.Shader.SetMatrix4("view", camera.GetViewMatrix());
             basicMaterial.Shader.SetMatrix4("projection", camera.GetProjectionMatrix());
+
+            cameraController.Update(args, KeyboardState, MouseState);
         }
 
         protected override void OnUnload()
@@ -153,11 +156,11 @@ namespace Examples
 
             foreach (var mesh in meshes)
             {
-                mesh.Value.Delete();
+                mesh.Value.Dispose();
             }
 
             texture.Dispose();
-            basicMaterial.Delete();
+            basicMaterial.Dispose();
 
             view.UnLoad();
         }
@@ -172,6 +175,8 @@ namespace Examples
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
+
+            cameraController.MouseUpdate(e);
 
             view.GetController().MouseScroll(e.Offset);
         }

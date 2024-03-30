@@ -1,35 +1,19 @@
 ﻿using Assimp;
+using Framework.Core.Base;
 using Framework.Core.Buffer;
 using Framework.Core.Vertex;
 using OpenTK.Graphics.OpenGL4;
 
-namespace Framework.Utils.Common.Mesh
+namespace ExamplesCommon
 {
     /// <summary>
     /// 
     /// </summary>
-    public class BasicMesh
+    public class BasicMesh : ResourceObject
     {
-        /* -------------------------------------------- Variáveis de classe -------------------------------------------- */
-
-#if DEBUG
-        /// <summary>
-        /// Representa o quantitativo de texturas existentes na VRAM.
-        /// </summary>
-        public static UInt32 Count { get { return count; } private set { } }
-
-        private static UInt32 count = 0;
-#endif
-
-        /// <summary>
-        /// Caminho para a pasta raiz para carregar arquivos de Shader.
-        /// </summary>
-        public static string RootPath { get { return rootPath; } set { rootPath = value; } }
+        #region (Data Fields)
 
         private static string rootPath = "";
-
-
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
 
         private VertexArrayObject vao;
 
@@ -39,15 +23,16 @@ namespace Framework.Utils.Common.Mesh
 
         private ElementBufferObject ebo;
 
+        #endregion
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Constructors)
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="invertUv"></param>
-        public BasicMesh(string filePath, bool invertUv = false)
+        public BasicMesh(string filePath, bool invertUv = false) : base(filePath.ToString(), 0)
         {
             filePath = rootPath + filePath;
             // Create assimp context (vertex data saved into the 3d model)
@@ -72,12 +57,12 @@ namespace Framework.Utils.Common.Mesh
                     if (mesh.HasVertexColors(0))
                         colors.Add(new Color3D(mesh.VertexColorChannels[0][i].R, mesh.VertexColorChannels[0][i].G, mesh.VertexColorChannels[0][i].B));
                     else
-                        colors.Add(new Color3D(1.0f ,1.0f ,1.0f));
+                        colors.Add(new Color3D(1.0f, 1.0f, 1.0f));
 
                     if (mesh.HasTextureCoords(0))
                         uvs.Add(new Vector2D(mesh.TextureCoordinateChannels[0][i].X, mesh.TextureCoordinateChannels[0][i].Y));
                     else
-                        uvs.Add(new Vector2D(0.0f ,0.0f));
+                        uvs.Add(new Vector2D(0.0f, 0.0f));
 
                     normals.Add(mesh.Normals[i]);
                 }
@@ -110,6 +95,19 @@ namespace Framework.Utils.Common.Mesh
             ebo = new ElementBufferObject(indices.ToArray());
         }
 
+        #endregion
+
+        #region (Properties)
+
+        /// <summary>
+        /// Caminho para a pasta raiz para carregar arquivos de Shader.
+        /// </summary>
+        public static string RootPath { get { return rootPath; } set { rootPath = value; } }
+
+        #endregion
+
+        #region (Public Methods)
+
         /// <summary>
         /// 
         /// </summary>
@@ -119,15 +117,18 @@ namespace Framework.Utils.Common.Mesh
             GL.DrawElements(BeginMode.Triangles, ebo.IndexCount, DrawElementsType.UnsignedInt, 0);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Delete()
+        #endregion
+
+        #region (Other Methods)
+
+        protected override void Dispose(bool isManualDispose)
         {
             vao.Dispose();
             positionVbo.Dispose();
             colorNormalTexCoordVbo.Dispose();
             ebo.Dispose();
         }
+
+        #endregion
     }
 }

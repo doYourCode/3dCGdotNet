@@ -1,12 +1,13 @@
 ﻿using Framework.Core;
+using Framework.Core.Base;
 using OpenTK.Mathematics;
 
-namespace Framework.Utils.Common.Material
+namespace ExamplesCommon
 {
     /// <summary>
     /// 
     /// </summary>
-    public class BasicMaterial
+    public class BasicMaterial : ResourceObject
     {
         #region (Data Fields)
 
@@ -29,14 +30,19 @@ namespace Framework.Utils.Common.Material
         /// <summary>
         /// 
         /// </summary>
-        public BasicMaterial(ShaderType ShaderType)
+        public BasicMaterial(ShaderType ShaderType) : base(ShaderType.ToString(), 0)
         {
-            if(this.AddInstance(ShaderType))
+            if (this.AddInstance(ShaderType))
             {
-                Console.WriteLine(ShaderType.ToString());
                 Shader = new Shader(ShaderType.ToString());
             }
-            
+
+            AlbedoMap = new Texture("Albedo");
+            SpecularMap = new Texture("Specular");
+            AmbientocclusionMap = new Texture("AO");
+            NormalMap = new Texture("Normal");
+            HeightMap = new Texture();
+
         }
 
         #endregion
@@ -87,25 +93,20 @@ namespace Framework.Utils.Common.Material
 
         #region (Public Methods)
 
-        public void Delete()
-        {
-            if (!RemoveInstance(this.shaderType))
-                Shader.Dispose();
 
-            AlbedoMap.Dispose();
-            SpecularMap.Dispose();
-            AmbientocclusionMap.Dispose();
-            NormalMap.Dispose();
-            HeightMap.Dispose();
-        }
 
         #endregion
 
         #region (Other Methods)
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ShaderType"></param>
+        /// <returns></returns>
         private bool AddInstance(ShaderType ShaderType)
         {
-            if(instancesCount[ShaderType] < UInt32.MaxValue)
+            if (instancesCount[ShaderType] < UInt32.MaxValue)
             {
                 instancesCount[ShaderType]++;
                 return true;
@@ -116,6 +117,11 @@ namespace Framework.Utils.Common.Material
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ShaderType"></param>
+        /// <returns></returns>
         private bool RemoveInstance(ShaderType ShaderType)
         {
             if (instancesCount[ShaderType] > UInt32.MinValue)
@@ -129,6 +135,23 @@ namespace Framework.Utils.Common.Material
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isManualDispose"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        protected override void Dispose(bool isManualDispose)
+        {
+            if (!RemoveInstance(this.shaderType))
+                Shader.Dispose();
+
+            AlbedoMap.Dispose();
+            SpecularMap.Dispose();
+            AmbientocclusionMap.Dispose();
+            NormalMap.Dispose();
+            HeightMap.Dispose();
+        }
+
         #endregion
     }
 
@@ -138,7 +161,7 @@ namespace Framework.Utils.Common.Material
     /// 
     /// </summary>
     public enum ShaderType
-    {                                   
+    {
         Oren_Nayar_Blinn,       //
         Phong,                  //
         Lambertian,             // TODO: implementar em um material mais robusto os tipos

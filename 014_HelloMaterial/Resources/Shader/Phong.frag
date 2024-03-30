@@ -26,14 +26,13 @@ void main()
 
     vec3 diffuseLight = DiffuseLighting(normal);
 
+    vec3 ambientLight = ambientColor * ambientIntensity;
+
     float specularLight = SpecularLighting(normal);
 
-    vec3 textureColor = texture(texture0, vUv).xyz;
+    vec3 finalLight = diffuseLight + ambientLight + specularLight;
 
-    vec3 diffuseFinalColor = (diffuseLight + ambientColor * ambientIntensity) * textureColor + specularLight;
-
-    //outputColor = vec4(diffuseFinalColor, 1.0);
-    outputColor = vec4(1.0, 1.0, 1.0, 1.0);
+    outputColor = vec4(finalLight, 1.0);
 }
 
 vec3 DiffuseLighting(vec3 normal)

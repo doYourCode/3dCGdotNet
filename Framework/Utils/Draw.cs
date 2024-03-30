@@ -1,6 +1,5 @@
 ﻿using Framework.Core;
 using Framework.Core.Buffer;
-using Framework.Utils.Common.Mesh;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Framework.Utils
@@ -10,12 +9,13 @@ namespace Framework.Utils
     /// </summary>
     public static class Draw
     {
-        /* -------------------------------------------- Variáveis de classe -------------------------------------------- */
+        #region (Data Fields)
 
         private static  ScreenRectangle screenRectangle = new ScreenRectangle();
 
+        #endregion
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Public Methods)
 
         /// <summary>
         /// 
@@ -77,15 +77,6 @@ namespace Framework.Utils
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="mesh"></param>
-        public static void Mesh(BasicMesh Mesh)
-        {
-            Mesh.Draw();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="Fbo"></param>
         /// <param name="ScreenRectangle"></param>
         public static void ScreenRectangle(FrameBufferObject Fbo, ScreenRectangle ScreenRectangle)
@@ -107,5 +98,7 @@ namespace Framework.Utils
         {
             ScreenRectangle(Fbo, Draw.screenRectangle);
         }
+
+        #endregion
     }
 }

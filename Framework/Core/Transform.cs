@@ -6,7 +6,7 @@ namespace Framework.Core
     /// <summary>
     /// 
     /// </summary>
-    public class Transform // Necessário p/ otimizar animações de rotação, escala e tanslação
+    public class Transform
     {
         #region (Data Fields)
 

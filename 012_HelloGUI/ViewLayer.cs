@@ -2,8 +2,7 @@
 using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
 using ImGuiNET;
-
-using Framework.Utils.Common;
+using Framework.Utils.GUI;
 
 namespace Examples
 {

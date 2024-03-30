@@ -8,18 +8,7 @@ namespace Framework.Core.Light
     /// </summary>
     public class AmbientLight
     {
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Vector3 Color { get => color; set => color = value; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public float Intensity { get => intensity; set => intensity = value; }
-
+        #region (Data Fields)
 
         private int colorUniformLocation;
 
@@ -29,8 +18,9 @@ namespace Framework.Core.Light
 
         internal float intensity;
 
+        #endregion
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Constructors)
 
         /// <summary>
         /// 
@@ -47,6 +37,24 @@ namespace Framework.Core.Light
         /// 
         /// </summary>
         public AmbientLight() : this(Vector3.Zero) { }
+
+        #endregion
+
+        #region (Properties)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Vector3 Color { get => color; set => color = value; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public float Intensity { get => intensity; set => intensity = value; }
+
+        #endregion
+
+        #region (Public Methods)
 
         /// <summary>
         /// 
@@ -66,5 +74,7 @@ namespace Framework.Core.Light
             GL.Uniform3(this.colorUniformLocation, this.color.X, this.color.Y, this.color.Z);
             GL.Uniform1(this.intensityUniformLocation, this.intensity);
         }
+
+        #endregion
     }
 }

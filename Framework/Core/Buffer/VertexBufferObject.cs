@@ -7,7 +7,7 @@ namespace Framework.Core.Buffer
     /// <summary>
     /// Representa um buffer contendo os dados necessários para a descrição de um ou mais atributos de vértices.
     /// </summary>
-    public class VertexBufferObject : ResourceObject
+    public class VertexBufferObject : OpenGLObject
     {
         #region (Constructors)
 

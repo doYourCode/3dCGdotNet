@@ -7,28 +7,7 @@ namespace Framework.Core.Vertex
     /// </summary>
     public class VertexFormat
     {
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
-
-        /// <summary>
-        /// Conjunto de atributos associados ao formato.
-        /// </summary>
-        public Dictionary<VertexAttribute, VertexBufferObject> UniqueVertexAttributes { get => uniqueVertexAttributes; private set { } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Dictionary<VertexAttribute, VertexBufferObject> InterleavedVertexAttributes { get => interleavedVertexAttributes; private set { } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Dictionary<VertexAttribute, uint> InterleavedOffsets { get => interleavedOffsets; private set { } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public uint InterleavedStride { get => interleavedStride; private set { } }
-
+        #region (Data Fields)
 
         private Dictionary<VertexAttribute, VertexBufferObject> uniqueVertexAttributes;
 
@@ -38,8 +17,45 @@ namespace Framework.Core.Vertex
 
         private UInt32 interleavedStride = 0;
 
+        #endregion
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Properties)
+
+        /// <summary>
+        /// Conjunto de atributos associados ao formato.
+        /// </summary>
+        public Dictionary<VertexAttribute, VertexBufferObject> UniqueVertexAttributes
+        {
+            get => uniqueVertexAttributes;
+            private set { }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Dictionary<VertexAttribute, VertexBufferObject> InterleavedVertexAttributes
+        {
+            get => interleavedVertexAttributes;
+            private set { }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Dictionary<VertexAttribute, uint> InterleavedOffsets
+        {
+            get => interleavedOffsets;
+            private set { }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public uint InterleavedStride { get => interleavedStride; private set { } }
+
+        #endregion
+
+        #region (Constructors)
 
         /// <summary>
         /// 
@@ -52,6 +68,10 @@ namespace Framework.Core.Vertex
 
             interleavedOffsets = new Dictionary<VertexAttribute, UInt32>();
         }
+
+        #endregion
+
+        #region (Public Methods)
 
         /// <summary>
         /// 
@@ -68,14 +88,11 @@ namespace Framework.Core.Vertex
         /// </summary>
         /// <param name="Vbo"></param>
         /// <param name="attribs"></param>
-        public void AddAttributesGroup(VertexBufferObject Vbo, params VertexAttributeType[] Attribs)
+        public void AddAttributesGroup(VertexBufferObject Vbo,
+                                       params VertexAttributeType[] Attribs)
         {
             foreach(VertexAttributeType attribType in Attribs)
             {
-#if DEBUG
-                Console.WriteLine("- Attribute (layout: " + ((int)attribType) + "): " + attribType.ToString());
-                Console.WriteLine("offset: " + this.interleavedStride);
-#endif
                 VertexAttribute attribute = new VertexAttribute(attribType);
 
                 this.interleavedVertexAttributes.Add(attribute, Vbo);
@@ -84,9 +101,8 @@ namespace Framework.Core.Vertex
 
                 this.interleavedStride += attribute.SizeInBytes;
             }
-#if DEBUG
-            Console.WriteLine("- Vertex stride: " + this.interleavedStride);
-#endif
         }
+
+        #endregion
     }
 }

@@ -8,7 +8,7 @@ namespace Framework.Core
     /// <summary>
     /// 
     /// </summary>
-    public class Shader : ResourceObject
+    public class Shader : OpenGLObject
     {
         #region (Data Fields)
 

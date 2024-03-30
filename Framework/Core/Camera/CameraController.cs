@@ -10,7 +10,7 @@ namespace Framework.Core.Camera
     /// </summary>
     public class CameraController
     {
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
+        #region (Data Fields)
 
         private PerspectiveCamera camera;
 
@@ -20,7 +20,9 @@ namespace Framework.Core.Camera
 
         private Vector2 lastPos;
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #endregion
+
+        #region (Constructors)
 
         /// <summary>
         /// 
@@ -32,6 +34,10 @@ namespace Framework.Core.Camera
             this.camera = Camera;
             this.window = Window;
         }
+
+        #endregion
+
+        #region (Public Fields)
 
         /// <summary>
         /// 
@@ -71,30 +77,38 @@ namespace Framework.Core.Camera
             {
                 camera.Position += camera.Right * cameraSpeed * (float)Event.Time; // Right
             }
-            if (Input.IsKeyDown(Keys.Space))
+            if (Input.IsKeyDown(Keys.Q))
             {
                 camera.Position += camera.Up * cameraSpeed * (float)Event.Time; // Up
             }
-            if (Input.IsKeyDown(Keys.LeftShift))
+            if (Input.IsKeyDown(Keys.E))
             {
                 camera.Position -= camera.Up * cameraSpeed * (float)Event.Time; // Down
             }
 
-            if (firstMove) // This bool variable is initially set to true.
+            if(Mouse.IsButtonDown(MouseButton.Right))
             {
-                lastPos = new Vector2(Mouse.X, Mouse.Y);
-                firstMove = false;
-            }
-            else
-            {
-                // Calculate the offset of the mouse position
-                var deltaX = Mouse.X - lastPos.X;
-                var deltaY = Mouse.Y - lastPos.Y;
-                lastPos = new Vector2(Mouse.X, Mouse.Y);
+                if (firstMove) // This bool variable is initially set to true.
+                {
+                    lastPos = new Vector2(Mouse.X, Mouse.Y);
+                    firstMove = false;
+                }
+                else
+                {
+                    // Calculate the offset of the mouse position
+                    var deltaX = Mouse.X - lastPos.X;
+                    var deltaY = Mouse.Y - lastPos.Y;
+                    lastPos = new Vector2(Mouse.X, Mouse.Y);
 
-                // Apply the camera pitch and yaw (we clamp the pitch in the camera class)
-                camera.Yaw += deltaX * sensitivity;
-                camera.Pitch -= deltaY * sensitivity; // Reversed since y-coordinates range from bottom to top
+                    // Apply the camera pitch and yaw (we clamp the pitch in the camera class)
+                    camera.Yaw += deltaX * sensitivity;
+                    camera.Pitch -= deltaY * sensitivity; // Reversed since y-coordinates range from bottom to top
+                }
+            }
+
+            if(Mouse.IsButtonReleased(MouseButton.Right))
+            {
+                firstMove = true;
             }
         }
 
@@ -106,5 +120,7 @@ namespace Framework.Core.Camera
         {
             camera.Fov -= Event.OffsetY;
         }
+
+        #endregion
     }
 }

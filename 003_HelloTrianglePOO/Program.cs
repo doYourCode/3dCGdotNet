@@ -2,8 +2,6 @@
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 
-using Framework.Core;
-
 namespace Examples
 {
     internal class Program

@@ -1,30 +1,50 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 
-
 namespace Framework.Core.Vertex
 {
-    /// <summary>
-    /// Enumeração dos atributos de vértice que são possíveis.
-    /// </summary>
-    public enum VertexAttributeType
-    {
-        Position,
-        TexCoord_0,
-        Normal,
-        Tangent,
-        Color,
-        TexCoord_1,
-
-        // TODO: BlendWeight, BlendIndices
-    }
-
-
     /// <summary>
     /// Fornece os dados necessários para adicionar suporte aos atributos listados.
     /// </summary>
     public class VertexAttribute
     {
-        /* ----------------------------------------- Variáveis de classe ----------------------------------------- */
+        #region (Data Fields)
+
+        private int layout;
+
+        private VertexAttribPointerType dataType;
+
+        private UInt32 dataTypeSize;
+
+        private UInt32 size;
+
+        #endregion
+
+        #region (Properties)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Layout { get => (int)layout; private set { } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public VertexAttribPointerType DataType { get => dataType; private set { } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public uint Size { get => size; private set { } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public uint SizeInBytes
+        {
+            get => size * dataTypeSize;
+
+            private set { }
+        }
 
         /// <summary>
         /// 
@@ -71,44 +91,9 @@ namespace Framework.Core.Vertex
             // TODO: BlendWeight = sizeof(float), BlendIndices = sizeof(int)
         };
 
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
+        #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public int Layout { get => (int)layout; private set { } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public VertexAttribPointerType DataType { get => dataType; private set { } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public uint Size { get => size; private set { } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public uint SizeInBytes
-        {
-            get => size * dataTypeSize;
-
-            private set { }
-        }
-
-
-        private int layout;
-
-        private VertexAttribPointerType dataType;
-
-        private UInt32 dataTypeSize;
-
-        private UInt32 size;
-
-
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #region (Constructors)
 
         public VertexAttribute(VertexAttributeType Type)
         {
@@ -120,5 +105,26 @@ namespace Framework.Core.Vertex
 
             this.size = GetSize[(int)Type];
         }
+
+        #endregion
     }
+
+    #region (Enums)
+
+    /// <summary>
+    /// Enumeração dos atributos de vértice que são possíveis.
+    /// </summary>
+    public enum VertexAttributeType
+    {
+        Position,
+        TexCoord_0,
+        Normal,
+        Tangent,
+        Color,
+        TexCoord_1,
+
+        // TODO: BlendWeight, BlendIndices
+    }
+
+    #endregion
 }

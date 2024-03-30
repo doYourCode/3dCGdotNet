@@ -2,13 +2,12 @@
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
-
-using Framework.Utils.Common;
-using Framework.Utils.Common.Mesh;
+using ExamplesCommon;
 using Framework.Core;
-using Framework.Utils.View;
 using Framework.Core.Light;
 using Framework.Core.Camera;
+using Framework.Utils.GUI;
+using Framework.Utils.GUI.ViewLayer;
 
 namespace Examples
 {
@@ -28,6 +27,7 @@ namespace Examples
         LightView lightView;
 
         private PerspectiveCamera camera;
+        private CameraController cameraController;
 
         public HelloLight(
             GameWindowSettings gameWindowSettings,
@@ -76,6 +76,9 @@ namespace Examples
 
             camera = new PerspectiveCamera(Vector3.UnitZ * 1.5f, Size.X / (float)Size.Y);
             camera.GetUniformLocations(shader);
+
+            cameraController = new CameraController(camera, this);
+
         }
 
         protected override void OnResize(ResizeEventArgs e)
@@ -138,6 +141,8 @@ namespace Examples
 
             shader.SetMatrix4("view", camera.GetViewMatrix());
             shader.SetMatrix4("projection", camera.GetProjectionMatrix());
+
+            cameraController.Update(args, KeyboardState, MouseState);
         }
 
         protected override void OnUnload()
@@ -146,7 +151,7 @@ namespace Examples
 
             foreach (var mesh in meshes)
             {
-                mesh.Value.Delete();
+                mesh.Value.Dispose();
             }
 
             shader.Dispose();
@@ -165,6 +170,8 @@ namespace Examples
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
+
+            cameraController.MouseUpdate(e);
 
             view.GetController().MouseScroll(e.Offset);
         }

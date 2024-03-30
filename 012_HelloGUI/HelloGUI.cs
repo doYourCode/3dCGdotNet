@@ -2,10 +2,9 @@
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
-
-using Framework.Utils.Common;
-using Framework.Utils.Common.Mesh;
+using ExamplesCommon;
 using Framework.Core;
+using Framework.Utils.GUI;
 
 namespace Examples
 {
@@ -109,7 +108,7 @@ namespace Examples
 
             foreach (var mesh in meshes)
             {
-                mesh.Value.Delete();
+                mesh.Value.Dispose();
             }
 
             shader.Dispose();

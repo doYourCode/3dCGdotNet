@@ -7,14 +7,15 @@ using System.Runtime.CompilerServices;
 using OpenTK.Graphics.OpenGL4;
 using ErrorCode = OpenTK.Graphics.OpenGL4.ErrorCode;
 
-namespace Framework.Utils.Common
+namespace Framework.Utils.GUI
 {
     /// <summary>
-    /// Adaptação de imediate mode GUI para a plataforma .Net. Essa classe é necessária para as view layers.
+    /// Adaptação do ImGui (Imediate mode Graphical User Inerface) para a plataforma .Net. Essa    
+    /// classe é necessária para implementar as view layers.
     /// </summary>
     public class ImGuiController : IDisposable
     {
-        /* ---------------------------------------------- Variáveis membro ---------------------------------------------- */
+        #region (Data Fields)
 
         private bool frameBegun;
 
@@ -50,8 +51,11 @@ namespace Framework.Utils.Common
 
         private bool CompatibilityProfile;
 
+        readonly List<char> PressedChars = new List<char>();
 
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
+        #endregion
+
+        #region (Constructors)
 
         /// <summary>
         /// Constructs a new ImGuiController.
@@ -85,6 +89,10 @@ namespace Framework.Utils.Common
             ImGui.NewFrame();
             frameBegun = true;
         }
+
+        #endregion
+
+        #region (Public Methods)
 
         /// <summary>
         /// 
@@ -253,6 +261,178 @@ void main()
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="keyChar"></param>
+        public void PressChar(char keyChar)
+        {
+            PressedChars.Add(keyChar);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="offset"></param>
+        public void MouseScroll(Vector2 offset)
+        {
+            ImGuiIOPtr io = ImGui.GetIO();
+
+            io.MouseWheel = offset.Y;
+            io.MouseWheelH = offset.X;
+        }
+
+        /// <summary>
+        /// Frees all graphics resources used by the renderer.
+        /// </summary>
+        public void Dispose()
+        {
+            GL.DeleteVertexArray(vertexArray);
+            GL.DeleteBuffer(vertexBuffer);
+            GL.DeleteBuffer(indexBuffer);
+
+            GL.DeleteTexture(fontTexture);
+            GL.DeleteProgram(shader);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objLabelIdent"></param>
+        /// <param name="glObject"></param>
+        /// <param name="name"></param>
+        public static void LabelObject(ObjectLabelIdentifier objLabelIdent, int glObject, string name)
+        {
+            if (KHRDebugAvailable)
+                GL.ObjectLabel(objLabelIdent, glObject, name.Length, name);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="vertexSource"></param>
+        /// <param name="fragmentSoruce"></param>
+        /// <returns></returns>
+        public static int CreateProgram(string name, string vertexSource, string fragmentSoruce)
+        {
+            int program = GL.CreateProgram();
+            LabelObject(ObjectLabelIdentifier.Program, program, $"Program: {name}");
+
+            int vertex = CompileShader(name, ShaderType.VertexShader, vertexSource);
+            int fragment = CompileShader(name, ShaderType.FragmentShader, fragmentSoruce);
+
+            GL.AttachShader(program, vertex);
+            GL.AttachShader(program, fragment);
+
+            GL.LinkProgram(program);
+
+            GL.GetProgram(program, GetProgramParameterName.LinkStatus, out int success);
+            if (success == 0)
+            {
+                string info = GL.GetProgramInfoLog(program);
+                Debug.WriteLine($"GL.LinkProgram had info log [{name}]:\n{info}");
+            }
+
+            GL.DetachShader(program, vertex);
+            GL.DetachShader(program, fragment);
+
+            GL.DeleteShader(vertex);
+            GL.DeleteShader(fragment);
+
+            return program;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static ImGuiKey TranslateKey(Keys key)
+        {
+            if (key >= Keys.D0 && key <= Keys.D9)
+                return key - Keys.D0 + ImGuiKey._0;
+
+            if (key >= Keys.A && key <= Keys.Z)
+                return key - Keys.A + ImGuiKey.A;
+
+            if (key >= Keys.KeyPad0 && key <= Keys.KeyPad9)
+                return key - Keys.KeyPad0 + ImGuiKey.Keypad0;
+
+            if (key >= Keys.F1 && key <= Keys.F24)
+                return key - Keys.F1 + ImGuiKey.F24;
+
+            switch (key)
+            {
+                case Keys.Tab: return ImGuiKey.Tab;
+                case Keys.Left: return ImGuiKey.LeftArrow;
+                case Keys.Right: return ImGuiKey.RightArrow;
+                case Keys.Up: return ImGuiKey.UpArrow;
+                case Keys.Down: return ImGuiKey.DownArrow;
+                case Keys.PageUp: return ImGuiKey.PageUp;
+                case Keys.PageDown: return ImGuiKey.PageDown;
+                case Keys.Home: return ImGuiKey.Home;
+                case Keys.End: return ImGuiKey.End;
+                case Keys.Insert: return ImGuiKey.Insert;
+                case Keys.Delete: return ImGuiKey.Delete;
+                case Keys.Backspace: return ImGuiKey.Backspace;
+                case Keys.Space: return ImGuiKey.Space;
+                case Keys.Enter: return ImGuiKey.Enter;
+                case Keys.Escape: return ImGuiKey.Escape;
+                case Keys.Apostrophe: return ImGuiKey.Apostrophe;
+                case Keys.Comma: return ImGuiKey.Comma;
+                case Keys.Minus: return ImGuiKey.Minus;
+                case Keys.Period: return ImGuiKey.Period;
+                case Keys.Slash: return ImGuiKey.Slash;
+                case Keys.Semicolon: return ImGuiKey.Semicolon;
+                case Keys.Equal: return ImGuiKey.Equal;
+                case Keys.LeftBracket: return ImGuiKey.LeftBracket;
+                case Keys.Backslash: return ImGuiKey.Backslash;
+                case Keys.RightBracket: return ImGuiKey.RightBracket;
+                case Keys.GraveAccent: return ImGuiKey.GraveAccent;
+                case Keys.CapsLock: return ImGuiKey.CapsLock;
+                case Keys.ScrollLock: return ImGuiKey.ScrollLock;
+                case Keys.NumLock: return ImGuiKey.NumLock;
+                case Keys.PrintScreen: return ImGuiKey.PrintScreen;
+                case Keys.Pause: return ImGuiKey.Pause;
+                case Keys.KeyPadDecimal: return ImGuiKey.KeypadDecimal;
+                case Keys.KeyPadDivide: return ImGuiKey.KeypadDivide;
+                case Keys.KeyPadMultiply: return ImGuiKey.KeypadMultiply;
+                case Keys.KeyPadSubtract: return ImGuiKey.KeypadSubtract;
+                case Keys.KeyPadAdd: return ImGuiKey.KeypadAdd;
+                case Keys.KeyPadEnter: return ImGuiKey.KeypadEnter;
+                case Keys.KeyPadEqual: return ImGuiKey.KeypadEqual;
+                case Keys.LeftShift: return ImGuiKey.LeftShift;
+                case Keys.LeftControl: return ImGuiKey.LeftCtrl;
+                case Keys.LeftAlt: return ImGuiKey.LeftAlt;
+                case Keys.LeftSuper: return ImGuiKey.LeftSuper;
+                case Keys.RightShift: return ImGuiKey.RightShift;
+                case Keys.RightControl: return ImGuiKey.RightCtrl;
+                case Keys.RightAlt: return ImGuiKey.RightAlt;
+                case Keys.RightSuper: return ImGuiKey.RightSuper;
+                case Keys.Menu: return ImGuiKey.Menu;
+                default: return ImGuiKey.None;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="title"></param>
+        public static void CheckGLError(string title)
+        {
+            ErrorCode error;
+            int i = 1;
+            while ((error = GL.GetError()) != ErrorCode.NoError)
+            {
+                Debug.Print($"{title} ({i++}): {error}");
+            }
+        }
+
+        #endregion
+
+        #region (Other Methods)
+
+        /// <summary>
         /// Sets per-frame data based on the associated window.
         /// This is called by Update(float).
         /// </summary>
@@ -265,8 +445,6 @@ void main()
             io.DisplayFramebufferScale = scaleFactor;
             io.DeltaTime = deltaSeconds; // DeltaTime is in seconds.
         }
-
-        readonly List<char> PressedChars = new List<char>(); // TODO: reorganizar
 
         /// <summary>
         /// 
@@ -308,27 +486,6 @@ void main()
             io.KeyAlt = KeyboardState.IsKeyDown(Keys.LeftAlt) || KeyboardState.IsKeyDown(Keys.RightAlt);
             io.KeyShift = KeyboardState.IsKeyDown(Keys.LeftShift) || KeyboardState.IsKeyDown(Keys.RightShift);
             io.KeySuper = KeyboardState.IsKeyDown(Keys.LeftSuper) || KeyboardState.IsKeyDown(Keys.RightSuper);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="keyChar"></param>
-        public void PressChar(char keyChar)
-        {
-            PressedChars.Add(keyChar);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="offset"></param>
-        public void MouseScroll(Vector2 offset)
-        {
-            ImGuiIOPtr io = ImGui.GetIO();
-
-            io.MouseWheel = offset.Y;
-            io.MouseWheelH = offset.X;
         }
 
         /// <summary>
@@ -519,30 +676,7 @@ void main()
             }
         }
 
-        /// <summary>
-        /// Frees all graphics resources used by the renderer.
-        /// </summary>
-        public void Dispose()
-        {
-            GL.DeleteVertexArray(vertexArray);
-            GL.DeleteBuffer(vertexBuffer);
-            GL.DeleteBuffer(indexBuffer);
 
-            GL.DeleteTexture(fontTexture);
-            GL.DeleteProgram(shader);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="objLabelIdent"></param>
-        /// <param name="glObject"></param>
-        /// <param name="name"></param>
-        public static void LabelObject(ObjectLabelIdentifier objLabelIdent, int glObject, string name)
-        {
-            if (KHRDebugAvailable)
-                GL.ObjectLabel(objLabelIdent, glObject, name.Length, name);
-        }
 
         /// <summary>
         /// 
@@ -559,42 +693,6 @@ void main()
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="vertexSource"></param>
-        /// <param name="fragmentSoruce"></param>
-        /// <returns></returns>
-        public static int CreateProgram(string name, string vertexSource, string fragmentSoruce)
-        {
-            int program = GL.CreateProgram();
-            LabelObject(ObjectLabelIdentifier.Program, program, $"Program: {name}");
-
-            int vertex = CompileShader(name, ShaderType.VertexShader, vertexSource);
-            int fragment = CompileShader(name, ShaderType.FragmentShader, fragmentSoruce);
-
-            GL.AttachShader(program, vertex);
-            GL.AttachShader(program, fragment);
-
-            GL.LinkProgram(program);
-
-            GL.GetProgram(program, GetProgramParameterName.LinkStatus, out int success);
-            if (success == 0)
-            {
-                string info = GL.GetProgramInfoLog(program);
-                Debug.WriteLine($"GL.LinkProgram had info log [{name}]:\n{info}");
-            }
-
-            GL.DetachShader(program, vertex);
-            GL.DetachShader(program, fragment);
-
-            GL.DeleteShader(vertex);
-            GL.DeleteShader(fragment);
-
-            return program;
         }
 
         /// <summary>
@@ -621,91 +719,6 @@ void main()
 
             return shader;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="title"></param>
-        public static void CheckGLError(string title)
-        {
-            ErrorCode error;
-            int i = 1;
-            while ((error = GL.GetError()) != ErrorCode.NoError)
-            {
-                Debug.Print($"{title} ({i++}): {error}");
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static ImGuiKey TranslateKey(Keys key)
-        {
-            if (key >= Keys.D0 && key <= Keys.D9)
-                return key - Keys.D0 + ImGuiKey._0;
-
-            if (key >= Keys.A && key <= Keys.Z)
-                return key - Keys.A + ImGuiKey.A;
-
-            if (key >= Keys.KeyPad0 && key <= Keys.KeyPad9)
-                return key - Keys.KeyPad0 + ImGuiKey.Keypad0;
-
-            if (key >= Keys.F1 && key <= Keys.F24)
-                return key - Keys.F1 + ImGuiKey.F24;
-
-            switch (key)
-            {
-                case Keys.Tab: return ImGuiKey.Tab;
-                case Keys.Left: return ImGuiKey.LeftArrow;
-                case Keys.Right: return ImGuiKey.RightArrow;
-                case Keys.Up: return ImGuiKey.UpArrow;
-                case Keys.Down: return ImGuiKey.DownArrow;
-                case Keys.PageUp: return ImGuiKey.PageUp;
-                case Keys.PageDown: return ImGuiKey.PageDown;
-                case Keys.Home: return ImGuiKey.Home;
-                case Keys.End: return ImGuiKey.End;
-                case Keys.Insert: return ImGuiKey.Insert;
-                case Keys.Delete: return ImGuiKey.Delete;
-                case Keys.Backspace: return ImGuiKey.Backspace;
-                case Keys.Space: return ImGuiKey.Space;
-                case Keys.Enter: return ImGuiKey.Enter;
-                case Keys.Escape: return ImGuiKey.Escape;
-                case Keys.Apostrophe: return ImGuiKey.Apostrophe;
-                case Keys.Comma: return ImGuiKey.Comma;
-                case Keys.Minus: return ImGuiKey.Minus;
-                case Keys.Period: return ImGuiKey.Period;
-                case Keys.Slash: return ImGuiKey.Slash;
-                case Keys.Semicolon: return ImGuiKey.Semicolon;
-                case Keys.Equal: return ImGuiKey.Equal;
-                case Keys.LeftBracket: return ImGuiKey.LeftBracket;
-                case Keys.Backslash: return ImGuiKey.Backslash;
-                case Keys.RightBracket: return ImGuiKey.RightBracket;
-                case Keys.GraveAccent: return ImGuiKey.GraveAccent;
-                case Keys.CapsLock: return ImGuiKey.CapsLock;
-                case Keys.ScrollLock: return ImGuiKey.ScrollLock;
-                case Keys.NumLock: return ImGuiKey.NumLock;
-                case Keys.PrintScreen: return ImGuiKey.PrintScreen;
-                case Keys.Pause: return ImGuiKey.Pause;
-                case Keys.KeyPadDecimal: return ImGuiKey.KeypadDecimal;
-                case Keys.KeyPadDivide: return ImGuiKey.KeypadDivide;
-                case Keys.KeyPadMultiply: return ImGuiKey.KeypadMultiply;
-                case Keys.KeyPadSubtract: return ImGuiKey.KeypadSubtract;
-                case Keys.KeyPadAdd: return ImGuiKey.KeypadAdd;
-                case Keys.KeyPadEnter: return ImGuiKey.KeypadEnter;
-                case Keys.KeyPadEqual: return ImGuiKey.KeypadEqual;
-                case Keys.LeftShift: return ImGuiKey.LeftShift;
-                case Keys.LeftControl: return ImGuiKey.LeftCtrl;
-                case Keys.LeftAlt: return ImGuiKey.LeftAlt;
-                case Keys.LeftSuper: return ImGuiKey.LeftSuper;
-                case Keys.RightShift: return ImGuiKey.RightShift;
-                case Keys.RightControl: return ImGuiKey.RightCtrl;
-                case Keys.RightAlt: return ImGuiKey.RightAlt;
-                case Keys.RightSuper: return ImGuiKey.RightSuper;
-                case Keys.Menu: return ImGuiKey.Menu;
-                default: return ImGuiKey.None;
-            }
-        }
+        #endregion
     }
 }

@@ -1,9 +1,8 @@
 ﻿using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
-
 using Framework.Core;
-using Framework.Utils.Common.Mesh;
+using ExamplesCommon;
 
 namespace Examples
 {
@@ -52,7 +51,7 @@ namespace Examples
         {
             base.OnUnload();
 
-            mesh.Delete();
+            mesh.Dispose();
             shader.Dispose();
             texture.Dispose();
         }

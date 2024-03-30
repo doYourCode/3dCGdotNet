@@ -6,7 +6,7 @@ namespace Framework.Utils.GUI.ViewLayer
     /// <summary>
     /// 
     /// </summary>
-    public class LightView
+    public class LightView : IimResourceControl
     {
         #region (Data Fields)
 
@@ -36,7 +36,7 @@ namespace Framework.Utils.GUI.ViewLayer
         /// <summary>
         /// 
         /// </summary>
-        public void DrawControl()
+        public void RenderControl()
         {
             ImGui.Begin("Light");
 
@@ -77,7 +77,10 @@ namespace Framework.Utils.GUI.ViewLayer
 
                 if (ImGui.BeginTabItem("Shadow"))
                 {
-                    ImGui.Checkbox("Cast Shadow", ref light.castShadow);
+                    if(ImGui.Checkbox("Cast Shadow", ref light.castShadow))
+                    {
+                        ImGui.Text("TODO: insert shadow functionality here.");
+                    }
 
                     ImGui.EndTabItem();
                 }
@@ -86,14 +89,6 @@ namespace Framework.Utils.GUI.ViewLayer
             }
 
             ImGui.End();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void DrawGismo()
-        {
-            // TODO: Draw a textured point to represent the light bulb and it's target
         }
 
         #endregion

@@ -13,9 +13,7 @@ namespace Examples
         ImGuiController controller;
 
         public LightView LightView { get; set; }
-
-        readonly System.Numerics.Vector2 modalInitPos = new System.Numerics.Vector2(16, 16);
-        readonly System.Numerics.Vector2 modalInitSize = new System.Numerics.Vector2(330, 200);
+        public MaterialView MaterialView { get; set; }
 
         private String[] items;
         private bool rotate;
@@ -40,8 +38,8 @@ namespace Examples
         {
             GL.Disable(EnableCap.DepthTest);
 
-            ShowGUI();
-            LightView.DrawControl();
+            RenderViewLayer();
+
             controller.Render();
 
             GL.Enable(EnableCap.DepthTest);
@@ -57,11 +55,9 @@ namespace Examples
             controller.WindowResized(width, height);
         }
 
-        public void ShowGUI()
+        public void RenderViewLayer()
         {
-            ImGui.Begin("Configurações", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove);
-            ImGui.SetWindowPos(modalInitPos);
-            ImGui.SetWindowSize(modalInitSize);
+            ImGui.Begin("Configurações");
 
             ImGui.LabelText("", "Select a mesh");
 
@@ -110,6 +106,10 @@ namespace Examples
             }
 
             ImGui.End();
+
+            LightView.RenderControl();
+
+            MaterialView.RenderControl();
         }
 
         public void SetList(string[] items)

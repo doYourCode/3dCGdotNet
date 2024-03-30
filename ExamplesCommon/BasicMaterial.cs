@@ -7,18 +7,17 @@ namespace ExamplesCommon
     /// <summary>
     /// 
     /// </summary>
-    public class BasicMaterial : ResourceObject
+    public class BasicMaterial : Material
     {
         #region (Data Fields)
 
         private static Dictionary<ShaderType, UInt32> instancesCount = new Dictionary<ShaderType, UInt32>()
             {
-                { ShaderType.Oren_Nayar_Blinn, 0 },
+                { ShaderType.Oren_Nayar, 0 },
                 { ShaderType.Phong, 0 },
                 { ShaderType.Lambertian, 0 },
                 { ShaderType.Half_Lambert, 0 },
                 { ShaderType.Gouraud, 0 },
-                { ShaderType.Cell_Shading, 0 }
             };
 
         private ShaderType shaderType;
@@ -162,12 +161,11 @@ namespace ExamplesCommon
     /// </summary>
     public enum ShaderType
     {
-        Oren_Nayar_Blinn,       //
+        Oren_Nayar,             //
         Phong,                  //
         Lambertian,             // TODO: implementar em um material mais robusto os tipos
         Half_Lambert,           // de materiais p/ carregar diferentes shaders
         Gouraud,                //
-        Cell_Shading,           //
     }
 
     #endregion

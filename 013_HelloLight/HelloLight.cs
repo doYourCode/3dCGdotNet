@@ -106,8 +106,6 @@ namespace Examples
 
             view.Render();
 
-            lightView.DrawControl();
-
             ImGuiController.CheckGLError("End of frame");
 
             SwapBuffers();

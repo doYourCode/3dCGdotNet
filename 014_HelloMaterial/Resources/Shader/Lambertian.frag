@@ -17,29 +17,23 @@ uniform vec3 ambientColor;
 uniform float ambientIntensity;
 uniform vec3 viewPosition;
 
-vec3 DiffuseLighting(vec3 normal);
-float SpecularLighting(vec3 normal);
+float LambertTerm(vec3 LightDirection, vec3 NormalDirection)
+{
+    return max(dot(NormalDirection, LightDirection), 0.0);
+}
 
 void main()
 {
-    vec3 normal = normalize(vNormal.xyz);
+    vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
+    vec3 normalDir = normalize(vNormal.xyz);
 
-    vec3 diffuseLight = DiffuseLighting(normal);
+    vec3 diffuseLight = vec3(LambertTerm(lightDir, normalDir)) * (lightColor * lightIntensity);
 
     vec3 ambientLight = ambientColor * ambientIntensity;
 
-    float specularLight = SpecularLighting(normal);
+    vec3 textureColor = texture(texture0, vUv).xyz;
 
-    //vec3 textureColor = texture(texture0, vUv).xyz;
-
-    vec3 finalLight = diffuseLight + ambientLight;
+    vec3 finalLight = (diffuseLight + ambientLight) * textureColor;
 
     outputColor = vec4(finalLight, 1.0);
-}
-
-vec3 DiffuseLighting(vec3 normal)
-{
-    vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
-    float diffuseTerm = max(dot(normal, lightDir), 0.0);
-    return diffuseTerm * lightColor * lightIntensity;
 }

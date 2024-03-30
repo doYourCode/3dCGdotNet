@@ -17,36 +17,41 @@ uniform vec3 ambientColor;
 uniform float ambientIntensity;
 uniform vec3 viewPosition;
 
-vec3 DiffuseLighting(vec3 normal);
-float SpecularLighting(vec3 normal);
+uniform float roughness;
+uniform float specularIntensity;
+uniform float specularPower;
+uniform vec3 specularColor;
+
+float SpecularTerm(vec3 ViewDirection, vec3 LightDirection, vec3 NormalDirection)
+{
+    vec3 reflectDir = reflect(LightDirection, NormalDirection);
+    float NdotV = dot(ViewDirection, reflectDir);
+
+    return pow(max(NdotV, 0.0), specularPower);
+}
+
+float LambertTerm(vec3 LightDirection, vec3 NormalDirection)
+{
+    float NdotL = dot(NormalDirection, LightDirection);
+
+    return max(NdotL, 0.0);
+}
 
 void main()
 {
-    vec3 normal = normalize(vNormal.xyz);
+    vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
+    vec3 viewDir = normalize(-viewPosition - fragPosition.xyz);
+    vec3 normalDir = normalize(vNormal.xyz);
 
-    vec3 diffuseLight = DiffuseLighting(normal);
+    vec3 diffuseLight = LambertTerm(lightDir, normalDir) * lightColor * lightIntensity;
 
     vec3 ambientLight = ambientColor * ambientIntensity;
 
-    float specularLight = SpecularLighting(normal);
+    vec3 specularLight = specularColor * (SpecularTerm(viewDir, lightDir, normalDir) * specularIntensity * lightIntensity);
 
-    vec3 finalLight = diffuseLight + ambientLight + specularLight;
+    vec3 textureColor = texture(texture0, vUv).xyz;
+
+    vec3 finalLight = (diffuseLight + ambientLight) * textureColor + specularLight;
 
     outputColor = vec4(finalLight, 1.0);
-}
-
-vec3 DiffuseLighting(vec3 normal)
-{
-    vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
-    float diffuseTerm = max(dot(normal, lightDir), 0.0);
-    return diffuseTerm * lightColor * lightIntensity;
-}
-
-float SpecularLighting(vec3 normal)
-{
-    float specularStrength = 0.24;
-    vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
-    vec3 viewDir = normalize(-viewPosition - fragPosition.xyz);
-    vec3 reflectDir = reflect(lightDir, normal);
-    return pow(max(dot(viewDir, reflectDir), 0.0), 9) * specularStrength;
 }

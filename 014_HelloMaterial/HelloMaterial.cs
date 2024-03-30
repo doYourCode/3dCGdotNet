@@ -7,7 +7,6 @@ using Framework.Core;
 using Framework.Core.Light;
 using Framework.Core.Camera;
 using ShaderType = ExamplesCommon.ShaderType;
-using Framework.Core.Buffer;
 using Framework.Utils.GUI;
 using Framework.Utils.GUI.ViewLayer;
 
@@ -25,7 +24,6 @@ namespace Examples
 
         Light light;
         AmbientLight ambientLight;
-        LightView lightView;
 
         BasicMaterial basicMaterial;
 
@@ -42,27 +40,28 @@ namespace Examples
         {
             base.OnLoad();
 
-            FrameBufferObject fbo = new FrameBufferObject();
-
-            // Change the shader type here to change the material type
-            basicMaterial = new BasicMaterial(ShaderType.Phong);
-
-            view = new ViewLayer();
-
-            view.Load(this);
-
+            // Modelos 3D
             meshes = new Dictionary<String, BasicMesh>
             {
                 { "Monkey", new BasicMesh("Monkey.fbx") }
             };
 
-            view.SetList(meshes.Keys.ToArray());
 
+            // Textura
             texture = Texture.LoadFromFile("Suzanne.png", TextureUnit.Texture0);
 
+
+            // Transform
             transform = new Transform();
             transform.SetRotationY(3.14f);
 
+
+            // Material
+            basicMaterial = new BasicMaterial(ShaderType.Phong);
+            basicMaterial.GetUniformLocations(basicMaterial.Shader);
+
+
+            // Luz
             light = new Light(
                 new System.Numerics.Vector3(2.0f, 2.0f, 2.0f),
                 new System.Numerics.Vector3(1.0f, 1.0f, 1.0f),
@@ -78,13 +77,28 @@ namespace Examples
                 );
             ambientLight.GetUniformLocations(basicMaterial.Shader);
 
-            lightView = new LightView(light, ambientLight);
-            view.LightView = lightView;
 
+            // Câmera
             camera = new PerspectiveCamera(Vector3.UnitZ * 1.5f, Size.X / (float)Size.Y);
             camera.GetUniformLocations(basicMaterial.Shader);
 
             cameraController = new CameraController(camera, this);
+
+
+            // GUI
+            view = new ViewLayer();
+
+            view.Load(this);
+
+            view.SetList(meshes.Keys.ToArray());
+
+            // GUI de Luz
+            LightView lightView = new LightView(light, ambientLight);
+            view.LightView = lightView;
+
+            // GUI de material
+            MaterialView materialView = new MaterialView(basicMaterial);
+            view.MaterialView = materialView;
         }
 
         protected override void OnResize(ResizeEventArgs e)
@@ -112,8 +126,6 @@ namespace Examples
 
             view.Render();
 
-            lightView.DrawControl();
-
             ImGuiController.CheckGLError("End of frame");
 
             SwapBuffers();
@@ -138,8 +150,8 @@ namespace Examples
             }
 
             light.UpdateUniforms();
-
             ambientLight.UpdateUniforms();
+            basicMaterial.UpdateUniforms();
 
             camera.UpdateUniforms();
 

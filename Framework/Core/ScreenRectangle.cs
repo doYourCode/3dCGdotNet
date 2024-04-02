@@ -1,4 +1,4 @@
-﻿using Framework.Core.Base;
+﻿using Framework.Core.Resource;
 using Framework.Core.Buffer;
 using Framework.Core.Vertex;
 

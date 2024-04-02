@@ -1,4 +1,4 @@
-﻿using Framework.Core.Base;
+﻿using Framework.Core.Resource;
 using Framework.Utils;
 using OpenTK.Graphics.OpenGL4;
 
@@ -24,9 +24,9 @@ namespace Framework.Core.Buffer
         /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
         /// Há outros valores possíveis, verifique as referências da API.
         /// </param>
-        public VertexBufferObject(float[] Data, BufferUsageHint Usage = BufferUsageHint.StaticDraw) : base("VertexBufferObject ", (UInt32)GL.GenBuffer())
+        public VertexBufferObject(float[] Data, BufferUsageHint Usage = BufferUsageHint.StaticDraw) : base("VertexBufferObject", (UInt32)GL.GenBuffer())
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, id);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, ID);
 
             GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * Data.Length, Data, Usage);
         }
@@ -47,7 +47,7 @@ namespace Framework.Core.Buffer
         /// <param name="Label"> Rótulo identificador do VBO. </param>
         public VertexBufferObject(string Label, float[] Data, BufferUsageHint Usage = BufferUsageHint.StaticDraw) : base(Label, (UInt32)GL.GenBuffer())
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, id);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, ID);
 
             GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * Data.Length, Data, Usage);
         }
@@ -61,7 +61,7 @@ namespace Framework.Core.Buffer
         /// </summary>
         public void Bind()
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, id);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, ID);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Framework.Core.Buffer
         protected override void Dispose(bool isManualDispose)
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, CONSTANTS.NONE);
-            GL.DeleteBuffer(id);
+            GL.DeleteBuffer(ID);
         }
 
         #endregion

@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using Framework.Utils;
 using OpenTK.Mathematics;
-using Framework.Core.Base;
+using Framework.Core.Resource;
 
 namespace Framework.Core.Buffer
 {
@@ -42,7 +42,7 @@ namespace Framework.Core.Buffer
                                  bool IsMultisample = false,
                                  ushort NumSamples = 1,
                                  float Gamma = 1.0f) :
-                                    base("FrameBufferObject ",
+                                    base("FrameBufferObject",
                                         (UInt32)GL.GenBuffer())
         {
             this.width = Width;
@@ -51,10 +51,10 @@ namespace Framework.Core.Buffer
             this.gamma = Gamma;
 
 
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, id);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, ID);
 
             // Gera um endereço para uma textura de uso interno
-            texture = new Texture("FBO (" + id + ") - Texture ", (UInt32)GL.GenTexture());
+            texture = new Texture("FBO (" + ID + ") - Texture ", (UInt32)GL.GenTexture());
 
             if (IsMultisample)
             {
@@ -163,7 +163,7 @@ namespace Framework.Core.Buffer
         protected override void Dispose(bool isManualDispose)
         {
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, CONSTANTS.NONE);
-            GL.DeleteFramebuffer(this.id);
+            GL.DeleteFramebuffer(this.ID);
 
             texture.Dispose();
         }
@@ -189,7 +189,7 @@ namespace Framework.Core.Buffer
             // Reconfigurar a viewport do OpenGL para as dimensões do FBO
             GL.Viewport(0, 0, this.width, this.height);
 
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, this.id);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, this.ID);
 
             GL.ClearColor(this.defaultBackgroundColor);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

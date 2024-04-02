@@ -1,4 +1,4 @@
-﻿using Framework.Core.Base;
+﻿using Framework.Core.Resource;
 using Framework.Core.Vertex;
 using Framework.Utils;
 using OpenTK.Graphics.OpenGL4;
@@ -19,7 +19,7 @@ namespace Framework.Core.Buffer
         /// 
         /// </summary>
         /// <param name="VertexFormat"></param>
-        public VertexArrayObject(VertexFormat VertexFormat) : base("VertexArrayObject ", (UInt32)GL.GenVertexArray())
+        public VertexArrayObject(VertexFormat VertexFormat) : base("VertexArrayObject", (UInt32)GL.GenVertexArray())
         {
             this.Bind();
 
@@ -62,7 +62,7 @@ namespace Framework.Core.Buffer
         /// </summary>
         public void Bind()
         {
-            GL.BindVertexArray(id);
+            GL.BindVertexArray(ID);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Framework.Core.Buffer
         protected override void Dispose(bool isManualDispose)
         {
             GL.BindVertexArray(CONSTANTS.NONE);
-            GL.DeleteVertexArray(id);
+            GL.DeleteVertexArray(ID);
         }
 
         /// <summary>

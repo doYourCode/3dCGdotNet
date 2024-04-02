@@ -109,7 +109,7 @@ namespace Framework.Core.Material
 
         #region (Properties)
 
-        public override ref float FloatRef { get { throw new NotSupportedException(); } }
+        public override ref System.Numerics.Vector2 Vector2Ref { get => ref value; }
 
         #endregion
 
@@ -124,7 +124,7 @@ namespace Framework.Core.Material
 
         #region (Unsupported)
 
-        public override ref System.Numerics.Vector2 Vector2Ref { get => ref value; }
+        public override ref float FloatRef { get { throw new NotSupportedException(); } }
         public override ref System.Numerics.Vector3 Vector3Ref { get { throw new NotSupportedException(); } }
         public override ref System.Numerics.Vector4 Vector4Ref { get { throw new NotSupportedException(); } }
 
@@ -152,7 +152,7 @@ namespace Framework.Core.Material
 
         #region (Properties)
 
-        public override ref float FloatRef { get { throw new NotSupportedException(); } }
+        public override ref System.Numerics.Vector3 Vector3Ref { get => ref value; }
 
         #endregion
 
@@ -166,8 +166,9 @@ namespace Framework.Core.Material
         #endregion
 
         #region (Unsupported)
+
         public override ref System.Numerics.Vector2 Vector2Ref { get { throw new NotSupportedException(); } }
-        public override ref System.Numerics.Vector3 Vector3Ref { get => ref value; }
+        public override ref float FloatRef { get { throw new NotSupportedException(); } }
         public override ref System.Numerics.Vector4 Vector4Ref { get { throw new NotSupportedException(); } }
 
         #endregion
@@ -194,7 +195,7 @@ namespace Framework.Core.Material
 
         #region (Properties)
 
-        public override ref float FloatRef { get { throw new NotSupportedException(); } }
+        public override ref System.Numerics.Vector4 Vector4Ref { get => ref value; }
 
         #endregion
 
@@ -211,7 +212,7 @@ namespace Framework.Core.Material
 
         public override ref System.Numerics.Vector2 Vector2Ref { get { throw new NotSupportedException(); } }
         public override ref System.Numerics.Vector3 Vector3Ref { get { throw new NotSupportedException(); } }
-        public override ref System.Numerics.Vector4 Vector4Ref { get => ref value; }
+        public override ref float FloatRef { get { throw new NotSupportedException(); } }
 
         #endregion
     }

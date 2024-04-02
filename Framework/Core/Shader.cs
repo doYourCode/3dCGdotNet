@@ -1,4 +1,4 @@
-﻿using Framework.Core.Base;
+﻿using Framework.Core.Resource;
 using Framework.Utils;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
@@ -43,24 +43,24 @@ namespace Framework.Core
             CompileShader(fragmentShader);
 
 
-            GL.AttachShader((Int32)id, vertexShader);
-            GL.AttachShader((Int32)id, fragmentShader);
+            GL.AttachShader((Int32)ID, vertexShader);
+            GL.AttachShader((Int32)ID, fragmentShader);
 
-            LinkProgram((Int32)id);
+            LinkProgram((Int32)ID);
 
-            GL.DetachShader((Int32)id, vertexShader);
-            GL.DetachShader((Int32)id, fragmentShader);
+            GL.DetachShader((Int32)ID, vertexShader);
+            GL.DetachShader((Int32)ID, fragmentShader);
             GL.DeleteShader(fragmentShader);
             GL.DeleteShader(vertexShader);
 
-            GL.GetProgram(id, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
+            GL.GetProgram(ID, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
 
             uniformLocations = new Dictionary<string, int>();
 
             for (var i = 0; i < numberOfUniforms; i++)
             {
-                var key = GL.GetActiveUniform((Int32)id, i, out _, out _);
-                var location = GL.GetUniformLocation(id, key);
+                var key = GL.GetActiveUniform((Int32)ID, i, out _, out _);
+                var location = GL.GetUniformLocation(ID, key);
                 uniformLocations.Add(key, location);
             }
         }
@@ -89,7 +89,7 @@ namespace Framework.Core
         /// </summary>
         public void Use()
         {
-            GL.UseProgram(id);
+            GL.UseProgram(ID);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Framework.Core
         /// <returns></returns>
         public int GetAttribLocation(string AttribName)
         {
-            return GL.GetAttribLocation(id, AttribName);
+            return GL.GetAttribLocation(ID, AttribName);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Framework.Core
         /// <param name="Data"></param>
         public void SetInt(string Name, int Data)
         {
-            GL.UseProgram(id);
+            GL.UseProgram(ID);
             GL.Uniform1(uniformLocations[Name], Data);
         }
 
@@ -120,7 +120,7 @@ namespace Framework.Core
         /// <param name="Data"></param>
         public void SetFloat(string Name, float Data)
         {
-            GL.UseProgram(id);
+            GL.UseProgram(ID);
             GL.Uniform1(uniformLocations[Name], Data);
         }
 
@@ -131,7 +131,7 @@ namespace Framework.Core
         /// <param name="Data"></param>
         public void SetMatrix4(string Name, Matrix4 Data)
         {
-            GL.UseProgram(id);
+            GL.UseProgram(ID);
             GL.UniformMatrix4(uniformLocations[Name], true, ref Data);
         }
 
@@ -142,7 +142,7 @@ namespace Framework.Core
         /// <param name="Data"></param>
         public void SetVector3(string Name, Vector3 Data)
         {
-            GL.UseProgram(id);
+            GL.UseProgram(ID);
             GL.Uniform3(uniformLocations[Name], Data);
         }
 
@@ -191,7 +191,7 @@ namespace Framework.Core
         protected override void Dispose(bool isManualDispose)
         {
             GL.UseProgram(CONSTANTS.NONE);
-            GL.DeleteProgram(id);
+            GL.DeleteProgram(ID);
         }
 
         #endregion

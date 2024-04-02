@@ -78,7 +78,6 @@ namespace Examples
             camera.GetUniformLocations(shader);
 
             cameraController = new CameraController(camera, this);
-
         }
 
         protected override void OnResize(ResizeEventArgs e)

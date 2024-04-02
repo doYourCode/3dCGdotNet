@@ -1,11 +1,15 @@
-﻿using Assimp;
-using Framework.Core.Base;
-using Framework.Core.Buffer;
-using Framework.Core.Vertex;
-using OpenTK.Graphics.OpenGL4;
+﻿// <copyright file="BasicMesh.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace ExamplesCommon
 {
+    using Assimp;
+    using Framework.Core.Buffer;
+    using Framework.Core.Resource;
+    using Framework.Core.Vertex;
+    using OpenTK.Graphics.OpenGL4;
+
     /// <summary>
     /// 
     /// </summary>
@@ -142,8 +146,7 @@ namespace ExamplesCommon
 
         #endregion
 
-        #region (Other Methods)
-
+        /// <inheritdoc/>
         protected override void Dispose(bool isManualDispose)
         {
             vao.Dispose();
@@ -151,7 +154,5 @@ namespace ExamplesCommon
             colorNormalTexCoordVbo.Dispose();
             ebo.Dispose();
         }
-
-        #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿using Framework.Core.Base;
+﻿using Framework.Core.Resource;
 
 namespace Framework.Core.Material
 {
@@ -51,7 +51,7 @@ namespace Framework.Core.Material
 
         protected override void Dispose(bool isManualDispose)
         {
-            // TODO: dispose all the related resources
+            base.Dispose(isManualDispose);
         }
 
         #endregion

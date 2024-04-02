@@ -2,7 +2,7 @@
 using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using StbImageSharp;
 using Framework.Utils;
-using Framework.Core.Base;
+using Framework.Core.Resource;
 
 namespace Framework.Core
 {
@@ -122,7 +122,7 @@ namespace Framework.Core
         public void Use(TextureUnit Unit)
         {
             GL.ActiveTexture(Unit);
-            GL.BindTexture(TextureTarget.Texture2D, id);
+            GL.BindTexture(TextureTarget.Texture2D, ID);
         }
 
         #endregion
@@ -136,7 +136,7 @@ namespace Framework.Core
         protected override void Dispose(bool isManualDispose)
         {
             GL.BindTexture(TextureTarget.Texture2D, CONSTANTS.NONE);
-            GL.DeleteTexture(id);
+            GL.DeleteTexture(ID);
         }
 
         #endregion

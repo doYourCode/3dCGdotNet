@@ -226,7 +226,7 @@ namespace Examples
             VertexFormat vertexFormat = new VertexFormat();
             vertexFormat.AddAttribute(posVbo, VertexAttributeType.Position);
             vertexFormat.AddAttribute(colorVbo, VertexAttributeType.Color);
-            vertexFormat.AddAttribute(texcoordVbo, VertexAttributeType.TexCoord_0);
+            vertexFormat.AddAttribute(texcoordVbo, VertexAttributeType.TexCoord0);
 
             vao = new VertexArrayObject(vertexFormat);
 

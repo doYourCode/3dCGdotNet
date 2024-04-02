@@ -1,5 +1,5 @@
 ﻿using ImGuiNET;
-using Framework.Core;
+using Framework.Core.Material;
 
 namespace Framework.Utils.GUI.ViewLayer
 {
@@ -39,28 +39,30 @@ namespace Framework.Utils.GUI.ViewLayer
             ImGui.Begin("Material");
 
             ImGui.DragFloat("Roughness",
-                ref material.roughness,
+                ref material.format.attributes["roughness"].FloatRef,
                 0.001f,
                 0.0f,
                 1.0f);
 
             ImGui.DragFloat("Spec. Intensity",
-                ref material.specularIntensity,
+                ref material.format.attributes["specularIntensity"].FloatRef,
                 0.001f,
                 0.0f,
                 3.0f);
 
             ImGui.DragFloat("Spec. Power",
-                ref material.specularPower,
+                ref material.format.attributes["specularPower"].FloatRef,
                 0.1f,
                 1.0f,
                 18.0f);
 
             ImGui.ColorPicker3("Color",
-                   ref material.specularColor,
+                   ref material.format.attributes["specularColor"].Vector3Ref,
                    ImGuiColorEditFlags.PickerHueWheel);
 
-            if(ImGui.Checkbox("Use Maps", ref useMaps))
+            ImGui.Checkbox("Use Maps", ref useMaps);
+
+            if(useMaps)
             {
                 //ImGui.image(...)
                 ImGui.Text("TODO: insert texture loaders here.");

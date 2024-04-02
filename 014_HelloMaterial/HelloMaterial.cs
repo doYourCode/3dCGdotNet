@@ -9,6 +9,7 @@ using Framework.Core.Camera;
 using ShaderType = ExamplesCommon.ShaderType;
 using Framework.Utils.GUI;
 using Framework.Utils.GUI.ViewLayer;
+using Framework.Core.Material;
 
 namespace Examples
 {
@@ -57,9 +58,14 @@ namespace Examples
 
 
             // Material
-            basicMaterial = new BasicMaterial(ShaderType.Phong);
-            basicMaterial.GetUniformLocations(basicMaterial.Shader);
+            MaterialFormat format = new MaterialFormat();
+            format.AddFloat("roughness", 0.5f);
+            format.AddFloat("specularIntensity", 1.0f);
+            format.AddFloat("specularPower", 9.0f);
+            format.AddVector3("specularColor", new System.Numerics.Vector3(0.9f, 0.9f, 1.0f));
 
+            basicMaterial = new BasicMaterial(ShaderType.Phong, format);
+            basicMaterial.GetUniformLocations();
 
             // Luz
             light = new Light(
@@ -124,7 +130,7 @@ namespace Examples
             if (currentMesh != null)
                 currentMesh.Draw();
 
-            view.Render();
+            view.Render(e);
 
             ImGuiController.CheckGLError("End of frame");
 
@@ -174,7 +180,7 @@ namespace Examples
             texture.Dispose();
             basicMaterial.Dispose();
 
-            view.UnLoad();
+            view.Unload();
         }
 
         protected override void OnTextInput(TextInputEventArgs e)

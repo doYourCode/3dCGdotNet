@@ -164,7 +164,7 @@ namespace Examples
 
             VertexFormat vertexFormat = new VertexFormat();
             vertexFormat.AddAttribute(posVbo, VertexAttributeType.Position);
-            vertexFormat.AddAttributesGroup(vbo, VertexAttributeType.Color, VertexAttributeType.TexCoord_0);
+            vertexFormat.AddAttributesGroup(vbo, VertexAttributeType.Color, VertexAttributeType.TexCoord0);
 
             vao = new VertexArrayObject(vertexFormat);
 

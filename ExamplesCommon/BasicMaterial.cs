@@ -1,5 +1,5 @@
 ﻿using Framework.Core;
-using Framework.Core.Base;
+using Framework.Core.Material;
 using OpenTK.Mathematics;
 
 namespace ExamplesCommon
@@ -11,7 +11,8 @@ namespace ExamplesCommon
     {
         #region (Data Fields)
 
-        private static Dictionary<ShaderType, UInt32> instancesCount = new Dictionary<ShaderType, UInt32>()
+        private static Dictionary<ShaderType, UInt32> instancesCount =
+            new Dictionary<ShaderType, UInt32>()
             {
                 { ShaderType.Oren_Nayar, 0 },
                 { ShaderType.Phong, 0 },
@@ -29,7 +30,7 @@ namespace ExamplesCommon
         /// <summary>
         /// 
         /// </summary>
-        public BasicMaterial(ShaderType ShaderType) : base(ShaderType.ToString(), 0)
+        public BasicMaterial(ShaderType ShaderType, MaterialFormat Format) : base(Format, ShaderType.ToString(), 0)
         {
             if (this.AddInstance(ShaderType))
             {
@@ -38,20 +39,20 @@ namespace ExamplesCommon
 
             AlbedoMap = new Texture("Albedo");
             SpecularMap = new Texture("Specular");
-            AmbientocclusionMap = new Texture("AO");
+            AmbientOcclusionMap = new Texture("AO");
             NormalMap = new Texture("Normal");
             HeightMap = new Texture();
 
+#if DEBUG
+            Console.WriteLine("BasicMaterial layout setup:\n");
+            Format.PrintLayout();
+            Console.WriteLine("\n");
+#endif
         }
 
         #endregion
 
         #region (Properties)
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Shader Shader { get; private set; }
 
         /// <summary>
         /// 
@@ -66,7 +67,7 @@ namespace ExamplesCommon
         /// <summary>
         /// 
         /// </summary>
-        public Texture AmbientocclusionMap { get; set; }
+        public Texture AmbientOcclusionMap { get; set; }
 
         /// <summary>
         /// 
@@ -87,12 +88,6 @@ namespace ExamplesCommon
         /// 
         /// </summary>
         public Vector3 SpecularColor { get; set; }
-
-        #endregion
-
-        #region (Public Methods)
-
-
 
         #endregion
 
@@ -129,7 +124,8 @@ namespace ExamplesCommon
                 return true;
             }
 #if DEBUG
-            Console.WriteLine("RemoveInstance(...) -> There is no instance to be removed.");
+            else
+                Console.WriteLine("RemoveInstance(...) -> There is no instance to be removed.");
 #endif
             return false;
         }
@@ -146,7 +142,7 @@ namespace ExamplesCommon
 
             AlbedoMap.Dispose();
             SpecularMap.Dispose();
-            AmbientocclusionMap.Dispose();
+            AmbientOcclusionMap.Dispose();
             NormalMap.Dispose();
             HeightMap.Dispose();
         }

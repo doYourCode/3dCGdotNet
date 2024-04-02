@@ -103,7 +103,7 @@ namespace Examples
             vbo = new VertexBufferObject(data);
 
             VertexFormat vertexFormat = new VertexFormat();
-            vertexFormat.AddAttributesGroup(vbo, VertexAttributeType.Position, VertexAttributeType.Color, VertexAttributeType.TexCoord_0);
+            vertexFormat.AddAttributesGroup(vbo, VertexAttributeType.Position, VertexAttributeType.Color, VertexAttributeType.TexCoord0);
 
             vao = new VertexArrayObject(vertexFormat);
 

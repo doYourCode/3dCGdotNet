@@ -8,7 +8,7 @@ using Framework.Utils.GUI.ViewLayer;
 
 namespace Examples
 {
-    internal class ViewLayer
+    internal class ViewLayer : IViewLayer
     {
         ImGuiController controller;
 
@@ -34,7 +34,8 @@ namespace Examples
         {
             controller.Update(window, (float)args.Time);
         }
-        public void Render()
+
+        public void Render(FrameEventArgs e)
         {
             GL.Disable(EnableCap.DepthTest);
 
@@ -45,7 +46,7 @@ namespace Examples
             GL.Enable(EnableCap.DepthTest);
         }
 
-        public void UnLoad()
+        public void Unload()
         {
             controller.Dispose();
         }

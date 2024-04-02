@@ -43,7 +43,7 @@ namespace Framework.Core.Buffer
         /// Há outros valores possíveis, verifique as referências da API.
         /// </param>
         public ElementBufferObject(int[] Indices,
-                                   BufferUsageHint Usage= BufferUsageHint.StaticDraw) :
+                                   BufferUsageHint Usage = BufferUsageHint.StaticDraw) :
                                                             base("ElementBufferObject ",
                                                                 (UInt32)GL.GenBuffer())
         {
@@ -59,15 +59,21 @@ namespace Framework.Core.Buffer
         /// <summary>
         /// Construtor
         /// </summary>
-        /// <param name="Indices"> Array de índices contendo os dados a serem enviados ao buffer.¹²
+        /// <param name="Label"> Atenção. </param>
+        /// 
+        /// <param name="Indices"> Array de índices contendo os dados a serem
+        /// enviados ao buffer.¹²
         /// <br />
-        /// ATENÇÃO: ¹ certifique-se de que o array não é nulo. ² Na implementação atual só é permitido utilizar
-        /// números inteiros como índices.
+        /// ATENÇÃO: ¹ certifique-se de que o array não é nulo. ² Na implementação
+        /// atual só é permitido utilizar números inteiros como índices.
         /// </param>
-        /// <param name="Usage"> Indicativo de para que os dados do buffer serão usados.
+        /// 
+        /// <param name="Usage"> Indicativo de para que os dados do buffer serão
+        /// usados.
         /// <br />
-        /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
-        /// Há outros valores possíveis, verifique as referências da API.
+        /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw
+        /// | BufferUsageHint.StreamDraw. Há outros valores possíveis, verifique as
+        /// referências da API.
         /// </param>
         public ElementBufferObject(string Label,
                                    int[] Indices,

@@ -77,7 +77,9 @@ namespace Framework.Utils.GUI.ViewLayer
 
                 if (ImGui.BeginTabItem("Shadow"))
                 {
-                    if(ImGui.Checkbox("Cast Shadow", ref light.castShadow))
+                    ImGui.Checkbox("Cast Shadow", ref light.castShadow);
+
+                    if(light.castShadow)
                     {
                         ImGui.Text("TODO: insert shadow functionality here.");
                     }

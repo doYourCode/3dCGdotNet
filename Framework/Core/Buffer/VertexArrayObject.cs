@@ -73,7 +73,19 @@ namespace Framework.Core.Buffer
             GL.BindVertexArray(CONSTANTS.NONE);
         }
 
-        /* ---------------------------------------------- Métodos privados ---------------------------------------------- */
+        #endregion
+
+        #region (Other Methods)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isManualDispose"></param>
+        protected override void Dispose(bool isManualDispose)
+        {
+            GL.BindVertexArray(CONSTANTS.NONE);
+            GL.DeleteVertexArray(id);
+        }
 
         /// <summary>
         /// 
@@ -109,20 +121,6 @@ namespace Framework.Core.Buffer
                     );
                 }
             }
-        }
-
-        #endregion
-
-        #region (Other Methods)
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="isManualDispose"></param>
-        protected override void Dispose(bool isManualDispose)
-        {
-            GL.BindVertexArray(CONSTANTS.NONE);
-            GL.DeleteVertexArray(id);
         }
 
         #endregion

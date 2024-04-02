@@ -13,7 +13,7 @@ namespace ExamplesCommon
     {
         #region (Data Fields)
 
-        private static string rootPath = "";
+        private static string rootPath = string.Empty;
 
         private VertexArrayObject vao;
 
@@ -32,13 +32,17 @@ namespace ExamplesCommon
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="invertUv"></param>
-        public BasicMesh(string filePath, bool invertUv = false) : base(filePath.ToString(), 0)
+        public BasicMesh(string filePath,
+                         bool invertUv = false) : base(filePath.ToString(), 0)
         {
             filePath = rootPath + filePath;
             // Create assimp context (vertex data saved into the 3d model)
             var context = new AssimpContext();
             // Loads the data into a "scene"
-            var scene = context.ImportFile(filePath, PostProcessSteps.Triangulate | PostProcessSteps.GenerateSmoothNormals | PostProcessSteps.FlipUVs);
+            var scene = context.ImportFile(filePath,
+                                           PostProcessSteps.Triangulate |
+                                           PostProcessSteps.GenerateSmoothNormals |
+                                           PostProcessSteps.FlipUVs);
 
             // Arrays p/ guardar copia dos dados na RAM
             var positions = new List<float>();
@@ -52,15 +56,19 @@ namespace ExamplesCommon
             {
                 for (int i = 0; i < mesh.VertexCount; i++)
                 {
-                    positions.AddRange(new[] { mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z });
+                    positions.AddRange(new[]
+                    { mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z });
 
                     if (mesh.HasVertexColors(0))
-                        colors.Add(new Color3D(mesh.VertexColorChannels[0][i].R, mesh.VertexColorChannels[0][i].G, mesh.VertexColorChannels[0][i].B));
+                        colors.Add(new Color3D(mesh.VertexColorChannels[0][i].R,
+                                               mesh.VertexColorChannels[0][i].G,
+                                               mesh.VertexColorChannels[0][i].B));
                     else
                         colors.Add(new Color3D(1.0f, 1.0f, 1.0f));
 
                     if (mesh.HasTextureCoords(0))
-                        uvs.Add(new Vector2D(mesh.TextureCoordinateChannels[0][i].X, mesh.TextureCoordinateChannels[0][i].Y));
+                        uvs.Add(new Vector2D(mesh.TextureCoordinateChannels[0][i].X,
+                                             mesh.TextureCoordinateChannels[0][i].Y));
                     else
                         uvs.Add(new Vector2D(0.0f, 0.0f));
 
@@ -70,7 +78,8 @@ namespace ExamplesCommon
                 for (int i = 0; i < mesh.FaceCount; i++)
                 {
                     var face = mesh.Faces[i];
-                    indices.AddRange(new[] { face.Indices[0], face.Indices[1], face.Indices[2] });
+                    indices.AddRange(new[]
+                    { face.Indices[0], face.Indices[1], face.Indices[2] });
                 }
             }
 
@@ -86,9 +95,20 @@ namespace ExamplesCommon
             positionVbo = new VertexBufferObject(positions.ToArray());
             colorNormalTexCoordVbo = new VertexBufferObject(interleaved.ToArray());
 
+            // Configura um formato de vértice adequado para receber os dados.
+            // No caso presente há um buffer isolado com as posições e um buffer
+            // enrelaçado com dados de cor, uvs e normais.
             VertexFormat format = new VertexFormat();
             format.AddAttribute(positionVbo, VertexAttributeType.Position);
-            format.AddAttributesGroup(colorNormalTexCoordVbo, VertexAttributeType.Color, VertexAttributeType.TexCoord_0, VertexAttributeType.Normal);
+            format.AddAttributesGroup(colorNormalTexCoordVbo,
+                                      VertexAttributeType.Color,
+                                      VertexAttributeType.TexCoord0,
+                                      VertexAttributeType.Normal);
+#if DEBUG
+            Console.WriteLine("BasicMesh layout setup:\n");
+            format.PrintLayout();
+            Console.WriteLine("\n");
+#endif
 
             vao = new VertexArrayObject(format);
 
@@ -114,7 +134,10 @@ namespace ExamplesCommon
         public void Draw()
         {
             GL.BindVertexArray(vao.ID);
-            GL.DrawElements(BeginMode.Triangles, ebo.IndexCount, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(BeginMode.Triangles,
+                            ebo.IndexCount,
+                            DrawElementsType.UnsignedInt,
+                            0);
         }
 
         #endregion

@@ -29,7 +29,7 @@ namespace Framework.Utils.GUI
 
         private int indexBufferSize;
 
-        //private Texture fontTexture;
+        //private Texture fontTexture; TODO: change internal texture handle for OOP version.
 
         private int fontTexture;
 

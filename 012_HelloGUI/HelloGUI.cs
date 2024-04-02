@@ -74,7 +74,7 @@ namespace Examples
             if(currentMesh != null)
                 currentMesh.Draw();
 
-            view.Render();
+            view.Render(e);
 
             ImGuiController.CheckGLError("End of frame");
 
@@ -114,7 +114,7 @@ namespace Examples
             shader.Dispose();
             texture.Dispose();
 
-            view.UnLoad();
+            view.Unload();
         }
 
         protected override void OnTextInput(TextInputEventArgs e)

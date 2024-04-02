@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExamplesCommon\ExamplesCommon.csproj" />
-    <ProjectReference Include="..\Framework\Framework.csproj" />
   </ItemGroup>
 
   <ItemGroup>

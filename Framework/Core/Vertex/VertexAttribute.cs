@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Framework.Core.Buffer;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Framework.Core.Vertex
 {
@@ -16,6 +17,29 @@ namespace Framework.Core.Vertex
         private UInt32 dataTypeSize;
 
         private UInt32 size;
+
+        #endregion
+
+        #region (Constructors)
+
+        public VertexAttribute(VertexAttributeType Type)
+        {
+            this.layout = (int)Type;
+            this.dataType = GetDataType[(int)Type];
+            this.dataTypeSize = GetDataTypeSize[(int)Type];
+            this.size = GetSize[(int)Type];
+        }
+
+        public VertexAttribute(int Layout,
+                               VertexAttribPointerType DataType,
+                               UInt32 DataSize,
+                               UInt32 DataTypeSizeInBytes)
+        {
+            this.layout = Layout;
+            this.dataType = DataType;
+            this.size = DataSize;
+            this.dataTypeSize = DataTypeSizeInBytes;
+        }
 
         #endregion
 
@@ -92,21 +116,6 @@ namespace Framework.Core.Vertex
         };
 
         #endregion
-
-        #region (Constructors)
-
-        public VertexAttribute(VertexAttributeType Type)
-        {
-            this.layout = (int)Type;
-
-            this.dataType = GetDataType[(int)Type];
-
-            this.dataTypeSize = GetDataTypeSize[(int)Type];
-
-            this.size = GetSize[(int)Type];
-        }
-
-        #endregion
     }
 
     #region (Enums)
@@ -117,11 +126,11 @@ namespace Framework.Core.Vertex
     public enum VertexAttributeType
     {
         Position,
-        TexCoord_0,
+        TexCoord0,
         Normal,
         Tangent,
         Color,
-        TexCoord_1,
+        TexCoord1,
 
         // TODO: BlendWeight, BlendIndices
     }

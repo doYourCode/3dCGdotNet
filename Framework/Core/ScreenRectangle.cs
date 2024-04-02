@@ -57,7 +57,7 @@ namespace Framework.Core
 
             VertexFormat format = new VertexFormat();
             format.AddAttribute(posVbo, VertexAttributeType.Position);
-            format.AddAttribute(uvVbo, VertexAttributeType.TexCoord_0);
+            format.AddAttribute(uvVbo, VertexAttributeType.TexCoord0);
 
             vao = new VertexArrayObject(format);
         }

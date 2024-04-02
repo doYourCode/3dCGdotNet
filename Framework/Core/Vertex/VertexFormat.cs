@@ -1,4 +1,5 @@
 ﻿using Framework.Core.Buffer;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Framework.Core.Vertex
 {
@@ -100,6 +101,41 @@ namespace Framework.Core.Vertex
                 this.interleavedOffsets.Add(attribute, this.interleavedStride);
 
                 this.interleavedStride += attribute.SizeInBytes;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Vbo"></param>
+        /// <param name="Layout"></param>
+        /// <param name="DataType"></param>
+        /// <param name="DataSize"></param>
+        /// <param name="DataTypeSizeInBytes"></param>
+        public void AddCustomAttribute(VertexBufferObject Vbo,
+                                       int Layout,
+                                       VertexAttribPointerType DataType,
+                                       UInt32 DataSize,
+                                       UInt32 DataTypeSizeInBytes)
+        {
+            VertexAttribute attrib = new VertexAttribute(Layout, DataType, DataSize, DataTypeSizeInBytes);
+            this.uniqueVertexAttributes.Add(attrib, Vbo);
+        }
+
+        #endregion
+
+        #region (Other Methods)
+
+        public void PrintLayout()
+        {
+            foreach(VertexAttribute attrib in uniqueVertexAttributes.Keys)
+            {
+                Console.WriteLine("layout(location = " + attrib.Layout + ") in vec" + attrib.Size + " v" + ((VertexAttributeType)attrib.Layout).ToString() + ";");
+            }
+
+            foreach (VertexAttribute attrib in interleavedVertexAttributes.Keys)
+            {
+                Console.WriteLine("layout(location = " + attrib.Layout + ") in vec" + attrib.Size + " v" + ((VertexAttributeType)attrib.Layout).ToString() + ";");
             }
         }
 

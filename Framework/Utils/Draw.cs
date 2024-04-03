@@ -1,21 +1,19 @@
-﻿using Framework.Core;
-using Framework.Core.Buffer;
-using OpenTK.Graphics.OpenGL4;
+﻿// <copyright file="Draw.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Utils
 {
+    using Framework.Core;
+    using Framework.Core.Buffer;
+    using OpenTK.Graphics.OpenGL4;
+
     /// <summary>
     /// Funções de utilidade para desenho de forma genérica.
     /// </summary>
     public static class Draw
     {
-        #region (Data Fields)
-
-        private static  ScreenRectangle screenRectangle = new ScreenRectangle();
-
-        #endregion
-
-        #region (Public Methods)
+        private static ScreenRectangle screenRectangle = new ScreenRectangle();
 
         /// <summary>
         /// 
@@ -98,7 +96,5 @@ namespace Framework.Utils
         {
             ScreenRectangle(Fbo, Draw.screenRectangle);
         }
-
-        #endregion
     }
 }

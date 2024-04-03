@@ -6,17 +6,11 @@ namespace Framework.Utils.GUI.ViewLayer
     /// <summary>
     /// 
     /// </summary>
-    public class LightView : IimResourceControl
+    public class LightView : IimResourceView
     {
-        #region (Data Fields)
-
         private Light light;
 
         private AmbientLight ambientLight;
-
-        #endregion
-
-        #region (Constructors)
 
         /// <summary>
         /// 
@@ -29,14 +23,10 @@ namespace Framework.Utils.GUI.ViewLayer
             ambientLight = AmbientLight;
         }
 
-        #endregion
-
-        #region (Public Methods)
-
         /// <summary>
         /// 
         /// </summary>
-        public void RenderControl()
+        public void RenderResourceView()
         {
             ImGui.Begin("Light");
 
@@ -92,7 +82,5 @@ namespace Framework.Utils.GUI.ViewLayer
 
             ImGui.End();
         }
-
-        #endregion
     }
 }

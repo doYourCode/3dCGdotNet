@@ -38,7 +38,7 @@ namespace Examples
         {
             GL.Disable(EnableCap.DepthTest);
 
-            RenderViewLayer();
+            RenderView();
             controller.Render();
 
             GL.Enable(EnableCap.DepthTest);
@@ -54,7 +54,7 @@ namespace Examples
             controller.WindowResized(width, height);
         }
 
-        public void RenderViewLayer()
+        public void RenderView()
         {
             ImGui.Begin("Configurações", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove);
             ImGui.SetWindowPos(modalInitPos);

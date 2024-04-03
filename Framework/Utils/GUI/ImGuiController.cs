@@ -1,21 +1,25 @@
-﻿using ImGuiNET;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.Desktop;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using OpenTK.Graphics.OpenGL4;
-using ErrorCode = OpenTK.Graphics.OpenGL4.ErrorCode;
+﻿// <copyright file="ImGuiController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Utils.GUI
 {
+    using System.Diagnostics;
+    using System.Runtime.CompilerServices;
+    using ImGuiNET;
+    using OpenTK.Graphics.OpenGL4;
+    using OpenTK.Mathematics;
+    using OpenTK.Windowing.Desktop;
+    using OpenTK.Windowing.GraphicsLibraryFramework;
+    using ErrorCode = OpenTK.Graphics.OpenGL4.ErrorCode;
+
     /// <summary>
-    /// Adaptação do ImGui (Imediate mode Graphical User Inerface) para a plataforma .Net. Essa    
+    /// Adaptação do ImGui (Imediate mode Graphical User Inerface) para a plataforma .Net. Essa
     /// classe é necessária para implementar as view layers.
     /// </summary>
     public class ImGuiController : IDisposable
     {
-        #region (Data Fields)
+        private static bool khrDebugAvailable = false;
 
         private bool frameBegun;
 
@@ -28,8 +32,6 @@ namespace Framework.Utils.GUI
         private int indexBuffer;
 
         private int indexBufferSize;
-
-        //private Texture fontTexture; TODO: change internal texture handle for OOP version.
 
         private int fontTexture;
 
@@ -45,17 +47,11 @@ namespace Framework.Utils.GUI
 
         private System.Numerics.Vector2 scaleFactor = System.Numerics.Vector2.One;
 
-        private static bool KHRDebugAvailable = false;
+        private int glVersion;
 
-        private int GLVersion;
+        private bool compatibilityProfile;
 
-        private bool CompatibilityProfile;
-
-        readonly List<char> PressedChars = new List<char>();
-
-        #endregion
-
-        #region (Constructors)
+        readonly List<char> pressedChars = new List<char>();
 
         /// <summary>
         /// Constructs a new ImGuiController.
@@ -68,11 +64,11 @@ namespace Framework.Utils.GUI
             int major = GL.GetInteger(GetPName.MajorVersion);
             int minor = GL.GetInteger(GetPName.MinorVersion);
 
-            GLVersion = major * 100 + minor * 10;
+            glVersion = major * 100 + minor * 10;
 
-            KHRDebugAvailable = major == 4 && minor >= 3 || IsExtensionSupported("KHR_debug");
+            khrDebugAvailable = major == 4 && minor >= 3 || IsExtensionSupported("KHR_debug");
 
-            CompatibilityProfile = (GL.GetInteger((GetPName)All.ContextProfileMask) & (int)All.ContextCompatibilityProfileBit) != 0;
+            compatibilityProfile = (GL.GetInteger((GetPName)All.ContextProfileMask) & (int)All.ContextCompatibilityProfileBit) != 0;
             IntPtr context = ImGui.CreateContext();
             ImGui.SetCurrentContext(context);
             var io = ImGui.GetIO();
@@ -89,10 +85,6 @@ namespace Framework.Utils.GUI
             ImGui.NewFrame();
             frameBegun = true;
         }
-
-        #endregion
-
-        #region (Public Methods)
 
         /// <summary>
         /// 
@@ -266,7 +258,7 @@ void main()
         /// <param name="keyChar"></param>
         public void PressChar(char keyChar)
         {
-            PressedChars.Add(keyChar);
+            pressedChars.Add(keyChar);
         }
 
         /// <summary>
@@ -302,7 +294,7 @@ void main()
         /// <param name="name"></param>
         public static void LabelObject(ObjectLabelIdentifier objLabelIdent, int glObject, string name)
         {
-            if (KHRDebugAvailable)
+            if (khrDebugAvailable)
                 GL.ObjectLabel(objLabelIdent, glObject, name.Length, name);
         }
 
@@ -428,10 +420,6 @@ void main()
             }
         }
 
-        #endregion
-
-        #region (Other Methods)
-
         /// <summary>
         /// Sets per-frame data based on the associated window.
         /// This is called by Update(float).
@@ -476,11 +464,11 @@ void main()
                 io.AddKeyEvent(TranslateKey(key), KeyboardState.IsKeyDown(key));
             }
 
-            foreach (var c in PressedChars)
+            foreach (var c in pressedChars)
             {
                 io.AddInputCharacter(c);
             }
-            PressedChars.Clear();
+            pressedChars.Clear();
 
             io.KeyCtrl = KeyboardState.IsKeyDown(Keys.LeftControl) || KeyboardState.IsKeyDown(Keys.RightControl);
             io.KeyAlt = KeyboardState.IsKeyDown(Keys.LeftAlt) || KeyboardState.IsKeyDown(Keys.RightAlt);
@@ -536,7 +524,7 @@ void main()
                 }
             }
 
-            if (GLVersion <= 310 || CompatibilityProfile)
+            if (glVersion <= 310 || compatibilityProfile)
             {
                 GL.PolygonMode(MaterialFace.Front, PolygonMode.Fill);
                 GL.PolygonMode(MaterialFace.Back, PolygonMode.Fill);
@@ -665,7 +653,7 @@ void main()
             if (prevDepthTestEnabled) GL.Enable(EnableCap.DepthTest); else GL.Disable(EnableCap.DepthTest);
             if (prevCullFaceEnabled) GL.Enable(EnableCap.CullFace); else GL.Disable(EnableCap.CullFace);
             if (prevScissorTestEnabled) GL.Enable(EnableCap.ScissorTest); else GL.Disable(EnableCap.ScissorTest);
-            if (GLVersion <= 310 || CompatibilityProfile)
+            if (glVersion <= 310 || compatibilityProfile)
             {
                 GL.PolygonMode(MaterialFace.Front, (PolygonMode)prevPolygonMode[0]);
                 GL.PolygonMode(MaterialFace.Back, (PolygonMode)prevPolygonMode[1]);
@@ -719,6 +707,5 @@ void main()
 
             return shader;
         }
-        #endregion
     }
 }

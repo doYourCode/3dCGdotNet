@@ -39,7 +39,7 @@ namespace Examples
         {
             GL.Disable(EnableCap.DepthTest);
 
-            RenderViewLayer();
+            RenderView();
 
             controller.Render();
 
@@ -56,7 +56,7 @@ namespace Examples
             controller.WindowResized(width, height);
         }
 
-        public void RenderViewLayer()
+        public void RenderView()
         {
             ImGui.Begin("Configurações");
 
@@ -108,9 +108,9 @@ namespace Examples
 
             ImGui.End();
 
-            LightView.RenderControl();
+            LightView.RenderResourceView();
 
-            MaterialView.RenderControl();
+            MaterialView.RenderResourceView();
         }
 
         public void SetList(string[] items)

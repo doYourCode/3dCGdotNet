@@ -1,9 +1,13 @@
-﻿using Framework.Core.Resource;
-using Framework.Utils;
-using OpenTK.Graphics.OpenGL4;
+﻿// <copyright file="VertexBufferObject.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Core.Buffer
 {
+    using Framework.Core.Resource;
+    using Framework.Utils;
+    using OpenTK.Graphics.OpenGL4;
+
     /// <summary>
     /// Representa um buffer contendo os dados necessários para a descrição de um ou mais atributos de vértices.
     /// </summary>

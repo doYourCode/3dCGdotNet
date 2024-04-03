@@ -1,10 +1,14 @@
-﻿using Framework.Core.Resource;
-using Framework.Core.Vertex;
-using Framework.Utils;
-using OpenTK.Graphics.OpenGL4;
+﻿// <copyright file="VertexArrayObject.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Core.Buffer
 {
+    using Framework.Core.Resource;
+    using Framework.Core.Vertex;
+    using Framework.Utils;
+    using OpenTK.Graphics.OpenGL4;
+
     /// <summary>
     /// Representa um container para associação de diferentes instâncias de VertexBufferObject (VBO) e permite o desenho
     /// utilizando-os também associados a um ElementBufferObject (EBO) com índices. Esse objeto permite realizar desenhos

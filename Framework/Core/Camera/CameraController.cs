@@ -1,16 +1,19 @@
-﻿using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using OpenTK.Windowing.Desktop;
+﻿// <copyright file="CameraController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Core.Camera
 {
+    using OpenTK.Mathematics;
+    using OpenTK.Windowing.Common;
+    using OpenTK.Windowing.Desktop;
+    using OpenTK.Windowing.GraphicsLibraryFramework;
+
     /// <summary>
     /// 
     /// </summary>
     public class CameraController
     {
-        #region (Data Fields)
 
         private PerspectiveCamera camera;
 
@@ -20,12 +23,9 @@ namespace Framework.Core.Camera
 
         private Vector2 lastPos;
 
-        #endregion
-
-        #region (Constructors)
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="CameraController"/> class.
         /// </summary>
         /// <param name="Camera"></param>
         /// <param name="Window"></param>
@@ -35,92 +35,87 @@ namespace Framework.Core.Camera
             this.window = Window;
         }
 
-        #endregion
-
-        #region (Public Fields)
-
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Event"></param>
-        /// <param name="Input"></param>
-        /// <param name="Mouse"></param>
-        public void Update(FrameEventArgs Event, KeyboardState Input, MouseState Mouse)
+        /// <param name="e"></param>
+        /// <param name="input"></param>
+        /// <param name="mouse"></param>
+        public void Update(FrameEventArgs e, KeyboardState input, MouseState mouse)
         {
-            if (!window.IsFocused) // Check to see if the window is focused
+            if (!this.window.IsFocused) // Check to see if the window is focused
             {
                 return;
             }
 
-            if (Input.IsKeyDown(Keys.Escape))
+            if (input.IsKeyDown(Keys.Escape))
             {
-                window.Close();
+                this.window.Close();
             }
 
             const float cameraSpeed = 1.5f;
             const float sensitivity = 0.2f;
 
-            if (Input.IsKeyDown(Keys.W))
+            if (input.IsKeyDown(Keys.W))
             {
-                camera.Position += camera.Front * cameraSpeed * (float)Event.Time; // Forward
+                this.camera.Position += this.camera.Front * cameraSpeed * (float)e.Time; // Forward
+            }
+            else if (input.IsKeyDown(Keys.S))
+            {
+                this.camera.Position -= this.camera.Front * cameraSpeed * (float)e.Time; // Backwards
             }
 
-            if (Input.IsKeyDown(Keys.S))
+            if (input.IsKeyDown(Keys.A))
             {
-                camera.Position -= camera.Front * cameraSpeed * (float)Event.Time; // Backwards
+                this.camera.Position -= this.camera.Right * cameraSpeed * (float)e.Time; // Left
             }
-            if (Input.IsKeyDown(Keys.A))
+            else if (input.IsKeyDown(Keys.D))
             {
-                camera.Position -= camera.Right * cameraSpeed * (float)Event.Time; // Left
-            }
-            if (Input.IsKeyDown(Keys.D))
-            {
-                camera.Position += camera.Right * cameraSpeed * (float)Event.Time; // Right
-            }
-            if (Input.IsKeyDown(Keys.Q))
-            {
-                camera.Position += camera.Up * cameraSpeed * (float)Event.Time; // Up
-            }
-            if (Input.IsKeyDown(Keys.E))
-            {
-                camera.Position -= camera.Up * cameraSpeed * (float)Event.Time; // Down
+                this.camera.Position += this.camera.Right * cameraSpeed * (float)e.Time; // Right
             }
 
-            if(Mouse.IsButtonDown(MouseButton.Right))
+            if (input.IsKeyDown(Keys.Q))
             {
-                if (firstMove) // This bool variable is initially set to true.
+                this.camera.Position += this.camera.Up * cameraSpeed * (float)e.Time; // Up
+            }
+            else if (input.IsKeyDown(Keys.E))
+            {
+                this.camera.Position -= this.camera.Up * cameraSpeed * (float)e.Time; // Down
+            }
+
+            if (mouse.IsButtonDown(MouseButton.Right))
+            {
+                if (this.firstMove) // This bool variable is initially set to true.
                 {
-                    lastPos = new Vector2(Mouse.X, Mouse.Y);
-                    firstMove = false;
+                    this.lastPos = new Vector2(mouse.X, mouse.Y);
+                    this.firstMove = false;
                 }
                 else
                 {
                     // Calculate the offset of the mouse position
-                    var deltaX = Mouse.X - lastPos.X;
-                    var deltaY = Mouse.Y - lastPos.Y;
-                    lastPos = new Vector2(Mouse.X, Mouse.Y);
+                    var deltaX = mouse.X - this.lastPos.X;
+                    var deltaY = mouse.Y - this.lastPos.Y;
+                    this.lastPos = new Vector2(mouse.X, mouse.Y);
 
                     // Apply the camera pitch and yaw (we clamp the pitch in the camera class)
-                    camera.Yaw += deltaX * sensitivity;
-                    camera.Pitch -= deltaY * sensitivity; // Reversed since y-coordinates range from bottom to top
+                    this.camera.Yaw += deltaX * sensitivity;
+                    this.camera.Pitch -= deltaY * sensitivity; // Reversed since y-coordinates range from bottom to top
                 }
             }
 
-            if(Mouse.IsButtonReleased(MouseButton.Right))
+            if (mouse.IsButtonReleased(MouseButton.Right))
             {
-                firstMove = true;
+                this.firstMove = true;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Event"></param>
-        public void MouseUpdate(MouseWheelEventArgs Event)
+        /// <param name="e"></param>
+        public void MouseUpdate(MouseWheelEventArgs e)
         {
-            camera.Fov -= Event.OffsetY;
+            this.camera.Fov -= e.OffsetY;
         }
-
-        #endregion
     }
 }

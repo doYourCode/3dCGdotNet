@@ -1,33 +1,31 @@
-﻿using OpenTK.Graphics.OpenGL4;
-using Framework.Utils;
-using OpenTK.Mathematics;
-using Framework.Core.Resource;
+﻿// <copyright file="FrameBufferObject.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Core.Buffer
 {
+    using OpenTK.Graphics.OpenGL4;
+    using Framework.Utils;
+    using OpenTK.Mathematics;
+    using Framework.Core.Resource;
+
     /// <summary>
     /// 
     /// </summary>
     public class FrameBufferObject : OpenGLObject
     {
-        #region (Data Fields)
+        private readonly Color4 defaultBackgroundColor =
+    new Color4(0.0f, 0.0f, 0.0f, 1.0f);
 
         private Texture texture;
 
-        private UInt16 width, height;
+        private ushort width;
 
-        private UInt16 numSamples;
+        private ushort height;
+
+        private ushort numSamples;
 
         private float gamma;
-
-        private readonly Color4 defaultBackgroundColor =
-            new Color4(0.0f, 0.0f, 0.0f, 1.0f);
-
-        #endregion
-
-        #region (Constructors)
-
-        /* ---------------------------------------------- Interface pública ---------------------------------------------- */
 
         /// <summary>
         /// 
@@ -151,10 +149,6 @@ namespace Framework.Core.Buffer
                 Console.WriteLine("Framebuffer " + this.texture.ID + " error:" + fboStatus);
         }
 
-        #endregion
-
-        #region (Other Methods)
-
         /// <summary>
         /// 
         /// </summary>
@@ -165,26 +159,18 @@ namespace Framework.Core.Buffer
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, CONSTANTS.NONE);
             GL.DeleteFramebuffer(this.ID);
 
-            texture.Dispose();
+            this.texture.Dispose();
         }
 
-        #endregion
-
-        #region (Properties)
-
         /// <summary>
-        /// 
+        /// Gets the internal Texture object.
         /// </summary>
         public Texture Texture { get => this.texture; private set { } }
 
-        #endregion
-
-        #region (Public Methods)
-
         /// <summary>
-        /// 
+        /// Binds the buffer.
         /// </summary>
-        void Bind()
+        public void Bind()
         {
             // Reconfigurar a viewport do OpenGL para as dimensões do FBO
             GL.Viewport(0, 0, this.width, this.height);
@@ -200,7 +186,7 @@ namespace Framework.Core.Buffer
         }
 
         /// <summary>
-        /// 
+        /// Unbinds the buffer.
         /// </summary>
         public void Unbind()
         {
@@ -208,22 +194,20 @@ namespace Framework.Core.Buffer
         }
 
         /// <summary>
-        /// 
+        /// Copies the data from a Texture to another.
         /// </summary>
-        /// <param name="Other"></param>
-        public void BlitTexture(FrameBufferObject Other)
+        /// <param name="other">The other texture to blit to.</param>
+        public void BlitTexture(FrameBufferObject other)
         {
             // TODO
         }
 
         /// <summary>
-        /// 
+        /// Unbinds any bound custom FrameBuffer, it makes OpenGL bind the Default.
         /// </summary>
-        static void BindDefault()
+        public static void BindDefault()
         {
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, CONSTANTS.NONE);
         }
-
-        #endregion
     }
 }

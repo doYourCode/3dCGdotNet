@@ -1,17 +1,19 @@
-﻿using Framework.Core.Resource;
-using Framework.Utils;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Mathematics;
+﻿// <copyright file="Shader.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Core
 {
+    using Framework.Core.Resource;
+    using Framework.Utils;
+    using OpenTK.Graphics.OpenGL;
+    using OpenTK.Mathematics;
+
     /// <summary>
     /// 
     /// </summary>
     public class Shader : OpenGLObject
     {
-        #region (Data Fields)
-
         /// <summary>
         /// Caminho para a pasta raiz para carregar arquivos de Shader.
         /// </summary>
@@ -21,47 +23,44 @@ namespace Framework.Core
 
         private readonly Dictionary<string, int> uniformLocations;
 
-        #endregion
-
-        #region (Constructors)
-
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="Shader"/> class.
         /// </summary>
-        /// <param name="VertPath"></param>
-        /// <param name="FragPath"></param>
-        public Shader(string VertPath, string FragPath) : base((UInt32)GL.CreateProgram())
+        /// <param name="vertPath">Vertex shader file path.</param>
+        /// <param name="fragPath">Fragment shader file path.</param>
+        public Shader(string vertPath, string fragPath)
+            : base((uint)GL.CreateProgram())
         {
-            var shaderSource = File.ReadAllText(VertPath);
+            var shaderSource = File.ReadAllText(vertPath);
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
-            shaderSource = File.ReadAllText(FragPath);
+            shaderSource = File.ReadAllText(fragPath);
             var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);
 
 
-            GL.AttachShader((Int32)ID, vertexShader);
-            GL.AttachShader((Int32)ID, fragmentShader);
+            GL.AttachShader((int)this.ID, vertexShader);
+            GL.AttachShader((int)this.ID, fragmentShader);
 
-            LinkProgram((Int32)ID);
+            LinkProgram((int)this.ID);
 
-            GL.DetachShader((Int32)ID, vertexShader);
-            GL.DetachShader((Int32)ID, fragmentShader);
+            GL.DetachShader((int)this.ID, vertexShader);
+            GL.DetachShader((int)this.ID, fragmentShader);
             GL.DeleteShader(fragmentShader);
             GL.DeleteShader(vertexShader);
 
-            GL.GetProgram(ID, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
+            GL.GetProgram(this.ID, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
 
-            uniformLocations = new Dictionary<string, int>();
+            this.uniformLocations = new Dictionary<string, int>();
 
             for (var i = 0; i < numberOfUniforms; i++)
             {
-                var key = GL.GetActiveUniform((Int32)ID, i, out _, out _);
+                var key = GL.GetActiveUniform((int)this.ID, i, out _, out _);
                 var location = GL.GetUniformLocation(ID, key);
-                uniformLocations.Add(key, location);
+                this.uniformLocations.Add(key, location);
             }
         }
 
@@ -71,17 +70,13 @@ namespace Framework.Core
         /// <param name="ShaderName"></param>
         public Shader(string ShaderName) : this(rootPath + ShaderName + ".vert", rootPath + ShaderName + ".frag") { }
 
-        #endregion
-
-        #region (Public Methods)
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="Path"></param>
         public static void SetRootPath(string Path)
         {
-            rootPath = Path;
+            Shader.rootPath = Path;
         }
 
         /// <summary>
@@ -89,7 +84,7 @@ namespace Framework.Core
         /// </summary>
         public void Use()
         {
-            GL.UseProgram(ID);
+            GL.UseProgram(this.ID);
         }
 
         /// <summary>
@@ -110,7 +105,7 @@ namespace Framework.Core
         public void SetInt(string Name, int Data)
         {
             GL.UseProgram(ID);
-            GL.Uniform1(uniformLocations[Name], Data);
+            GL.Uniform1(this.uniformLocations[Name], Data);
         }
 
         /// <summary>
@@ -121,7 +116,7 @@ namespace Framework.Core
         public void SetFloat(string Name, float Data)
         {
             GL.UseProgram(ID);
-            GL.Uniform1(uniformLocations[Name], Data);
+            GL.Uniform1(this.uniformLocations[Name], Data);
         }
 
         /// <summary>
@@ -132,7 +127,7 @@ namespace Framework.Core
         public void SetMatrix4(string Name, Matrix4 Data)
         {
             GL.UseProgram(ID);
-            GL.UniformMatrix4(uniformLocations[Name], true, ref Data);
+            GL.UniformMatrix4(this.uniformLocations[Name], true, ref Data);
         }
 
         /// <summary>
@@ -142,13 +137,9 @@ namespace Framework.Core
         /// <param name="Data"></param>
         public void SetVector3(string Name, Vector3 Data)
         {
-            GL.UseProgram(ID);
-            GL.Uniform3(uniformLocations[Name], Data);
+            GL.UseProgram(this.ID);
+            GL.Uniform3(this.uniformLocations[Name], Data);
         }
-
-        #endregion
-
-        #region (Other Methods)
 
         /// <summary>
         /// 
@@ -179,7 +170,8 @@ namespace Framework.Core
             GL.GetProgram(Program, GetProgramParameterName.LinkStatus, out var code);
             if (code != (int)All.True)
             {
-                throw new Exception($"Error occurred whilst linking Program({Program})");
+                var infoLog = GL.GetProgramInfoLog(Program);
+                throw new Exception($"Error occurred whilst linking Program({Program}).\n\n{infoLog}");
             }
         }
 
@@ -191,9 +183,7 @@ namespace Framework.Core
         protected override void Dispose(bool isManualDispose)
         {
             GL.UseProgram(CONSTANTS.NONE);
-            GL.DeleteProgram(ID);
+            GL.DeleteProgram(this.ID);
         }
-
-        #endregion
     }
 }

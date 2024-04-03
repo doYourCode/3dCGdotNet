@@ -13,16 +13,23 @@ namespace Examples
         ImGuiController controller;
 
         public LightView LightView { get; set; }
+
         public MaterialView MaterialView { get; set; }
 
         private String[] items;
+
         private bool rotate;
+
         private System.Numerics.Vector3 rotationSpeed;
 
         public string CurrentItem { get; set; } = "";
+
         public string PreviousItem { get; set; } = "";
+
         public float Tick { get; set; } = 0.0f;
+
         public bool Rotate { get => rotate; set => rotate = value; }
+
         public System.Numerics.Vector3 RotationSpeed { get => rotationSpeed; set => rotationSpeed = value; }
 
         public void Load(GameWindow window)

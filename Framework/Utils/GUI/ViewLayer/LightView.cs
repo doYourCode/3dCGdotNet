@@ -53,11 +53,11 @@ namespace Framework.Utils.GUI.ViewLayer
                 if (ImGui.BeginTabItem("Ambient"))
                 {
                     ImGui.ColorPicker3("Color",
-                                       ref ambientLight.color,
+                                       ref ambientLight.ColorRef,
                                        ImGuiColorEditFlags.PickerHueWheel);
 
                     ImGui.DragFloat("Intensity",
-                                    ref ambientLight.intensity,
+                                    ref ambientLight.IntensityRef,
                                     0.001f,
                                     0.0f,
                                     2.0f);

@@ -1,23 +1,30 @@
-﻿using OpenTK.Windowing.Desktop;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
-using Framework.Core;
-using ExamplesCommon;
+﻿// <copyright file="Program.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Examples
 {
+    using ExamplesCommon;
+    using Framework.Core;
+    using OpenTK.Mathematics;
+    using OpenTK.Windowing.Common;
+    using OpenTK.Windowing.Desktop;
+
+    /// <summary>
+    /// Ponto de entrada.
+    /// </summary>
     internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             NativeWindowSettings settings = new NativeWindowSettings()
             {
-                Title = "Hello Material",
+                Title = "Hello Scene",
                 ClientSize = new Vector2i(1200, 800),
                 WindowBorder = WindowBorder.Fixed,
                 WindowState = WindowState.Normal,
                 APIVersion = new Version(3, 3),
-                Vsync = VSyncMode.On
+                Vsync = VSyncMode.On,
             };
 
             var window = new HelloMaterial(GameWindowSettings.Default, settings);

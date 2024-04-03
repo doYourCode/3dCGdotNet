@@ -19,4 +19,23 @@
     <ProjectReference Include="..\ExamplesCommon\ExamplesCommon.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\Scene\test.fbx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Shader\Phong.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Shader\Phong.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Texture\Uv_checker_01.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\Scene\" />
+  </ItemGroup>
+
 </Project>

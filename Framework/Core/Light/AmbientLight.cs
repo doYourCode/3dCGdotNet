@@ -1,69 +1,67 @@
-﻿using OpenTK.Graphics.OpenGL4;
-using System.Numerics;
+﻿// <copyright file="AmbientLight.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Core.Light
 {
+    using System.Numerics;
+    using OpenTK.Graphics.OpenGL4;
+
     /// <summary>
     /// 
     /// </summary>
     public class AmbientLight
     {
-        #region (Data Fields)
-
         private int colorUniformLocation;
 
         private int intensityUniformLocation;
 
-        internal Vector3 color;
+        private Vector3 color;
 
-        internal float intensity;
-
-        #endregion
-
-        #region (Constructors)
+        private float intensity;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="AmbientLight"/> class.
         /// </summary>
-        /// <param name="Color"></param>
-        /// <param name="Intensity"></param>
-        public AmbientLight(Vector3 Color, float Intensity = 1.0f)
+        /// <param name="color"></param>
+        /// <param name="intensity"></param>
+        public AmbientLight(Vector3 color, float intensity = 1.0f)
         {
-            this.color = Color;
-            this.intensity = Intensity;
+            this.color = color;
+            this.intensity = intensity;
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="AmbientLight"/> class.
         /// </summary>
-        public AmbientLight() : this(Vector3.Zero) { }
-
-        #endregion
-
-        #region (Properties)
+        public AmbientLight()
+            : this(Vector3.Zero) { }
 
         /// <summary>
         /// 
         /// </summary>
-        public Vector3 Color { get => color; set => color = value; }
+        public Vector3 Color { get => this.color; set => this.color = value; }
 
         /// <summary>
         /// 
         /// </summary>
-        public float Intensity { get => intensity; set => intensity = value; }
-
-        #endregion
-
-        #region (Public Methods)
+        public ref Vector3 ColorRef { get => ref this.color; }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Shader"></param>
-        public void GetUniformLocations(Shader Shader)
+        public float Intensity { get => this.intensity; set => this.intensity = value; }
+
+        public ref float IntensityRef { get => ref this.intensity; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="shader"></param>
+        public void GetUniformLocations(Shader shader)
         {
-            this.colorUniformLocation = GL.GetUniformLocation(Shader.ID, "ambientColor");
-            this.intensityUniformLocation = GL.GetUniformLocation(Shader.ID, "ambientIntensity");
+            this.colorUniformLocation = GL.GetUniformLocation(shader.ID, "ambientColor");
+            this.intensityUniformLocation = GL.GetUniformLocation(shader.ID, "ambientIntensity");
         }
 
         /// <summary>
@@ -74,7 +72,5 @@ namespace Framework.Core.Light
             GL.Uniform3(this.colorUniformLocation, this.color.X, this.color.Y, this.color.Z);
             GL.Uniform1(this.intensityUniformLocation, this.intensity);
         }
-
-        #endregion
     }
 }

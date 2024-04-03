@@ -1,18 +1,20 @@
-﻿using Framework.Core;
-using Framework.Core.Material;
-using OpenTK.Mathematics;
+﻿// <copyright file="BasicMaterial.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace ExamplesCommon
 {
+    using Framework.Core;
+    using Framework.Core.Material;
+    using OpenTK.Mathematics;
+
     /// <summary>
     /// 
     /// </summary>
     public class BasicMaterial : Material
     {
-        #region (Data Fields)
-
-        private static Dictionary<ShaderType, UInt32> instancesCount =
-            new Dictionary<ShaderType, UInt32>()
+        private static Dictionary<ShaderType, uint> instancesCount =
+            new Dictionary<ShaderType, uint>()
             {
                 { ShaderType.Oren_Nayar, 0 },
                 { ShaderType.Phong, 0 },
@@ -23,36 +25,32 @@ namespace ExamplesCommon
 
         private ShaderType shaderType;
 
-        #endregion
-
-        #region (Constructors)
-
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="BasicMaterial"/> class.
         /// </summary>
-        public BasicMaterial(ShaderType ShaderType, MaterialFormat Format) : base(Format, ShaderType.ToString(), 0)
+        /// <param name="shaderType"></param>
+        /// <param name="format"></param>
+        [Obsolete("This constructor is deprecated, please use other instead.")]
+        public BasicMaterial(ShaderType shaderType, MaterialFormat format)
+            : base(format, shaderType.ToString(), 0)
         {
-            if (this.AddInstance(ShaderType))
+            if (this.AddInstance(shaderType))
             {
-                Shader = new Shader(ShaderType.ToString());
+                this.Shader = new Shader(shaderType.ToString());
             }
 
-            AlbedoMap = new Texture("Albedo");
-            SpecularMap = new Texture("Specular");
-            AmbientOcclusionMap = new Texture("AO");
-            NormalMap = new Texture("Normal");
-            HeightMap = new Texture();
+            this.AlbedoMap = new Texture("Albedo");
+            this.SpecularMap = new Texture("Specular");
+            this.AmbientOcclusionMap = new Texture("AO");
+            this.NormalMap = new Texture("Normal");
+            this.HeightMap = new Texture();
 
 #if DEBUG
             Console.WriteLine("BasicMaterial layout setup:\n");
-            Format.PrintLayout();
+            format.PrintLayout();
             Console.WriteLine("\n");
 #endif
         }
-
-        #endregion
-
-        #region (Properties)
 
         /// <summary>
         /// 
@@ -89,10 +87,6 @@ namespace ExamplesCommon
         /// </summary>
         public Vector3 SpecularColor { get; set; }
 
-        #endregion
-
-        #region (Other Methods)
-
         /// <summary>
         /// 
         /// </summary>
@@ -100,7 +94,7 @@ namespace ExamplesCommon
         /// <returns></returns>
         private bool AddInstance(ShaderType ShaderType)
         {
-            if (instancesCount[ShaderType] < UInt32.MaxValue)
+            if (instancesCount[ShaderType] < uint.MaxValue)
             {
                 instancesCount[ShaderType]++;
                 return true;
@@ -140,17 +134,13 @@ namespace ExamplesCommon
             if (!RemoveInstance(this.shaderType))
                 Shader.Dispose();
 
-            AlbedoMap.Dispose();
-            SpecularMap.Dispose();
-            AmbientOcclusionMap.Dispose();
-            NormalMap.Dispose();
-            HeightMap.Dispose();
+            this.AlbedoMap.Dispose();
+            this.SpecularMap.Dispose();
+            this.AmbientOcclusionMap.Dispose();
+            this.NormalMap.Dispose();
+            this.HeightMap.Dispose();
         }
-
-        #endregion
     }
-
-    #region (Enums)
 
     /// <summary>
     /// 
@@ -163,6 +153,4 @@ namespace ExamplesCommon
         Half_Lambert,           // de materiais p/ carregar diferentes shaders
         Gouraud,                //
     }
-
-    #endregion
 }

@@ -165,7 +165,7 @@ namespace ExamplesCommon
             // Configura um formato de vértice adequado para receber os dados.
             // No caso presente há um buffer isolado com as posições e um buffer
             // enrelaçado com dados de cor, uvs e normais.
-            VertexFormat format = new VertexFormat();
+            VertexFormat format = new ();
             format.AddAttribute(this.positionVbo, VertexAttributeType.Position);
             format.AddAttributesGroup(
                 this.colorNormalTexCoordVbo,

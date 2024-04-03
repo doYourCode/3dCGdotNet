@@ -4,6 +4,7 @@
 
 namespace ExamplesCommon
 {
+    using System.Numerics;
     using Assimp;
     using Framework.Core;
     using Framework.Core.Resource;
@@ -17,7 +18,7 @@ namespace ExamplesCommon
 
         private Dictionary<string, BasicMesh> sceneMeshes;
 
-        private Dictionary<string, Transform> scenetransforms;
+        private Dictionary<string, Transform> sceneTransforms;
 
         private Dictionary<string, BasicMaterial> sceneMaterials;
 
@@ -33,19 +34,39 @@ namespace ExamplesCommon
             filePath = rootPath + filePath;
 
             this.sceneMeshes = new Dictionary<string, BasicMesh>();
-            this.scenetransforms = new Dictionary<string, Transform>();
+            this.sceneTransforms = new Dictionary<string, Transform>();
             this.sceneMaterials = new Dictionary<string, BasicMaterial>();
             this.sceneShaders = new Dictionary<string, Shader>();
 
-            AssimpContext context = new AssimpContext();
+            AssimpContext context = new ();
 
             Scene scene = context.ImportFile(
                 filePath,
                 PostProcessSteps.Triangulate | PostProcessSteps.GenerateSmoothNormals | PostProcessSteps.FlipUVs);
 
-            foreach (Mesh mesh in scene.Meshes)
+            uint meshCount = (uint)scene.RootNode.ChildCount;
+
+            foreach (Node node in scene.RootNode.Children)
             {
-                this.sceneMeshes.Add(mesh.Name, new BasicMesh(mesh));
+                Transform transform = new ();
+
+                Vector3D scale = new ();
+                Assimp.Quaternion rotation = new ();
+                Vector3D position = new ();
+
+                node.Transform.Decompose(out scale, out rotation, out position);
+
+                Vector3 snposition = new (position.X, position.Y, position.Z);
+                Vector3 snrotation = new (rotation.X, rotation.Y, rotation.Z);
+                Vector3 snscale = new (scale.X, scale.Y, scale.Z);
+
+                foreach (int i in node.MeshIndices)
+                {
+                    // TODO: add transform support
+                    Mesh mesh = scene.Meshes[i];
+                    this.sceneMeshes.Add(mesh.Name, new BasicMesh(mesh));
+                    this.sceneTransforms.Add(mesh.Name, new Transform(snposition * 0.01f, snrotation * 0.01f, snscale * 0.01f));
+                }
             }
         }
 
@@ -61,10 +82,12 @@ namespace ExamplesCommon
         /// <summary>
         /// Draws the whole scene.
         /// </summary>
-        public void Draw()
+        /// <param name="shader"> PARAM TODO. </param>
+        public void Draw(Shader shader)
         {
             foreach (BasicMesh mesh in this.sceneMeshes.Values)
             {
+                shader.SetMatrix4("model", this.sceneTransforms[mesh.Label].GetModelMatrix());
                 mesh.Draw();
             }
         }

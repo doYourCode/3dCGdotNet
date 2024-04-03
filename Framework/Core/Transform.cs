@@ -1,156 +1,317 @@
-﻿using Framework.Core.Camera;
-using OpenTK.Mathematics;
+﻿// <copyright file="Transform.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Core
 {
+    using Framework.Core.Camera;
+    using OpenTK.Mathematics;
+
     /// <summary>
-    /// 
+    /// TODO.
     /// </summary>
     public class Transform
     {
-        #region (Data Fields)
+        private Vector3 position;
 
-        internal Vector3 position;
+        private Vector3 rotation;
 
-        internal Vector3 rotation;
-
-        internal Vector3 scale;
-
-        #endregion
-
-        #region (Constructors)
+        private Vector3 scale;
 
         /// <summary>
-        /// Construtor padrão, com todos os parâmetros
+        /// Initializes a new instance of the <see cref="Transform"/> class.
         /// </summary>
-        /// <param name="Position"> Posição </param>
-        /// <param name="Rotation"> Rotação </param>
-        /// <param name="Scale"> Escala </param>
-        public Transform(Vector3 Position, Vector3 Rotation, Vector3 Scale)
+        /// <param name="position"> Posição. </param>
+        /// <param name="rotation"> Rotação. </param>
+        /// <param name="scale"> Escala. </param>
+        public Transform(Vector3 position, Vector3 rotation, Vector3 scale)
         {
-            this.position = Position;
-            this.rotation = Rotation;
-            this.scale = Scale;
+            this.position = position;
+            this.rotation = rotation;
+            this.scale = scale;
         }
 
         /// <summary>
-        /// Construtor sem parâmetros, inicializa posição e rotação zerados e escala 1:1
+        /// Initializes a new instance of the <see cref="Transform"/> class.
         /// </summary>
-        public Transform() : this(Vector3.Zero, Vector3.Zero, Vector3.One) { }
+        /// <param name="position"> Posição. </param>
+        /// <param name="rotation"> Rotação. </param>
+        /// <param name="scale"> Escala. </param>
+        public Transform(
+            System.Numerics.Vector3 position,
+            System.Numerics.Vector3 rotation,
+            System.Numerics.Vector3 scale)
+        {
+            this.position = new ();
+            this.position.X = position.X;
+            this.position.Y = position.Y;
+            this.position.Z = position.Z;
+
+            this.rotation = new ();
+            this.rotation.X = rotation.X;
+            this.rotation.Y = rotation.Y;
+            this.rotation.Z = rotation.Z;
+
+            this.scale = new ();
+            this.scale.X = scale.X;
+            this.scale.Y = scale.Y;
+            this.scale.Z = scale.Z;
+        }
 
         /// <summary>
-        /// Construtor com apenas posição, inicializa rotação zerada e escala 1:1
+        /// Initializes a new instance of the <see cref="Transform"/> class.
         /// </summary>
-        public Transform(Vector3 Position) : this(Position, Vector3.Zero, Vector3.One) { }
+        public Transform()
+            : this(Vector3.Zero, Vector3.Zero, Vector3.One)
+        {
+        }
 
         /// <summary>
-        /// Construtor com posição e rotação, inicializa a escala 1:1
+        /// Initializes a new instance of the <see cref="Transform"/> class.
+        /// TODO.
         /// </summary>
-        public Transform(Vector3 Position, Vector3 Rotation) : this(Position, Rotation, Vector3.One) { }
-
-        #endregion
-
-        #region (Properties)
+        /// <param name="position"> PARAM TODO. </param>
+        public Transform(Vector3 position)
+            : this(position, Vector3.Zero, Vector3.One)
+        {
+        }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="Transform"/> class.
+        /// TODO.
         /// </summary>
-        public Vector3 Position { get => position; set => position = value; }
+        /// <param name="position"> PARAM TODO. </param>
+        /// <param name="rotation"> PARAM2 TODO. </param>
+        public Transform(Vector3 position, Vector3 rotation)
+            : this(position, rotation, Vector3.One)
+        {
+        }
 
         /// <summary>
-        /// 
+        /// Gets or sets TODO.
         /// </summary>
-        public Vector3 Rotation { get => rotation; set => rotation = value; }
+        public Vector3 Position { get => this.position; set => this.position = value; }
 
         /// <summary>
-        /// 
+        /// Gets or sets TODO.
         /// </summary>
-        public Vector3 Scale { get => scale; set => scale = value; }
+        public Vector3 Rotation { get => this.rotation; set => this.rotation = value; }
 
-        #endregion
-
-        #region (Public Methods)
+        /// <summary>
+        /// Gets or sets TODO.
+        /// </summary>
+        public Vector3 Scale { get => this.scale; set => this.scale = value; }
 
         /// <summary>
         /// Gets an object space matrix of a transformed model.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> RETURN TODO. </returns>
         public Matrix4 GetModelMatrix()
         {
-            Matrix4 posMat = Matrix4.CreateTranslation(position);
-            Matrix4 scaleMat = Matrix4.CreateScale(scale);
-            Matrix4 rotX = Matrix4.CreateRotationX(rotation.X);
-            Matrix4 rotY = Matrix4.CreateRotationY(rotation.Y);
-            Matrix4 rotZ = Matrix4.CreateRotationZ(rotation.Z);
+            Matrix4 posMat = Matrix4.CreateTranslation(this.position);
+            Matrix4 scaleMat = Matrix4.CreateScale(this.scale);
+            Matrix4 rotX = Matrix4.CreateRotationX(this.rotation.X);
+            Matrix4 rotY = Matrix4.CreateRotationY(this.rotation.Y);
+            Matrix4 rotZ = Matrix4.CreateRotationZ(this.rotation.Z);
             Matrix4 rotMat = rotX * rotY * rotZ;
 
             return posMat * rotMat * scaleMat;
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="Camera"></param>
-        /// <returns></returns>
-        public Matrix4 GetModelViewProjectionMatrix(PerspectiveCamera Camera)
+        /// <param name="camera">  PARAM TODO. </param>
+        /// <returns> RETURN TODO. </returns>
+        public Matrix4 GetModelViewProjectionMatrix(PerspectiveCamera camera)
         {
-            return Camera.GetViewMatrix() * Camera.GetProjectionMatrix() * GetModelMatrix();
+            return camera.GetViewMatrix() * camera.GetProjectionMatrix() * this.GetModelMatrix();
         }
 
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <returns> RETURN TODO. </returns>
+        public Vector3 GetPosition()
+        {
+            return this.position;
+        }
 
-        // Getters alternativos
-        public Vector3 GetPosition() { return this.position; }
-        public Vector3 GetRotation() { return this.rotation; }
-        public Vector3 GetScale() { return this.scale; }
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <returns> RETURN TODO. </returns>
+        public Vector3 GetRotation()
+        {
+            return this.rotation;
+        }
 
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <returns> RETURN TODO. </returns>
+        public Vector3 GetScale()
+        {
+            return this.scale;
+        }
 
         // Setters alternativos (p/ dar maior flexibilidade para a API pública)
 
-        // Position
-        public void SetPosition(Vector3 Position) { this.position = Position; }
-        public void SetPositionX(float X) { this.position.X = X; }
-        public void SetPositionY(float Y) { this.position.Y = Y; }
-        public void SetPositionZ(float Z) { this.position.Z = Z; }
-
-        public void SetPositionXY(Vector2 Position)
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="position"> PARAM TODO. </param>
+        public void SetPosition(Vector3 position)
         {
-            this.position.X = Position.X;
-            this.position.Y = Position.Y;
+            this.position = position;
         }
 
-        public void SetPosition(float X, float Y, float Z)
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="x"> PARAM TODO. </param>
+        public void SetPositionX(float x)
         {
-            this.position.X = X;
-            this.position.Y = Y;
-            this.position.Z = Z;
+            this.position.X = x;
         }
 
-        // Rotation
-        public void SetRotation(Vector3 Rotation) { this.rotation = Rotation; }
-        public void SetRotationX(float rot) { this.rotation.X = rot; }
-        public void SetRotationY(float rot) { this.rotation.Y = rot; }
-        public void SetRotationZ(float rot) { this.rotation.Z = rot; }
-
-        public void SetRotation(float X, float Y, float Z)
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="y"> PARAM TODO. </param>
+        public void SetPositionY(float y)
         {
-            this.rotation.X = X;
-            this.rotation.Y = Y;
-            this.rotation.Z = Z;
+            this.position.Y = y;
         }
 
-        // Scale
-        public void SetScale(Vector3 Scale) { this.scale = Scale; }
-        public void SetScaleX(float scl) { this.scale.X = scl; }
-        public void SetScaleY(float scl) { this.scale.Y = scl; }
-        public void SetScaleZ(float scl) { this.scale.Z = scl; }
-
-        public void SetScale(float X, float Y, float Z)
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="z"> PARAM TODO. </param>
+        public void SetPositionZ(float z)
         {
-            this.scale.X = X;
-            this.scale.Y = Y;
-            this.scale.Z = Z;
+            this.position.Z = z;
         }
 
-        #endregion
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="position"> PARAM TODO. </param>
+        public void SetPositionXY(Vector2 position)
+        {
+            this.position.X = position.X;
+            this.position.Y = position.Y;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="x"> PARAM TODO. </param>
+        /// <param name="y"> PARAM2 TODO. </param>
+        /// <param name="z"> PARAM3 TODO. </param>
+        public void SetPosition(float x, float y, float z)
+        {
+            this.position.X = x;
+            this.position.Y = y;
+            this.position.Z = z;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="rotation"> PARAM TODO. </param>
+        public void SetRotation(Vector3 rotation)
+        {
+            this.rotation = rotation;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="rot"> PARAM TODO. </param>
+        public void SetRotationX(float rot)
+        {
+            this.rotation.X = rot;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="rot"> PARAM TODO. </param>
+        public void SetRotationY(float rot)
+        {
+            this.rotation.Y = rot;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="rot"> PARAM TODO. </param>
+        public void SetRotationZ(float rot)
+        {
+            this.rotation.Z = rot;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="x"> PARAM TODO. </param>
+        /// <param name="y"> PARAM2 TODO. </param>
+        /// <param name="z"> PARAM3 TODO. </param>
+        public void SetRotation(float x, float y, float z)
+        {
+            this.rotation.X = x;
+            this.rotation.Y = y;
+            this.rotation.Z = z;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="scale"> PARAM TODO. </param>
+        public void SetScale(Vector3 scale)
+        {
+            this.scale = scale;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="scl"> PARAM TODO. </param>
+        public void SetScaleX(float scl)
+        {
+            this.scale.X = scl;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="scl"> PARAM TODO. </param>
+        public void SetScaleY(float scl)
+        {
+            this.scale.Y = scl;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="scl"> PARAM TODO. </param>
+        public void SetScaleZ(float scl)
+        {
+            this.scale.Z = scl;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="x"> PARAM TODO. </param>
+        /// <param name="y"> PARAM2 TODO. </param>
+        /// <param name="z"> PARAM3 TODO. </param>
+        public void SetScale(float x, float y, float z)
+        {
+            this.scale.X = x;
+            this.scale.Y = y;
+            this.scale.Z = z;
+        }
     }
 }

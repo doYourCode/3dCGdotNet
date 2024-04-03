@@ -62,7 +62,7 @@ namespace Examples
             this.transform.SetRotationY(3.14f);
 
             // Material
-            MaterialFormat format = new MaterialFormat();
+            MaterialFormat format = new ();
             format.AddFloat("roughness", 0.5f);
             format.AddFloat("specularIntensity", 1.0f);
             format.AddFloat("specularPower", 9.0f);
@@ -106,6 +106,8 @@ namespace Examples
         {
             base.OnRenderFrame(e);
 
+            GL.Enable(EnableCap.DepthTest);
+
             GL.ClearColor(new Color4(0, 32, 48, 255));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
@@ -113,7 +115,7 @@ namespace Examples
 
             this.texture.Use(TextureUnit.Texture0);
 
-            this.scene.Draw();
+            this.scene.Draw(this.basicMaterial.Shader);
 
             ImGuiController.CheckGLError("End of frame");
 
@@ -131,7 +133,7 @@ namespace Examples
 
             this.camera.UpdateUniforms();
 
-            this.basicMaterial.Shader.SetMatrix4("model", this.transform.GetModelMatrix());
+            //this.basicMaterial.Shader.SetMatrix4("model", this.transform.GetModelMatrix());
             this.basicMaterial.Shader.SetMatrix4("view", this.camera.GetViewMatrix());
             this.basicMaterial.Shader.SetMatrix4("projection", this.camera.GetProjectionMatrix());
 

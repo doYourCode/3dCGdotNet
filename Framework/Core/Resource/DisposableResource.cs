@@ -21,6 +21,8 @@ namespace Framework.Core.Resource
 
         private uint id;
 
+        private string label;
+
         private bool isDisposed;
 
         /// <summary>
@@ -34,6 +36,8 @@ namespace Framework.Core.Resource
             this.isDisposed = false;
 
             this.id = id;
+
+            this.label = label;
 
             this.RegisterInstance(label + "_" + this.id, this);
         }
@@ -76,6 +80,11 @@ namespace Framework.Core.Resource
         {
             get { return this.isDisposed; } private set { }
         }
+
+        /// <summary>
+        /// Gets or sets TODO.
+        /// </summary>
+        public string Label { get => this.label; set => this.label = value; }
 
         /// <summary>
         /// Automatically calls <see cref="Dispose()"/> on all

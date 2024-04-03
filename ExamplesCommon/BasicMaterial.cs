@@ -9,12 +9,46 @@ namespace ExamplesCommon
     using OpenTK.Mathematics;
 
     /// <summary>
-    /// 
+    /// TODO.
+    /// </summary>
+    public enum ShaderType
+    {
+#pragma warning disable CRRSP08 // A misspelled word has been found
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Oren_Nayar,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Phong,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Lambertian,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Half_Lambert,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Gouraud,
+
+#pragma warning restore CRRSP08 // A misspelled word has been found
+    }
+
+    /// <summary>
+    /// TODO.
     /// </summary>
     public class BasicMaterial : Material
     {
-        private static Dictionary<ShaderType, uint> instancesCount =
-            new Dictionary<ShaderType, uint>()
+        private static Dictionary<ShaderType, uint> instancesCount = new ()
             {
                 { ShaderType.Oren_Nayar, 0 },
                 { ShaderType.Phong, 0 },
@@ -28,8 +62,8 @@ namespace ExamplesCommon
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicMaterial"/> class.
         /// </summary>
-        /// <param name="shaderType"></param>
-        /// <param name="format"></param>
+        /// <param name="shaderType"> PARAM TODO. </param>
+        /// <param name="format"> PARAM2 TODO. </param>
         [Obsolete("This constructor is deprecated, please use other instead.")]
         public BasicMaterial(ShaderType shaderType, MaterialFormat format)
             : base(format, shaderType.ToString(), 0)
@@ -53,50 +87,69 @@ namespace ExamplesCommon
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets TODO.
         /// </summary>
         public Texture AlbedoMap { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets TODO.
         /// </summary>
         public Texture SpecularMap { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets TODO.
         /// </summary>
         public Texture AmbientOcclusionMap { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets TODO.
         /// </summary>
         public Texture NormalMap { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets TODO.
         /// </summary>
         public Texture HeightMap { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets TODO.
         /// </summary>
         public Vector3 DiffuseColor { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets TODO.
         /// </summary>
         public Vector3 SpecularColor { get; set; }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="ShaderType"></param>
-        /// <returns></returns>
-        private bool AddInstance(ShaderType ShaderType)
+        /// <param name="isManualDispose"> PARAM TODO. </param>
+        /// <exception cref="NotImplementedException"> EXCP. TODO. </exception>
+        protected override void Dispose(bool isManualDispose)
         {
-            if (instancesCount[ShaderType] < uint.MaxValue)
+            if (!this.RemoveInstance(this.shaderType))
             {
-                instancesCount[ShaderType]++;
+                this.Shader.Dispose();
+            }
+
+            this.AlbedoMap.Dispose();
+            this.SpecularMap.Dispose();
+            this.AmbientOcclusionMap.Dispose();
+            this.NormalMap.Dispose();
+            this.HeightMap.Dispose();
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="shaderType"> PARAM TODO. </param>
+        /// <returns> RETURN TODO. </returns>
+        private bool AddInstance(ShaderType shaderType)
+        {
+            if (instancesCount[shaderType] < uint.MaxValue)
+            {
+                instancesCount[shaderType]++;
                 return true;
             }
 #if DEBUG
@@ -106,51 +159,24 @@ namespace ExamplesCommon
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="ShaderType"></param>
-        /// <returns></returns>
-        private bool RemoveInstance(ShaderType ShaderType)
+        /// <param name="shaderType"> PARAM TODO. </param>
+        /// <returns> RETURN TODO. </returns>
+        private bool RemoveInstance(ShaderType shaderType)
         {
-            if (instancesCount[ShaderType] > UInt32.MinValue)
+            if (instancesCount[shaderType] > uint.MinValue)
             {
-                instancesCount[ShaderType]--;
+                instancesCount[shaderType]--;
                 return true;
             }
 #if DEBUG
             else
+            {
                 Console.WriteLine("RemoveInstance(...) -> There is no instance to be removed.");
+            }
 #endif
             return false;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="isManualDispose"></param>
-        /// <exception cref="NotImplementedException"></exception>
-        protected override void Dispose(bool isManualDispose)
-        {
-            if (!RemoveInstance(this.shaderType))
-                Shader.Dispose();
-
-            this.AlbedoMap.Dispose();
-            this.SpecularMap.Dispose();
-            this.AmbientOcclusionMap.Dispose();
-            this.NormalMap.Dispose();
-            this.HeightMap.Dispose();
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public enum ShaderType
-    {
-        Oren_Nayar,             //
-        Phong,                  //
-        Lambertian,             // TODO: implementar em um material mais robusto os tipos
-        Half_Lambert,           // de materiais p/ carregar diferentes shaders
-        Gouraud,                //
     }
 }

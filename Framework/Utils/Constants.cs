@@ -4,6 +4,8 @@
 
 namespace Framework.Utils
 {
+#pragma warning disable SA1310 // Field names should not contain underscore
+
     /// <summary>
     /// Constantes úteis para realização de alguns cálculos ou para melhorar a legibilidade / semântica do código.
     /// </summary>
@@ -17,17 +19,17 @@ namespace Framework.Utils
         /// <summary>
         /// The mathematical constant, Pi.
         /// </summary>
-        public const double GOLDENRATIO = 1.61803398874989484820;
+        public const double GOLDEN_RATIO = 1.61803398874989484820;
 
         /// <summary>
         /// The mathematical constant, Pi.
         /// </summary>
-        public const double NATURALLOGBASE = 2.71828182845904523536;
+        public const double NATURAL_LOG_BASE = 2.71828182845904523536;
 
         /// <summary>
         /// The mathematical constant, Pi.
         /// </summary>
-        public const double EULERSCONST = 0.57721566490153286060;
+        public const double EULER_CONST = 0.57721566490153286060;
 
         /// <summary>
         /// The value of Zero.
@@ -44,4 +46,6 @@ namespace Framework.Utils
         /// </summary>
         public const uint NONE = 0;
     }
+
+#pragma warning restore SA1310 // Field names should not contain underscore
 }

@@ -16,85 +16,85 @@ namespace Framework.Utils
         private static ScreenRectangle screenRectangle = new ScreenRectangle();
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="Vao"></param>
-        /// <param name="First"></param>
-        /// <param name="Count"></param>
-        /// <param name="PointSize"></param>
-        public static void Points(VertexArrayObject Vao, int First, int Count, int PointSize)
+        /// <param name="vao"> PARAM TODO. </param>
+        /// <param name="first"> PARAM2 TODO. </param>
+        /// <param name="count"> PARAM3 TODO. </param>
+        /// <param name="pointSize"> PARAM4 TODO. </param>
+        public static void Points(VertexArrayObject vao, int first, int count, int pointSize)
         {
-            GL.PointSize(PointSize);
+            GL.PointSize(pointSize);
 
-            Vao.Bind();
+            vao.Bind();
 
-            GL.DrawArrays(PrimitiveType.Points, First, Count);
+            GL.DrawArrays(PrimitiveType.Points, first, count);
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="Vao"></param>
-        /// <param name="First"></param>
-        /// <param name="Count"></param>
-        /// <param name="Thickness"></param>
-        public static void Lines(VertexArrayObject Vao, int First, int Count, int Thickness)
+        /// <param name="vao"> PARAM TODO. </param>
+        /// <param name="first"> PARAM2 TODO. </param>
+        /// <param name="count"> PARAM3 TODO. </param>
+        /// <param name="thickness"> PARAM4 TODO. </param>
+        public static void Lines(VertexArrayObject vao, int first, int count, int thickness)
         {
-            GL.LineWidth(Thickness);
+            GL.LineWidth(thickness);
 
-            Vao.Bind();
+            vao.Bind();
 
-            GL.DrawArrays(PrimitiveType.LineLoop, First, Count);
+            GL.DrawArrays(PrimitiveType.LineLoop, first, count);
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="Vao"></param>
-        /// <param name="First"></param>
-        /// <param name="Count"></param>
-        public static void Triangles(VertexArrayObject Vao, int First, int Count)
+        /// <param name="vao"> PARAM TODO. </param>
+        /// <param name="first"> PARAM2 TODO. </param>
+        /// <param name="count"> PARAM3 TODO. </param>
+        public static void Triangles(VertexArrayObject vao, int first, int count)
         {
-            Vao.Bind();
+            vao.Bind();
 
-            GL.DrawArrays(PrimitiveType.Triangles, First, Count);
+            GL.DrawArrays(PrimitiveType.Triangles, first, count);
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="Vao"></param>
-        /// <param name="IndexCount"></param>
-        public static void Elements(VertexArrayObject Vao, int IndexCount)
+        /// <param name="vao"> PARAM TODO.</param>
+        /// <param name="indexCount"> PARAM2 TODO. </param>
+        public static void Elements(VertexArrayObject vao, int indexCount)
         {
-            Vao.Bind();
+            vao.Bind();
 
-            GL.DrawElements(BeginMode.Triangles, IndexCount, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(BeginMode.Triangles, indexCount, DrawElementsType.UnsignedInt, 0);
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="Fbo"></param>
-        /// <param name="ScreenRectangle"></param>
-        public static void ScreenRectangle(FrameBufferObject Fbo, ScreenRectangle ScreenRectangle)
+        /// <param name="fbo"> PARAM TODO. </param>
+        /// <param name="screenRectangle"> PARAM TODO2. </param>
+        public static void ScreenRectangle(FrameBufferObject fbo, ScreenRectangle screenRectangle)
         {
-            ScreenRectangle.Vao.Bind();
+            screenRectangle.Vao.Bind();
 
-            GL.Disable(EnableCap.DepthTest);                        // Desligamos o "Depth testing" para garantir que o desenho
-                                                                    // será feito sobre qualquer outro elemento da tela
-            GL.BindTexture(TextureTarget.Texture2D, Fbo.Texture.ID);
+            GL.Disable(EnableCap.DepthTest);    // Disable depth
+
+            GL.BindTexture(TextureTarget.Texture2D, fbo.Texture.ID);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="Fbo"></param>
-        public static void ScreenRectangle(FrameBufferObject Fbo)
+        /// <param name="fbo"> PARAM TODO. </param>
+        public static void ScreenRectangle(FrameBufferObject fbo)
         {
-            ScreenRectangle(Fbo, Draw.screenRectangle);
+            ScreenRectangle(fbo, Draw.screenRectangle);
         }
     }
 }

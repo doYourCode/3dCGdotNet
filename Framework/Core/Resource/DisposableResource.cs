@@ -105,7 +105,11 @@ namespace Framework.Core.Resource
                     if (typeof(DisposableResource).IsAssignableFrom(field.FieldType))
                     {
                         // and release it
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+
                         (field.GetValue(obj) as DisposableResource).Dispose();
+
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                     }
                 }
             }

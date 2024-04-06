@@ -11,65 +11,77 @@ namespace Framework.Core
     using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 
     /// <summary>
-    /// 
+    /// TODO.
     /// </summary>
     public class Texture : OpenGLObject
     {
         private static string rootPath = string.Empty;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="Texture"/> class.
         /// </summary>
         public Texture()
-            : base("Texture ", (uint)GL.GenTexture()) { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Id"></param>
-        public Texture(UInt32 Id)
-            : base("Texture ", Id) { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Label"></param>
-        public Texture(string Label)
-            : base(Label, (uint)GL.GenTexture()) { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Id"></param>
-        public Texture(string Label, uint Id)
-            : base(Label, Id) { }
-
-        /// <summary>
-        /// Caminho para a pasta raiz para carregar arquivos de Shader.
-        /// </summary>
-        public static string RootPath { get { return rootPath; } set { rootPath = value; } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Path"></param>
-        /// <param name="Unit"></param>
-        /// <param name="InvertY"></param>
-        /// <returns></returns>
-        public static Texture LoadFromFile(string Path, TextureUnit Unit, bool InvertY = false)
+            : base("Texture ", (uint)GL.GenTexture())
         {
-            Path = rootPath + Path;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Texture"/> class.
+        /// </summary>
+        /// <param name="id"> PARAM TODO. </param>
+        public Texture(uint id)
+            : base("Texture ", id)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Texture"/> class.
+        /// </summary>
+        /// <param name="label"> PARAM TODO. </param>
+        public Texture(string label)
+            : base(label, (uint)GL.GenTexture())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Texture"/> class.
+        /// </summary>
+        /// /// <param name="label"> PARAM TODO. </param>
+        /// <param name="id"> PARAM2 TODO. </param>
+        public Texture(string label, uint id)
+            : base(label, id)
+        {
+        }
+
+        /// <summary>
+        /// Gets or sets TODO.
+        /// </summary>
+        public static string RootPath
+        {
+            get { return rootPath; } set { rootPath = value; }
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="path"> PARAM TODO. </param>
+        /// <param name="unit"> PARAM2 TODO. </param>
+        /// <param name="invertY"> PARAM3 TODO. </param>
+        /// <returns> RETURN TODO. </returns>
+        public static Texture LoadFromFile(string path, TextureUnit unit, bool invertY = false)
+        {
+            path = rootPath + path;
 
             uint handle = (uint)GL.GenTexture();
-            GL.ActiveTexture(Unit);
+            GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, handle);
 
-            if (InvertY)
+            if (invertY)
             {
                 StbImage.stbi_set_flip_vertically_on_load(1);
             }
 
-            using (Stream stream = File.OpenRead(Path))
+            using (Stream stream = File.OpenRead(path))
             {
                 ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
 
@@ -111,12 +123,12 @@ namespace Framework.Core
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="unit"></param>
-        /// <returns></returns>
+        /// <param name="width"> PARAM TODO. </param>
+        /// <param name="height"> PARAM2 TODO. </param>
+        /// <param name="unit"> PARAM3 TODO. </param>
+        /// <returns> RETURN TODO. </returns>
         public static Texture CreateInMemory(
             int width,
             int height,
@@ -161,23 +173,23 @@ namespace Framework.Core
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="unit"></param>
+        /// <param name="unit"> PARAM TODO. </param>
         public void Use(TextureUnit unit)
         {
             GL.ActiveTexture(unit);
-            GL.BindTexture(TextureTarget.Texture2D, ID);
+            GL.BindTexture(TextureTarget.Texture2D, this.ID);
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="isManualDispose"></param>
+        /// <param name="isManualDispose"> PARAM TODO. </param>
         protected override void Dispose(bool isManualDispose)
         {
             GL.BindTexture(TextureTarget.Texture2D, CONSTANTS.NONE);
-            GL.DeleteTexture(ID);
+            GL.DeleteTexture(this.ID);
         }
     }
 }

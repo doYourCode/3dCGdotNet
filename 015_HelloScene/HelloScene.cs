@@ -52,7 +52,7 @@ namespace Examples
             base.OnLoad();
 
             // Cena
-            this.scene = new BasicScene("test.fbx");
+            this.scene = new BasicScene("SCENE.dae");
 
             // Textura
             this.texture = Texture.LoadFromFile("Uv_checker_01.png", TextureUnit.Texture0);
@@ -68,14 +68,18 @@ namespace Examples
             format.AddFloat("specularPower", 9.0f);
             format.AddVector3("specularColor", new System.Numerics.Vector3(0.9f, 0.9f, 1.0f));
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
             this.basicMaterial = new BasicMaterial(ShaderType.Phong, format);
+
+#pragma warning restore CS0618 // Type or member is obsolete
             this.basicMaterial.GetUniformLocations();
 
             // Luz
             this.light = new Light(
                 new System.Numerics.Vector3(2.0f, 2.0f, 2.0f),
                 new System.Numerics.Vector3(1.0f, 1.0f, 1.0f),
-                new System.Numerics.Vector3(0.0f, 0.0f, 0.0f),
+                new System.Numerics.Vector3(-1.0f, 0.3f, 1.2f),
                 1.0f,
                 false);
 
@@ -133,7 +137,6 @@ namespace Examples
 
             this.camera.UpdateUniforms();
 
-            //this.basicMaterial.Shader.SetMatrix4("model", this.transform.GetModelMatrix());
             this.basicMaterial.Shader.SetMatrix4("view", this.camera.GetViewMatrix());
             this.basicMaterial.Shader.SetMatrix4("projection", this.camera.GetProjectionMatrix());
 

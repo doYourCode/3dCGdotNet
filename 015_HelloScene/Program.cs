@@ -4,7 +4,6 @@
 
 namespace Examples
 {
-    using _015_HelloScene;
     using ExamplesCommon;
     using Framework.Core;
     using OpenTK.Mathematics;

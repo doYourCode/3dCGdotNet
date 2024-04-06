@@ -17,48 +17,54 @@ namespace Framework.Core.Buffer
     /// </summary>
     public class VertexArrayObject : OpenGLObject
     {
-        #region (Constructors)
-
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="VertexArrayObject"/> class.
+        /// TODO.
         /// </summary>
-        /// <param name="VertexFormat"></param>
-        public VertexArrayObject(VertexFormat VertexFormat) : base("VertexArrayObject", (UInt32)GL.GenVertexArray())
+        /// <param name="vertexFormat"> PARAM TODO. </param>
+        public VertexArrayObject(VertexFormat vertexFormat)
+            : base("VertexArrayObject", (uint)GL.GenVertexArray())
         {
             this.Bind();
 
-            this.Setup(VertexFormat);
+            this.Setup(vertexFormat);
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="VertexArrayObject"/> class.
+        /// TODO.
         /// </summary>
-        /// <param name="VertexFormat"></param>
-        public VertexArrayObject(string Label, VertexFormat VertexFormat) : base(Label,(UInt32)GL.GenVertexArray())
+        /// <param name="label"> PARAM TODO. </param>
+        /// <param name="vertexFormat"> PARAM2 TODO. </param>
+        public VertexArrayObject(string label, VertexFormat vertexFormat)
+            : base(label, (uint)GL.GenVertexArray())
         {
             this.Bind();
 
-            this.Setup(VertexFormat);
+            this.Setup(vertexFormat);
         }
 
-        #endregion
-
-        #region (Public Methods)
-
         /// <summary>
-        /// Associa um VBO arbitrário a um atributo relacionado ao VAO atual. Obs: esta é a maneira atual de anexar 
-        /// VBOs a VAOs. Não é o único jeito, talvez não seja o melhor mas é fácil de aprender.
+        /// TODO.
         /// </summary>
-        /// <param name="Vbo"></param>
-        /// <param name="Layout"></param>   // TODO: fornecer outras interfaces públicas para essa mesma tarefa
-        /// <param name="Stride"></param>
-        /// <param name="Offset"></param>
-        public void LinkVBO(VertexBufferObject Vbo, int Layout, UInt32 Size, VertexAttribPointerType DataType, int Stride, int Offset)
+        /// <param name="vbo"> PARAM TODO. </param>
+        /// <param name="layout"> PARAM2 TODO. </param>
+        /// <param name="size"> PARAM3 TODO. </param>
+        /// <param name="dataType"> PARAM4 TODO. </param>
+        /// <param name="stride"> PARAM5 TODO. </param>
+        /// <param name="offset"> PARAM6 TODO. </param>
+        public void LinkVBO(
+            VertexBufferObject vbo,
+            int layout,
+            uint size,
+            VertexAttribPointerType dataType,
+            int stride,
+            int offset)
         {
-            Vbo.Bind();
+            vbo.Bind();
 
-            GL.VertexAttribPointer(Layout, (int)Size, DataType, false, Stride, Offset);
-            GL.EnableVertexAttribArray(Layout);
+            GL.VertexAttribPointer(layout, (int)size, dataType, false, stride, offset);
+            GL.EnableVertexAttribArray(layout);
         }
 
         /// <summary>
@@ -66,7 +72,7 @@ namespace Framework.Core.Buffer
         /// </summary>
         public void Bind()
         {
-            GL.BindVertexArray(ID);
+            GL.BindVertexArray(this.ID);
         }
 
         /// <summary>
@@ -77,56 +83,55 @@ namespace Framework.Core.Buffer
             GL.BindVertexArray(CONSTANTS.NONE);
         }
 
-        #endregion
-
-        #region (Other Methods)
-
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="isManualDispose"></param>
+        /// <param name="isManualDispose"> PARAM TODO. </param>
         protected override void Dispose(bool isManualDispose)
         {
             GL.BindVertexArray(CONSTANTS.NONE);
-            GL.DeleteVertexArray(ID);
+            GL.DeleteVertexArray(this.ID);
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="VertexFormat"></param>
-        private void Setup(VertexFormat VertexFormat)
+        /// <param name="vertexFormat"> PARAM TODO. </param>
+        private void Setup(VertexFormat vertexFormat)
         {
             // Associa todos os buffera de atributos únicos, se existirem
-            if (VertexFormat.UniqueVertexAttributes.Count > 0)
+            if (vertexFormat.UniqueVertexAttributes.Count > 0)
             {
-                foreach (VertexAttribute attrib in VertexFormat.UniqueVertexAttributes.Keys)
+                foreach (VertexAttribute attrib in vertexFormat.UniqueVertexAttributes.Keys)
                 {
-                    LinkVBO(VertexFormat.UniqueVertexAttributes.GetValueOrDefault(attrib),
+#pragma warning disable CS8604 // Possible null reference argument.
+                    this.LinkVBO(
+                        vertexFormat.UniqueVertexAttributes.GetValueOrDefault(attrib),
                         attrib.Layout,
                         attrib.Size,
                         attrib.DataType,
-                        0, 0
-                    );
+                        0,
+                        0);
+#pragma warning restore CS8604 // Possible null reference argument.
                 }
             }
 
             // Associa todos os buffera de atributos entrelaçados, se existirem
-            if (VertexFormat.InterleavedVertexAttributes.Count > 0)
+            if (vertexFormat.InterleavedVertexAttributes.Count > 0)
             {
-                foreach (VertexAttribute attrib in VertexFormat.InterleavedVertexAttributes.Keys)
+                foreach (VertexAttribute attrib in vertexFormat.InterleavedVertexAttributes.Keys)
                 {
-                    LinkVBO(VertexFormat.InterleavedVertexAttributes.GetValueOrDefault(attrib),
+#pragma warning disable CS8604 // Possible null reference argument.
+                    this.LinkVBO(
+                        vertexFormat.InterleavedVertexAttributes.GetValueOrDefault(attrib),
                         attrib.Layout,
                         attrib.Size,
                         attrib.DataType,
-                        (int)VertexFormat.InterleavedStride,
-                        (int)VertexFormat.InterleavedOffsets.GetValueOrDefault(attrib)
-                    );
+                        (int)vertexFormat.InterleavedStride,
+                        (int)vertexFormat.InterleavedOffsets.GetValueOrDefault(attrib));
+#pragma warning restore CS8604 // Possible null reference argument.
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -39,7 +39,7 @@ float LambertTerm(vec3 LightDirection, vec3 NormalDirection)
 
 void main()
 {
-    vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
+    vec3 lightDir = normalize(lightDirection);
     vec3 viewDir = normalize(-viewPosition - fragPosition.xyz);
     vec3 normalDir = normalize(vNormal.xyz);
 

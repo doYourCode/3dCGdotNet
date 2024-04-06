@@ -1,10 +1,14 @@
-﻿using ImGuiNET;
-using Framework.Core.Light;
+﻿// <copyright file="LightView.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Utils.GUI.ViewLayer
 {
+    using Framework.Core.Light;
+    using ImGuiNET;
+
     /// <summary>
-    /// 
+    /// TODO.
     /// </summary>
     public class LightView : IimResourceView
     {
@@ -13,18 +17,19 @@ namespace Framework.Utils.GUI.ViewLayer
         private AmbientLight ambientLight;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="LightView"/> class.
+        /// TODO.
         /// </summary>
-        /// <param name="light"></param>
-        /// <param name="AmbientLight"></param>
-        public LightView(Light light, AmbientLight AmbientLight)
+        /// <param name="light"> PARAM TODO. </param>
+        /// <param name="ambientLight"> PARAM2 TODO. </param>
+        public LightView(Light light, AmbientLight ambientLight)
         {
             this.light = light;
-            ambientLight = AmbientLight;
+            this.ambientLight = ambientLight;
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
         public void RenderResourceView()
         {
@@ -34,42 +39,46 @@ namespace Framework.Utils.GUI.ViewLayer
             {
                 if (ImGui.BeginTabItem("Diffuse"))
                 {
-                    ImGui.DragFloat3("Position", ref light.position, 0.001f);
-                    ImGui.DragFloat3("Direction", ref light.direction, 0.001f);
+                    ImGui.DragFloat3("Position", ref this.light.PositionRef, 0.001f);
+                    ImGui.DragFloat3("Direction", ref this.light.DirectionRef, 0.001f);
 
-                    ImGui.ColorPicker3("Color",
-                                       ref light.color,
-                                       ImGuiColorEditFlags.PickerHueWheel);
+                    ImGui.ColorPicker3(
+                        "Color",
+                        ref this.light.ColorRef,
+                        ImGuiColorEditFlags.PickerHueWheel);
 
-                    ImGui.DragFloat("Intensity",
-                                    ref light.intensity,
-                                    0.001f,
-                                    0.0f,
-                                    2.0f);
+                    ImGui.DragFloat(
+                        "Intensity",
+                        ref this.light.IntensityRef,
+                        0.001f,
+                        0.0f,
+                        2.0f);
 
                     ImGui.EndTabItem();
                 }
 
                 if (ImGui.BeginTabItem("Ambient"))
                 {
-                    ImGui.ColorPicker3("Color",
-                                       ref ambientLight.ColorRef,
-                                       ImGuiColorEditFlags.PickerHueWheel);
+                    ImGui.ColorPicker3(
+                        "Color",
+                        ref this.ambientLight.ColorRef,
+                        ImGuiColorEditFlags.PickerHueWheel);
 
-                    ImGui.DragFloat("Intensity",
-                                    ref ambientLight.IntensityRef,
-                                    0.001f,
-                                    0.0f,
-                                    2.0f);
+                    ImGui.DragFloat(
+                        "Intensity",
+                        ref this.ambientLight.IntensityRef,
+                        0.001f,
+                        0.0f,
+                        2.0f);
 
                     ImGui.EndTabItem();
                 }
 
                 if (ImGui.BeginTabItem("Shadow"))
                 {
-                    ImGui.Checkbox("Cast Shadow", ref light.castShadow);
+                    ImGui.Checkbox("Cast Shadow", ref this.light.CastShadowRef);
 
-                    if(light.castShadow)
+                    if (this.light.CastShadow)
                     {
                         ImGui.Text("TODO: insert shadow functionality here.");
                     }

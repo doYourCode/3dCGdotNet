@@ -10,11 +10,10 @@ namespace Framework.Core.Camera
     using OpenTK.Windowing.GraphicsLibraryFramework;
 
     /// <summary>
-    /// 
+    /// TODO.
     /// </summary>
     public class CameraController
     {
-
         private PerspectiveCamera camera;
 
         private GameWindow window;
@@ -23,24 +22,23 @@ namespace Framework.Core.Camera
 
         private Vector2 lastPos;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CameraController"/> class.
         /// </summary>
-        /// <param name="Camera"></param>
-        /// <param name="Window"></param>
-        public CameraController(PerspectiveCamera Camera, GameWindow Window)
+        /// <param name="camera"> PARAM TODO. </param>
+        /// <param name="window"> PARAM2 TODO. </param>
+        public CameraController(PerspectiveCamera camera, GameWindow window)
         {
-            this.camera = Camera;
-            this.window = Window;
+            this.camera = camera;
+            this.window = window;
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="e"></param>
-        /// <param name="input"></param>
-        /// <param name="mouse"></param>
+        /// <param name="e"> PARAM TODO. </param>
+        /// <param name="input"> PARAM2 TODO. </param>
+        /// <param name="mouse"> PARAM3 TODO. </param>
         public void Update(FrameEventArgs e, KeyboardState input, MouseState mouse)
         {
             if (!this.window.IsFocused) // Check to see if the window is focused
@@ -110,9 +108,9 @@ namespace Framework.Core.Camera
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e"> PARAM TODO. </param>
         public void MouseUpdate(MouseWheelEventArgs e)
         {
             this.camera.Fov -= e.OffsetY;

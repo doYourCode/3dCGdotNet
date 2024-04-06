@@ -1,77 +1,54 @@
-﻿using Framework.Core.Buffer;
-using OpenTK.Graphics.OpenGL4;
+﻿// <copyright file="VertexAttribute.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Core.Vertex
 {
+    using OpenTK.Graphics.OpenGL4;
+
+    /// <summary>
+    /// Enumeração dos atributos de vértice que são possíveis.
+    /// </summary>
+    public enum VertexAttributeType
+    {
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Position,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        TexCoord0,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Normal,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Tangent,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Color,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        TexCoord1,
+    }
+
     /// <summary>
     /// Fornece os dados necessários para adicionar suporte aos atributos listados.
     /// </summary>
     public class VertexAttribute
     {
-        #region (Data Fields)
-
-        private int layout;
-
-        private VertexAttribPointerType dataType;
-
-        private UInt32 dataTypeSize;
-
-        private UInt32 size;
-
-        #endregion
-
-        #region (Constructors)
-
-        public VertexAttribute(VertexAttributeType Type)
-        {
-            this.layout = (int)Type;
-            this.dataType = GetDataType[(int)Type];
-            this.dataTypeSize = GetDataTypeSize[(int)Type];
-            this.size = GetSize[(int)Type];
-        }
-
-        public VertexAttribute(int Layout,
-                               VertexAttribPointerType DataType,
-                               UInt32 DataSize,
-                               UInt32 DataTypeSizeInBytes)
-        {
-            this.layout = Layout;
-            this.dataType = DataType;
-            this.size = DataSize;
-            this.dataTypeSize = DataTypeSizeInBytes;
-        }
-
-        #endregion
-
-        #region (Properties)
-
         /// <summary>
-        /// 
-        /// </summary>
-        public int Layout { get => (int)layout; private set { } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public VertexAttribPointerType DataType { get => dataType; private set { } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public uint Size { get => size; private set { } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public uint SizeInBytes
-        {
-            get => size * dataTypeSize;
-
-            private set { }
-        }
-
-        /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
         private static readonly VertexAttribPointerType[] GetDataType =
         {
@@ -81,14 +58,12 @@ namespace Framework.Core.Vertex
             VertexAttribPointerType.Float,              // Tangent
             VertexAttribPointerType.Float,              // Color
             VertexAttribPointerType.Float,              // TexCoord_1
-
-            // TODO: BlendWeight = Float, BlendIndices = Int
         };
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        private static readonly UInt32[] GetSize =
+        private static readonly uint[] GetSize =
         {
             3,                          // Position
             2,                          // TexCoord_0
@@ -96,44 +71,92 @@ namespace Framework.Core.Vertex
             3,                          // Tangent
             3,                          // Color
             2,                          // TexCoord_1
-
-            // TODO: BlendWeight = 1, BlendIndices = 2
         };
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        private static readonly UInt32[] GetDataTypeSize =
-{
+        private static readonly uint[] GetDataTypeSize =
+        {
             sizeof(float),                          // Position
             sizeof(float),                          // TexCoord_0
             sizeof(float),                          // Normal
             sizeof(float),                          // Tangent
             sizeof(float),                           // Color
             sizeof(float),                          // TexCoord_1
-
-            // TODO: BlendWeight = sizeof(float), BlendIndices = sizeof(int)
         };
 
-        #endregion
+        private int layout;
+
+        private VertexAttribPointerType dataType;
+
+        private uint dataTypeSize;
+
+        private uint size;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VertexAttribute"/> class.
+        /// </summary>
+        /// <param name="type"> PARAM TODO. </param>
+        public VertexAttribute(VertexAttributeType type)
+        {
+            this.layout = (int)type;
+            this.dataType = GetDataType[(int)type];
+            this.dataTypeSize = GetDataTypeSize[(int)type];
+            this.size = GetSize[(int)type];
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VertexAttribute"/> class.
+        /// </summary>
+        /// <param name="layout"> PARAM TODO. </param>
+        /// <param name="dataType"> PARAM2 TODO. </param>
+        /// <param name="dataSize"> PARAM3 TODO. </param>
+        /// <param name="dataTypeSizeInBytes"> PARAM4 TODO. </param>
+        public VertexAttribute(
+            int layout,
+            VertexAttribPointerType dataType,
+            uint dataSize,
+            uint dataTypeSizeInBytes)
+        {
+            this.layout = layout;
+            this.dataType = dataType;
+            this.size = dataSize;
+            this.dataTypeSize = dataTypeSizeInBytes;
+        }
+
+        /// <summary>
+        /// Gets the layout index.
+        /// </summary>
+        public int Layout
+        {
+            get => (int)this.layout; private set { }
+        }
+
+        /// <summary>
+        /// Gets TODO.
+        /// </summary>
+        public VertexAttribPointerType DataType
+        {
+            get => this.dataType; private set { }
+        }
+
+        /// <summary>
+        /// Gets TODO.
+        /// </summary>
+        public uint Size
+        {
+            get => this.size; private set { }
+        }
+
+        /// <summary>
+        /// Gets TODO.
+        /// </summary>
+        public uint SizeInBytes
+        {
+            get => this.size * this.dataTypeSize;
+
+            private set { }
+        }
     }
-
-    #region (Enums)
-
-    /// <summary>
-    /// Enumeração dos atributos de vértice que são possíveis.
-    /// </summary>
-    public enum VertexAttributeType
-    {
-        Position,
-        TexCoord0,
-        Normal,
-        Tangent,
-        Color,
-        TexCoord1,
-
-        // TODO: BlendWeight, BlendIndices
-    }
-
-    #endregion
 }

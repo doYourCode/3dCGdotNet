@@ -1,14 +1,20 @@
-﻿using OpenTK.Windowing.Desktop;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
-
-using Framework.Core;
+﻿// <copyright file="Program.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Examples
 {
+    using Framework.Core;
+    using OpenTK.Mathematics;
+    using OpenTK.Windowing.Common;
+    using OpenTK.Windowing.Desktop;
+
+    /// <summary>
+    /// TODO.
+    /// </summary>
     internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             NativeWindowSettings settings = new NativeWindowSettings()
             {
@@ -17,12 +23,10 @@ namespace Examples
                 WindowBorder = WindowBorder.Fixed,
                 WindowState = WindowState.Normal,
                 APIVersion = new Version(3, 3),
-                Vsync = VSyncMode.On
+                Vsync = VSyncMode.On,
             };
 
             var window = new HelloTests(GameWindowSettings.Default, settings);
-
-            Shader.SetRootPath("Resources/Shader/");
 
             window.Run();
         }

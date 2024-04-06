@@ -1,26 +1,36 @@
-﻿using OpenTK.Graphics.OpenGL4;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Numerics;
+﻿// <copyright file="Vector4Attribute.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Core.Material.Attributes
 {
+    using System.Numerics;
+    using OpenTK.Graphics.OpenGL4;
+
+    /// <summary>
+    /// TODO.
+    /// </summary>
     public class Vector4Attribute : MaterialAttribute
     {
-        internal Vector4 value;
-        public Vector4Attribute(string Label, System.Numerics.Vector4 Value) : base(Label)
-        {
-            value = Value;
+        private Vector4 value;
 
-            UpdateUniform();
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Vector4Attribute"/> class.
+        /// </summary>
+        /// <param name="label"> PARAM TODO. </param>
+        /// <param name="value"> PARAM2 TODO. </param>
+        public Vector4Attribute(string label, System.Numerics.Vector4 value)
+            : base(label)
+        {
+            this.value = value;
+
+            this.UpdateUniform();
         }
 
+        /// <inheritdoc/>
         public override void UpdateUniform()
         {
-            GL.Uniform4(this.UniformLocation, value.X, value.Y, value.Z, value.W);
+            GL.Uniform4(this.UniformLocation, this.value.X, this.value.Y, this.value.Z, this.value.W);
         }
 
         /// <inheritdoc/>

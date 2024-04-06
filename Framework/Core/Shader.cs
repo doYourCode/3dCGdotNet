@@ -10,16 +10,11 @@ namespace Framework.Core
     using OpenTK.Mathematics;
 
     /// <summary>
-    /// 
+    /// TODO.
     /// </summary>
     public class Shader : OpenGLObject
     {
-        /// <summary>
-        /// Caminho para a pasta raiz para carregar arquivos de Shader.
-        /// </summary>
-        public static string RootPath { get { return rootPath; } set { rootPath = value; } }
-
-        private static string rootPath = "";
+        private static string rootPath = string.Empty;
 
         private readonly Dictionary<string, int> uniformLocations;
 
@@ -41,7 +36,6 @@ namespace Framework.Core
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);
 
-
             GL.AttachShader((int)this.ID, vertexShader);
             GL.AttachShader((int)this.ID, fragmentShader);
 
@@ -59,28 +53,39 @@ namespace Framework.Core
             for (var i = 0; i < numberOfUniforms; i++)
             {
                 var key = GL.GetActiveUniform((int)this.ID, i, out _, out _);
-                var location = GL.GetUniformLocation(ID, key);
+                var location = GL.GetUniformLocation(this.ID, key);
                 this.uniformLocations.Add(key, location);
             }
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="Shader"/> class.
         /// </summary>
-        /// <param name="ShaderName"></param>
-        public Shader(string ShaderName) : this(rootPath + ShaderName + ".vert", rootPath + ShaderName + ".frag") { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Path"></param>
-        public static void SetRootPath(string Path)
+        /// <param name="shaderName"> PARAM TODO. </param>
+        public Shader(string shaderName)
+            : this(rootPath + shaderName + ".vert", rootPath + shaderName + ".frag")
         {
-            Shader.rootPath = Path;
         }
 
         /// <summary>
-        /// 
+        /// Gets or Sets path.
+        /// </summary>
+        public static string RootPath
+        {
+            get { return rootPath; } set { rootPath = value; }
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="path"> PARAM TODO. </param>
+        public static void SetRootPath(string path)
+        {
+            Shader.rootPath = path;
+        }
+
+        /// <summary>
+        /// TODO.
         /// </summary>
         public void Use()
         {
@@ -88,102 +93,98 @@ namespace Framework.Core
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="AttribName"></param>
-        /// <returns></returns>
-        public int GetAttribLocation(string AttribName)
+        /// <param name="attribName"> PARAM TODO. </param>
+        /// <returns> RETURN TODO. </returns>
+        public int GetAttribLocation(string attribName)
         {
-            return GL.GetAttribLocation(ID, AttribName);
+            return GL.GetAttribLocation(this.ID, attribName);
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="Name"></param>
-        /// <param name="Data"></param>
-        public void SetInt(string Name, int Data)
-        {
-            GL.UseProgram(ID);
-            GL.Uniform1(this.uniformLocations[Name], Data);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Name"></param>
-        /// <param name="Data"></param>
-        public void SetFloat(string Name, float Data)
-        {
-            GL.UseProgram(ID);
-            GL.Uniform1(this.uniformLocations[Name], Data);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Name"></param>
-        /// <param name="Data"></param>
-        public void SetMatrix4(string Name, Matrix4 Data)
-        {
-            GL.UseProgram(ID);
-            GL.UniformMatrix4(this.uniformLocations[Name], true, ref Data);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Name"></param>
-        /// <param name="Data"></param>
-        public void SetVector3(string Name, Vector3 Data)
+        /// <param name="name"> PARAM TODO. </param>
+        /// <param name="data"> PARAM2 TODO. </param>
+        public void SetInt(string name, int data)
         {
             GL.UseProgram(this.ID);
-            GL.Uniform3(this.uniformLocations[Name], Data);
+            GL.Uniform1(this.uniformLocations[name], data);
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="Shader"></param>
-        /// <exception cref="Exception"></exception>
-        private static void CompileShader(int Shader)
+        /// <param name="name"> PARAM TODO. </param>
+        /// <param name="data"> PARAM2 TODO. </param>
+        public void SetFloat(string name, float data)
         {
-            GL.CompileShader(Shader);
-
-            GL.GetShader(Shader, ShaderParameter.CompileStatus, out var code);
-            if (code != (int)All.True)
-            {
-                var infoLog = GL.GetShaderInfoLog(Shader);
-                throw new Exception($"Error occurred whilst compiling Shader({Shader}).\n\n{infoLog}");
-            }
+            GL.UseProgram(this.ID);
+            GL.Uniform1(this.uniformLocations[name], data);
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="Program"></param>
-        /// <exception cref="Exception"></exception>
-        private static void LinkProgram(int Program)
+        /// <param name="name"> PARAM TODO. </param>
+        /// <param name="data"> PARAM2 TODO. </param>
+        public void SetMatrix4(string name, Matrix4 data)
         {
-            GL.LinkProgram(Program);
-
-            GL.GetProgram(Program, GetProgramParameterName.LinkStatus, out var code);
-            if (code != (int)All.True)
-            {
-                var infoLog = GL.GetProgramInfoLog(Program);
-                throw new Exception($"Error occurred whilst linking Program({Program}).\n\n{infoLog}");
-            }
+            GL.UseProgram(this.ID);
+            GL.UniformMatrix4(this.uniformLocations[name], true, ref data);
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="isManualDispose"></param>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <param name="name"> PARAM TODO. </param>
+        /// <param name="data"> PARAM2 TODO. </param>
+        public void SetVector3(string name, Vector3 data)
+        {
+            GL.UseProgram(this.ID);
+            GL.Uniform3(this.uniformLocations[name], data);
+        }
+
+        /// <inheritdoc/>
         protected override void Dispose(bool isManualDispose)
         {
             GL.UseProgram(CONSTANTS.NONE);
             GL.DeleteProgram(this.ID);
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="shader"> PARAM TODO. </param>
+        /// <exception cref="Exception"> Ex. TODO. </exception>
+        private static void CompileShader(int shader)
+        {
+            GL.CompileShader(shader);
+
+            GL.GetShader(shader, ShaderParameter.CompileStatus, out var code);
+            if (code != (int)All.True)
+            {
+                var infoLog = GL.GetShaderInfoLog(shader);
+                throw new Exception($"Error occurred whilst compiling Shader({shader}).\n\n{infoLog}");
+            }
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="program"> PARAM TODO. </param>
+        /// <exception cref="Exception"> E. TODO. </exception>
+        private static void LinkProgram(int program)
+        {
+            GL.LinkProgram(program);
+
+            GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
+            if (code != (int)All.True)
+            {
+                var infoLog = GL.GetProgramInfoLog(program);
+                throw new Exception($"Error occurred whilst linking Program({program}).\n\n{infoLog}");
+            }
         }
     }
 }

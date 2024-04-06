@@ -1,102 +1,97 @@
-﻿using Framework.Core.Buffer;
-using OpenTK.Graphics.OpenGL4;
+﻿// <copyright file="VertexFormat.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Core.Vertex
 {
+    using Framework.Core.Buffer;
+    using OpenTK.Graphics.OpenGL4;
+
     /// <summary>
-    /// 
+    /// TODO.
     /// </summary>
     public class VertexFormat
     {
-        #region (Data Fields)
-
         private Dictionary<VertexAttribute, VertexBufferObject> uniqueVertexAttributes;
 
         private Dictionary<VertexAttribute, VertexBufferObject> interleavedVertexAttributes;
 
-        private Dictionary<VertexAttribute, UInt32> interleavedOffsets;
+        private Dictionary<VertexAttribute, uint> interleavedOffsets;
 
-        private UInt32 interleavedStride = 0;
-
-        #endregion
-
-        #region (Properties)
+        private uint interleavedStride = 0;
 
         /// <summary>
-        /// Conjunto de atributos associados ao formato.
-        /// </summary>
-        public Dictionary<VertexAttribute, VertexBufferObject> UniqueVertexAttributes
-        {
-            get => uniqueVertexAttributes;
-            private set { }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Dictionary<VertexAttribute, VertexBufferObject> InterleavedVertexAttributes
-        {
-            get => interleavedVertexAttributes;
-            private set { }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Dictionary<VertexAttribute, uint> InterleavedOffsets
-        {
-            get => interleavedOffsets;
-            private set { }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public uint InterleavedStride { get => interleavedStride; private set { } }
-
-        #endregion
-
-        #region (Constructors)
-
-        /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="VertexFormat"/> class.
+        /// TODO.
         /// </summary>
         public VertexFormat()
         {
-            uniqueVertexAttributes = new Dictionary<VertexAttribute, VertexBufferObject>();
+            this.uniqueVertexAttributes = new Dictionary<VertexAttribute, VertexBufferObject>();
 
-            interleavedVertexAttributes = new Dictionary<VertexAttribute, VertexBufferObject>();
+            this.interleavedVertexAttributes = new Dictionary<VertexAttribute, VertexBufferObject>();
 
-            interleavedOffsets = new Dictionary<VertexAttribute, UInt32>();
-        }
-
-        #endregion
-
-        #region (Public Methods)
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="AttribType"></param>
-        /// <param name="Vbo"></param>
-        public void AddAttribute(VertexBufferObject Vbo, VertexAttributeType AttribType)
-        {
-            this.uniqueVertexAttributes.Add(new VertexAttribute(AttribType), Vbo);
+            this.interleavedOffsets = new Dictionary<VertexAttribute, uint>();
         }
 
         /// <summary>
-        /// 
+        /// Gets TODO.
         /// </summary>
-        /// <param name="Vbo"></param>
-        /// <param name="attribs"></param>
-        public void AddAttributesGroup(VertexBufferObject Vbo,
-                                       params VertexAttributeType[] Attribs)
+        public Dictionary<VertexAttribute, VertexBufferObject> UniqueVertexAttributes
         {
-            foreach(VertexAttributeType attribType in Attribs)
+            get => this.uniqueVertexAttributes;
+            private set { }
+        }
+
+        /// <summary>
+        /// Gets TODO.
+        /// </summary>
+        public Dictionary<VertexAttribute, VertexBufferObject> InterleavedVertexAttributes
+        {
+            get => this.interleavedVertexAttributes;
+            private set { }
+        }
+
+        /// <summary>
+        /// Gets TODO.
+        /// </summary>
+        public Dictionary<VertexAttribute, uint> InterleavedOffsets
+        {
+            get => this.interleavedOffsets;
+            private set { }
+        }
+
+        /// <summary>
+        /// Gets TODO.
+        /// </summary>
+        public uint InterleavedStride
+        {
+            get => this.interleavedStride; private set { }
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="vbo"> PARAM2 TODO. </param>
+        /// <param name="attribType"> PARAM TODO. </param>
+        public void AddAttribute(VertexBufferObject vbo, VertexAttributeType attribType)
+        {
+            this.uniqueVertexAttributes.Add(new VertexAttribute(attribType), vbo);
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="vbo"> PARAM TODO. </param>
+        /// <param name="attribs"> PARAM2 TODO. </param>
+        public void AddAttributesGroup(
+            VertexBufferObject vbo,
+            params VertexAttributeType[] attribs)
+        {
+            foreach (VertexAttributeType attribType in attribs)
             {
                 VertexAttribute attribute = new VertexAttribute(attribType);
 
-                this.interleavedVertexAttributes.Add(attribute, Vbo);
+                this.interleavedVertexAttributes.Add(attribute, vbo);
 
                 this.interleavedOffsets.Add(attribute, this.interleavedStride);
 
@@ -105,40 +100,38 @@ namespace Framework.Core.Vertex
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="Vbo"></param>
-        /// <param name="Layout"></param>
-        /// <param name="DataType"></param>
-        /// <param name="DataSize"></param>
-        /// <param name="DataTypeSizeInBytes"></param>
-        public void AddCustomAttribute(VertexBufferObject Vbo,
-                                       int Layout,
-                                       VertexAttribPointerType DataType,
-                                       UInt32 DataSize,
-                                       UInt32 DataTypeSizeInBytes)
+        /// <param name="vbo"> PARAM TODO. </param>
+        /// <param name="layout"> PARAM2 TODO. </param>
+        /// <param name="dataType"> PARAM3 TODO. </param>
+        /// <param name="dataSize"> PARAM4 TODO. </param>
+        /// <param name="dataTypeSizeInBytes"> PARAM5 TODO. </param>
+        public void AddCustomAttribute(
+            VertexBufferObject vbo,
+            int layout,
+            VertexAttribPointerType dataType,
+            uint dataSize,
+            uint dataTypeSizeInBytes)
         {
-            VertexAttribute attrib = new VertexAttribute(Layout, DataType, DataSize, DataTypeSizeInBytes);
-            this.uniqueVertexAttributes.Add(attrib, Vbo);
+            VertexAttribute attrib = new VertexAttribute(layout, dataType, dataSize, dataTypeSizeInBytes);
+            this.uniqueVertexAttributes.Add(attrib, vbo);
         }
 
-        #endregion
-
-        #region (Other Methods)
-
+        /// <summary>
+        /// TODO.
+        /// </summary>
         public void PrintLayout()
         {
-            foreach(VertexAttribute attrib in uniqueVertexAttributes.Keys)
+            foreach (VertexAttribute attrib in this.uniqueVertexAttributes.Keys)
             {
                 Console.WriteLine("layout(location = " + attrib.Layout + ") in vec" + attrib.Size + " v" + ((VertexAttributeType)attrib.Layout).ToString() + ";");
             }
 
-            foreach (VertexAttribute attrib in interleavedVertexAttributes.Keys)
+            foreach (VertexAttribute attrib in this.interleavedVertexAttributes.Keys)
             {
                 Console.WriteLine("layout(location = " + attrib.Layout + ") in vec" + attrib.Size + " v" + ((VertexAttributeType)attrib.Layout).ToString() + ";");
             }
         }
-
-        #endregion
     }
 }

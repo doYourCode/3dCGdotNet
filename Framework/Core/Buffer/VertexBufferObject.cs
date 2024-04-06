@@ -13,59 +13,58 @@ namespace Framework.Core.Buffer
     /// </summary>
     public class VertexBufferObject : OpenGLObject
     {
-        #region (Constructors)
-
         /// <summary>
-        /// Construtor
+        /// Initializes a new instance of the <see cref="VertexBufferObject"/> class.
         /// </summary>
-        /// <param name="Data"> Array de vértices contendo os dados a serem enviados ao buffer.¹²
+        /// <param name="data"> Array de vértices contendo os dados a serem enviados ao buffer.¹²
         /// <br />
         /// ATENÇÃO: ¹ certifique-se de que o array não é nulo. ² Na implementação atual só é permitido utilizar
         /// números reais de precisão simples (float).
         /// </param>
-        /// <param name="Usage"> Indicativo de para que os dados do buffer serão usados.
+        /// <param name="usage"> Indicativo de para que os dados do buffer serão usados.
         /// <br />
         /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
         /// Há outros valores possíveis, verifique as referências da API.
         /// </param>
-        public VertexBufferObject(float[] Data, BufferUsageHint Usage = BufferUsageHint.StaticDraw) : base("VertexBufferObject", (UInt32)GL.GenBuffer())
+        public VertexBufferObject(float[] data, BufferUsageHint usage = BufferUsageHint.StaticDraw)
+            : base("VertexBufferObject", (uint)GL.GenBuffer())
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, ID);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, this.ID);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * Data.Length, Data, Usage);
+            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * data.Length, data, usage);
         }
 
         /// <summary>
-        /// Construtor
+        /// Initializes a new instance of the <see cref="VertexBufferObject"/> class.
         /// </summary>
-        /// <param name="Data"> Array de vértices contendo os dados a serem enviados ao buffer.¹²
+        /// <param name="data"> Array de vértices contendo os dados a serem enviados ao buffer.¹²
         /// <br />
         /// ATENÇÃO: ¹ certifique-se de que o array não é nulo. ² Na implementação atual só é permitido utilizar
         /// números reais de precisão simples (float).
         /// </param>
-        /// <param name="Usage"> Indicativo de para que os dados do buffer serão usados.
+        /// <param name="usage"> Indicativo de para que os dados do buffer serão usados.
         /// <br />
         /// Valores comuns: BufferUsageHint.StaticDraw | BufferUsageHint.DynamicDraw | BufferUsageHint.StreamDraw.
         /// Há outros valores possíveis, verifique as referências da API.
         /// </param>
-        /// <param name="Label"> Rótulo identificador do VBO. </param>
-        public VertexBufferObject(string Label, float[] Data, BufferUsageHint Usage = BufferUsageHint.StaticDraw) : base(Label, (UInt32)GL.GenBuffer())
+        /// <param name="label"> Rótulo identificador do VBO. </param>
+        public VertexBufferObject(
+            string label,
+            float[] data,
+            BufferUsageHint usage = BufferUsageHint.StaticDraw)
+            : base(label, (uint)GL.GenBuffer())
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, ID);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, this.ID);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * Data.Length, Data, Usage);
+            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * data.Length, data, usage);
         }
-
-        #endregion
-
-        #region (Public Methods)
 
         /// <summary>
         /// Vincula o buffer para alteração ou desenho.
         /// </summary>
         public void Bind()
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer, ID);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, this.ID);
         }
 
         /// <summary>
@@ -76,21 +75,11 @@ namespace Framework.Core.Buffer
             GL.BindBuffer(BufferTarget.ArrayBuffer, CONSTANTS.NONE);
         }
 
-        #endregion
-
-        #region (Other Methods)
-
-        /// <summary>
-        /// Apaga os dados do buffer da VRAM.
-        /// <br />
-        /// ATENÇÃO: esta ação também desvincula o buffer.
-        /// </summary>
+        /// <inheritdoc/>
         protected override void Dispose(bool isManualDispose)
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, CONSTANTS.NONE);
-            GL.DeleteBuffer(ID);
+            GL.DeleteBuffer(this.ID);
         }
-
-        #endregion
     }
 }

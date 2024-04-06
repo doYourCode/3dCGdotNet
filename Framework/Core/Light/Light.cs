@@ -1,18 +1,46 @@
-﻿using OpenTK.Graphics.OpenGL4;
-using System.Numerics;
+﻿// <copyright file="Light.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Framework.Core.Light
 {
+    using System.Numerics;
+    using OpenTK.Graphics.OpenGL4;
+
+    /// <summary>
+    /// Tipos de luz: Directional | Spot | Point | Area.
+    /// </summary>
+    internal enum LightType
+    {
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Directional,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Spot,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Point,
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        Area,
+    }
+
     /// <summary>
     /// Representação genérica de um ponto // direção que seja uma fonte de luz.
     /// Essa classe fornece os dados que utilizaremos nos shaders para escrever
     /// os algoritmos de efeitos de iluminação. (Ex: Lambert, Phong, Blinn, Oren-Nayar
-    /// ou mesmo PBR shading)
+    /// ou mesmo PBR shading).
     /// </summary>
     public class Light
     {
-        #region (Data Fields)
-
         private int positionUniformLocation;
 
         private int directionUniformLocation;
@@ -21,129 +49,153 @@ namespace Framework.Core.Light
 
         private int intensityUniformLocation;
 
+        private Vector3 position;
 
-        internal Vector3 position;
+        private Vector3 direction;
 
-        internal Vector3 direction;
+        private Vector3 color;
 
-        internal Vector3 color;
+        private float intensity;
 
-        internal float intensity;
-
-        internal bool castShadow;
-
-        #endregion
-
-        #region (Constructors)
+        private bool castShadow;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="Light"/> class.
+        /// TODO.
         /// </summary>
-        /// <param name="Position"></param>
-        /// <param name="Color"></param>
-        /// <param name="Direction"></param>
-        /// <param name="Intensity"></param>
-        /// <param name="CastShadow"></param>
-        public Light(Vector3 Position,
-                     Vector3 Color,
-                     Vector3 Direction,
-                     float Intensity = 1.0f,
-                     bool CastShadow = false)
+        /// <param name="position"> PARAM TODO. </param>
+        /// <param name="color"> PARAM2 TODO. </param>
+        /// <param name="direction"> PARAM3 TODO. </param>
+        /// <param name="intensity"> PARAM4 TODO. </param>
+        /// <param name="castShadow"> PARAM5 TODO. </param>
+        public Light(
+            Vector3 position,
+            Vector3 color,
+            Vector3 direction,
+            float intensity = 1.0f,
+            bool castShadow = false)
         {
-            this.position = Position;
-            this.direction = Direction;
-            this.color = Color;
-            this.intensity = Intensity;
-            this.castShadow = CastShadow;
+            this.position = position;
+            this.direction = direction;
+            this.color = color;
+            this.intensity = intensity;
+            this.castShadow = castShadow;
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="Light"/> class.
+        /// TODO.
         /// </summary>
-        public Light() : this(Vector3.Zero, Vector3.One, Vector3.Zero) { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Position"></param>
-        /// <param name="Intensity"></param>
-        /// <param name="CastShadow"></param>
-        public Light(Vector3 Position,
-                     float Intensity = 1.0f,
-                     bool CastShadow = false) : this(Position,
-                                                     Vector3.One,
-                                                     Vector3.Zero,
-                                                     Intensity,
-                                                     CastShadow) { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Position"></param>
-        /// <param name="Color"></param>
-        /// <param name="Intensity"></param>
-        /// <param name="CastShadow"></param>
-        public Light(Vector3 Position,
-                     Vector3 Color,
-                     float Intensity = 1.0f,
-                     bool CastShadow = false) : this(Position,
-                                                     Color,
-                                                     Vector3.Zero,
-                                                     Intensity,
-                                                     CastShadow) { }
-
-        #endregion
-
-        #region (Properties)
-
-        /// <summary>
-        /// Posição do ponto de luz nos eixos X Y e Z.
-        /// </summary>
-        public Vector3 Position { get => position; set => position = value; }
-
-        /// <summary>
-        /// Direção da fonte de luz (em luzes direcionais) representadas por um vetor 3d.
-        /// </summary>
-        public Vector3 Direction { get => direction; set => direction = value; }
-
-        /// <summary>
-        /// Cor da luz representada pelos valores RGB. Obs: note que não há o
-        /// canal alpha pois a intensidade 
-        /// da luz é representada por outra variável desta mesma classe.
-        /// </summary>
-        public Vector3 Color { get => color; set => color = value; }
-
-        /// <summary>
-        /// Itensidade da fonte de luz. Obs: pode ser maior do que 1.0, atente-se
-        /// para as formas corretas de renderizar high dynamic range (HDR).
-        /// </summary>
-        public float Intensity { get => intensity; set => intensity = value; }
-
-        /// <summary>
-        /// Liga ou desliga a projeção de sombras pela fonte de luz.
-        /// <br />
-        /// ATENÇÃO: este efeito tem forte influência sobre o desempenho do render, use-o com cautela.
-        /// </summary>
-        public bool CastShadow { get => castShadow; set => castShadow = value; } // TODO: implementar os efeitos de sombra
-
-        #endregion
-
-        #region (Public Methods)
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Shader"></param>
-        public void GetUniformLocations(Shader Shader)
+        public Light()
+            : this(Vector3.Zero, Vector3.One, Vector3.Zero)
         {
-            this.positionUniformLocation = GL.GetUniformLocation(Shader.ID, "lightPosition");
-            this.directionUniformLocation = GL.GetUniformLocation(Shader.ID, "lightDirection");
-            this.colorUniformLocation = GL.GetUniformLocation(Shader.ID, "lightColor");
-            this.intensityUniformLocation = GL.GetUniformLocation(Shader.ID, "lightIntensity");
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="Light"/> class.
+        /// </summary>
+        /// <param name="position"> PARAM TODO. </param>
+        /// <param name="intensity"> PARAM2 TODO. </param>
+        /// <param name="castShadow"> PARAM3 TODO. </param>
+        public Light(
+            Vector3 position,
+            float intensity = 1.0f,
+            bool castShadow = false)
+            : this(
+                  position,
+                  Vector3.One,
+                  Vector3.Zero,
+                  intensity,
+                  castShadow)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Light"/> class.
+        /// TODO.
+        /// </summary>
+        /// <param name="position"> PARAM TODO. </param>
+        /// <param name="color"> PARAM2 TODO. </param>
+        /// <param name="intensity"> PARAM3 TODO. </param>
+        /// <param name="castShadow"> PARAM4 TODO. </param>
+        public Light(
+            Vector3 position,
+            Vector3 color,
+            float intensity = 1.0f,
+            bool castShadow = false)
+            : this(
+                position,
+                color,
+                Vector3.Zero,
+                intensity,
+                castShadow)
+        {
+        }
+
+        /// <summary>
+        /// Gets or sets TODO.
+        /// </summary>
+        public Vector3 Position { get => this.position; set => this.position = value; }
+
+        /// <summary>
+        /// Gets or sets TODO.
+        /// </summary>
+        public Vector3 Direction { get => this.direction; set => this.direction = value; }
+
+        /// <summary>
+        /// Gets or sets TODO.
+        /// </summary>
+        public Vector3 Color { get => this.color; set => this.color = value; }
+
+        /// <summary>
+        /// Gets or sets TODO.
+        /// </summary>
+        public float Intensity { get => this.intensity; set => this.intensity = value; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether TODO.
+        /// </summary>
+        public bool CastShadow { get => this.castShadow; set => this.castShadow = value; } // TODO: implementar os efeitos de sombra
+
+        /// <summary>
+        /// Gets or sets TODO.
+        /// </summary>
+        public ref Vector3 PositionRef { get => ref this.position; }
+
+        /// <summary>
+        /// Gets TODO.
+        /// </summary>
+        public ref Vector3 DirectionRef { get => ref this.direction; }
+
+        /// <summary>
+        /// Gets TODO.
+        /// </summary>
+        public ref Vector3 ColorRef { get => ref this.color; }
+
+        /// <summary>
+        /// Gets TODO.
+        /// </summary>
+        public ref float IntensityRef { get => ref this.intensity; }
+
+        /// <summary>
+        /// Gets a value indicating whether TODO.
+        /// </summary>
+        public ref bool CastShadowRef { get => ref this.castShadow; }
+
+        /// <summary>
+        /// Gets the uniforms set.
+        /// </summary>
+        /// <param name="shader"> PARAM TODO. </param>
+        public void GetUniformLocations(Shader shader)
+        {
+            this.positionUniformLocation = GL.GetUniformLocation(shader.ID, "lightPosition");
+            this.directionUniformLocation = GL.GetUniformLocation(shader.ID, "lightDirection");
+            this.colorUniformLocation = GL.GetUniformLocation(shader.ID, "lightColor");
+            this.intensityUniformLocation = GL.GetUniformLocation(shader.ID, "lightIntensity");
+        }
+
+        /// <summary>
+        /// TODO.
         /// </summary>
         public void UpdateUniforms()
         {
@@ -154,27 +206,10 @@ namespace Framework.Core.Light
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
         public void Dispose()
         {
         }
-
-        #endregion
     }
-
-    #region (Enums)
-
-    /// <summary>
-    /// Tipos de luz: Directional | Spot | Point | Area
-    /// </summary>
-    enum LightType
-    {
-        Directional,    // TODO: implementar essas diferenças na classe Light e
-        Spot,           // uma forma de refletir essa mudança nos shaders
-        Point,          // (shaders modulares? hot-loading? precisa pesquisar soluções)
-        Area
-    }
-
-    #endregion
 }

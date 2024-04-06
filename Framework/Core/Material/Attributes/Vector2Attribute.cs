@@ -7,21 +7,31 @@ namespace Framework.Core.Material.Attributes
     using System.Numerics;
     using OpenTK.Graphics.OpenGL4;
 
+    /// <summary>
+    /// TODO.
+    /// </summary>
     public class Vector2Attribute : MaterialAttribute
     {
         private System.Numerics.Vector2 value;
 
-
-        public Vector2Attribute(string Label, System.Numerics.Vector2 Value) : base(Label)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Vector2Attribute"/> class.
+        /// TODO.
+        /// </summary>
+        /// <param name="label"> PARAM TODO. </param>
+        /// <param name="value"> PARAM2 TODO. </param>
+        public Vector2Attribute(string label, System.Numerics.Vector2 value)
+            : base(label)
         {
-            this.value = Value;
+            this.value = value;
 
-            UpdateUniform();
+            this.UpdateUniform();
         }
 
+        /// <inheritdoc/>
         public override void UpdateUniform()
         {
-            GL.Uniform2(this.UniformLocation, value.X, value.Y);
+            GL.Uniform2(this.UniformLocation, this.value.X, this.value.Y);
         }
 
         /// <inheritdoc/>

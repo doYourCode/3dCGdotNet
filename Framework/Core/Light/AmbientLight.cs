@@ -8,7 +8,7 @@ namespace Framework.Core.Light
     using OpenTK.Graphics.OpenGL4;
 
     /// <summary>
-    /// 
+    /// TODO.
     /// </summary>
     public class AmbientLight
     {
@@ -23,8 +23,8 @@ namespace Framework.Core.Light
         /// <summary>
         /// Initializes a new instance of the <see cref="AmbientLight"/> class.
         /// </summary>
-        /// <param name="color"></param>
-        /// <param name="intensity"></param>
+        /// <param name="color"> PARAM TODO. </param>
+        /// <param name="intensity"> PARAM2 TODO. </param>
         public AmbientLight(Vector3 color, float intensity = 1.0f)
         {
             this.color = color;
@@ -35,29 +35,34 @@ namespace Framework.Core.Light
         /// Initializes a new instance of the <see cref="AmbientLight"/> class.
         /// </summary>
         public AmbientLight()
-            : this(Vector3.Zero) { }
+            : this(Vector3.Zero)
+        {
+        }
 
         /// <summary>
-        /// 
+        /// Gets or sets TODO.
         /// </summary>
         public Vector3 Color { get => this.color; set => this.color = value; }
 
         /// <summary>
-        /// 
+        /// Gets TODO.
         /// </summary>
         public ref Vector3 ColorRef { get => ref this.color; }
 
         /// <summary>
-        /// 
+        /// Gets or sets TODO.
         /// </summary>
         public float Intensity { get => this.intensity; set => this.intensity = value; }
 
+        /// <summary>
+        /// Gets TODO.
+        /// </summary>
         public ref float IntensityRef { get => ref this.intensity; }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
-        /// <param name="shader"></param>
+        /// <param name="shader"> PARAM TODO. </param>
         public void GetUniformLocations(Shader shader)
         {
             this.colorUniformLocation = GL.GetUniformLocation(shader.ID, "ambientColor");
@@ -65,7 +70,7 @@ namespace Framework.Core.Light
         }
 
         /// <summary>
-        /// 
+        /// TODO.
         /// </summary>
         public void UpdateUniforms()
         {

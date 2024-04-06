@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="ViewLayer.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
-namespace _015_HelloScene
+namespace Examples
 {
+    /// <summary>
+    /// TODO.
+    /// </summary>
     internal class ViewLayer
     {
     }

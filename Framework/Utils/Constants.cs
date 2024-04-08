@@ -45,6 +45,11 @@ namespace Framework.Utils
         /// Same as zero, but useful for semantic reasons.
         /// </summary>
         public const uint NONE = 0;
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        public const double MAX_FPS = 512;
     }
 
 #pragma warning restore SA1310 // Field names should not contain underscore

@@ -5,6 +5,7 @@
 namespace Examples
 {
     using Framework.Utils;
+    using Framework.Utils.GUI;
     using OpenTK.Graphics.OpenGL;
     using OpenTK.Windowing.Common;
     using OpenTK.Windowing.Desktop;
@@ -18,7 +19,9 @@ namespace Examples
         // Constantes relacionadas aos atributos dos vértices
         private static readonly int POSITION = 0;
         private static readonly int[] OFFSET = { 0 };
-        private static readonly int VERTEX_SIZE = 3 * sizeof(float);
+        private static readonly int VERTEXSIZE = 3 * sizeof(float);
+
+        private FPSCounter fpsCounter;
 
         private float pointSize = 4.0f;
 
@@ -45,13 +48,16 @@ namespace Examples
         {
             base.OnLoad();
 
+            this.fpsCounter = new FPSCounter(this);
+
             // Dados que serão carregados no buffer (por hora só temos as posições dos vértices de um triângulo)
             float[] data =
             {
-                // Posições (no eixo X, Y e Z respectivamente)
-                -0.75f, -0.75f, 0.0f, // Vértice 0 -> canto inferior esquerdo
-                0.7f , -0.75f, 0.0f, // Vértice 1 -> canto inferior direito
-                0.0f  , 0.75f , 0.0f  // Vértice 2 -> canto superior (no centro da tela)
+            // Posições
+            // .X       Y        Z
+                -0.75f, -0.75f,  0.0f,  // Vértice 0 -> canto inferior esquerdo
+                0.7f,   -0.75f,  0.0f,  // Vértice 1 -> canto inferior direito
+                0.0f,   0.75f,   0.0f,  // Vértice 2 -> canto superior (no centro da tela)
             };
 
             // Gerar o buffer do objeto array de vértices (VAO) e armazenar o identificador do buffer na variável
@@ -79,7 +85,7 @@ namespace Examples
             GL.BufferData(BufferTarget.ArrayBuffer, data.Length * sizeof(float), data, BufferUsageHint.StaticDraw);
 
             // Cria e ativa um ponteiro de atributo associado ao buffer de vértices (VBO) que está ativo no momento
-            GL.VertexAttribPointer(POSITION, 3, VertexAttribPointerType.Float, false, VERTEX_SIZE, OFFSET[POSITION]);
+            GL.VertexAttribPointer(POSITION, 3, VertexAttribPointerType.Float, false, VERTEXSIZE, OFFSET[POSITION]);
             GL.EnableVertexAttribArray(POSITION);
 
             GL.ClearColor(1.0f, 1.0f, 0.0f, 1.0f);
@@ -106,6 +112,8 @@ namespace Examples
         {
             base.OnUpdateFrame(args);
 
+            this.fpsCounter.Update(args);
+
             GL.PointSize(this.pointSize);
         }
 
@@ -118,6 +126,7 @@ namespace Examples
             // dessa forma é necessário o programador apagar os dados quando eles não forem mais necessários.
             GL.BindBuffer(BufferTarget.ArrayBuffer, CONSTANTS.ZERO);
             GL.BindVertexArray(CONSTANTS.ZERO);
+
             GL.DeleteBuffer(this.vertexBufferObject);
             GL.DeleteVertexArray(this.vertexArrayObject);
         }

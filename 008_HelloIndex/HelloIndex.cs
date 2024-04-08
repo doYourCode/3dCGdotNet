@@ -3,6 +3,7 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
 using Framework.Core;
+using Framework.Utils.GUI;
 
 namespace Examples
 {
@@ -14,6 +15,8 @@ namespace Examples
         private const int UV = 2;
         private readonly int[] OFFSET = { 0, 12, 24 };
         private const int VERTEX_SIZE = 8 * sizeof(float);
+
+        private FPSCounter fpsCounter;
 
         private int indexCount = 0;
 
@@ -32,6 +35,8 @@ namespace Examples
         protected override void OnLoad()
         {
             base.OnLoad();
+
+            this.fpsCounter = new FPSCounter(this);
 
             float[] data =
             {  
@@ -154,6 +159,14 @@ namespace Examples
             GL.BindVertexArray(0);
 
             SwapBuffers();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnUpdateFrame(FrameEventArgs args)
+        {
+            base.OnUpdateFrame(args);
+
+            this.fpsCounter.Update(args);
         }
 
         protected override void OnUnload()

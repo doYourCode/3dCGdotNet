@@ -4,19 +4,20 @@
 
 namespace Examples
 {
+    using Framework.Utils.GUI;
     using OpenTK.Graphics.OpenGL;
     using OpenTK.Mathematics;
     using OpenTK.Windowing.Common;
     using OpenTK.Windowing.Desktop;
 
-    /// <summary>
-    /// Limpar e dispor um Frame Buffer, utilizando a funcionalidade disponível na biblioteca OpenTK.
-    /// </summary>
+    /// <inheritdoc/>
     internal class HelloSwapBuffers : GameWindow
     {
-        private Color4 bgColor = new Color4(0.0f, 0.0f, 0.0f, 1.0f);
+        private FPSCounter fpsCounter;
 
-        private int taxaDeAtualizacao = 3;
+        private Color4 backgroundColor = new Color4(0.0f, 0.0f, 0.0f, 1.0f);
+
+        private int taxaDeAtualizacao = 100;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HelloSwapBuffers"/> class.
@@ -30,66 +31,71 @@ namespace Examples
         {
         }
 
-        /// <summary>
-        /// O método 'OnLoad' é chamado uma vez, logo após a criação da janela.
-        /// Sua função é permitir que o usuário configure a janela, os objetos e
-        /// carregue os dados necessários antes de iniciar o loop de renderização.
-        /// </summary>
+        /// <inheritdoc/>
         protected override void OnLoad()
         {
             base.OnLoad();
 
+            this.fpsCounter = new FPSCounter(this);
+
             // Configura a cor de fundo do Frame Buffer.
-            GL.ClearColor(this.bgColor);
+            GL.ClearColor(this.backgroundColor);
         }
 
-        /// <summary>
-        /// O método 'OnUpdateFrame' é comumente chamado uma vez a cada frame (
-        /// podendo ser configurado de forma diferente). Neste método chamamos as
-        /// principais funções de lógica de negócio do programa.
-        /// </summary>
-        /// <param name="args">Argumentos com parâmetros individuais por iteração.</param>
+        /// <inheritdoc/>
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
 
-            this.bgColor.R += 0.00100f * this.taxaDeAtualizacao;
-            if (this.bgColor.R > 1.0f)
+            this.fpsCounter.Update(args);
+
+            // Diferença de tempo para cada frame, usada para suavisar qualquer
+            // animação de cores ou movimento.
+            float dT = (float)args.Time;
+
+            /* Para criar o efeito de variação de cores o que é feito é atualizar
+             * cada canal de cor por uma taxa. Note que para obter um efeito
+             * diferente para cada canal há um valor fixo e um variável por canal.
+            */
+
+            this.backgroundColor.R += 0.00100f * this.taxaDeAtualizacao * dT;
+            if (this.backgroundColor.R > 1.0f)
             {
-                this.bgColor.R = 0.0f;
+                this.backgroundColor.R = 0.0f;
             }
 
-            this.bgColor.G += 0.00013f * this.taxaDeAtualizacao;
-            if (this.bgColor.G > 1.0f)
+            this.backgroundColor.G += 0.00013f * this.taxaDeAtualizacao * dT;
+            if (this.backgroundColor.G > 1.0f)
             {
-                this.bgColor.G = 0.0f;
+                this.backgroundColor.G = 0.0f;
             }
 
-            this.bgColor.B += 0.00333f * this.taxaDeAtualizacao;
-            if (this.bgColor.B > 1.0f)
+            this.backgroundColor.B += 0.00333f * this.taxaDeAtualizacao * dT;
+            if (this.backgroundColor.B > 1.0f)
             {
-                this.bgColor.B = 0.0f;
+                this.backgroundColor.B = 0.0f;
             }
 
-            GL.ClearColor(this.bgColor);
+            GL.ClearColor(this.backgroundColor);
         }
 
-        /// <summary>
-        /// O método 'OnRenderFrame' é chamado uma vez a cada frame. Sua função
-        /// é chamar as funções que permitem desenhar na tela , utilizando os
-        /// dados disponíveis.
-        /// </summary>
-        /// <param name="args">Argumentos com parâmetros individuais por quadro.</param>
+        /// <inheritdoc/>
         protected override void OnRenderFrame(FrameEventArgs args)
         {
+            /* O método 'OnRenderFrame' é chamado uma vez a cada frame. Sua função
+             * é chamar as funções que permitem desenhar na tela , utilizando os
+             * dados disponíveis.
+            */
+
             base.OnRenderFrame(args);
 
             // Limpa o Frame Buffer, utilizando a cor de fundo.
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            // AQUI VOCÊ DEVERÁ DESENHAR OS OBJETOS
+            // AQUI ( entre GL.Clear(...) e this.SwapBuffers() ) VOCÊ DEVERÁ DESENHAR OS OBJETOS
 
-            // Disponibiliza o Frame Buffer na tela, alternando entre dois buffers que são pintados em sequência (Double buffering).
+            // Disponibiliza o Frame Buffer na tela, alternando entre dois buffers
+            // que são pintados em sequência (Double buffering).
             this.SwapBuffers();
         }
     }

@@ -1,31 +1,45 @@
-﻿using OpenTK.Windowing.Desktop;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
-using Framework.Core;
+﻿// <copyright file="Program.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Examples
 {
+    using Framework.Core;
+    using Framework.Utils;
+    using OpenTK.Mathematics;
+    using OpenTK.Windowing.Common;
+    using OpenTK.Windowing.Desktop;
+
+    /// <summary>
+    /// Entry point.
+    /// </summary>
     internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             NativeWindowSettings settings = new NativeWindowSettings()
             {
-                Title = "Hello Texture",
+                Title = "Hello Attribute",
                 ClientSize = new Vector2i(800, 800),
                 WindowBorder = WindowBorder.Fixed,
                 WindowState = WindowState.Normal,
                 APIVersion = new Version(3, 3),
-                Vsync = VSyncMode.On
+                Vsync = VSyncMode.Off,
             };
 
-            var window = new HelloTexture(GameWindowSettings.Default, settings);
+            GameWindowSettings gmSettings = new GameWindowSettings()
+            {
+                UpdateFrequency = CONSTANTS.MAX_FPS,
+            };
+
+            var appWindow = new HelloTexture(gmSettings, settings);
 
             Shader.RootPath = "Resources/Shader/";
+
             // Configura uma pasta raiz para carregar os arquivos de textura (a exemplo do que é feito com os Shaders)
             Texture.RootPath = "Resources/Texture/";
 
-            window.Run();
+            appWindow.Run();
         }
     }
 }

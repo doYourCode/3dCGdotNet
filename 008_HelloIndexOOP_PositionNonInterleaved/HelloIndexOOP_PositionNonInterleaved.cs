@@ -6,11 +6,14 @@ using Framework.Core;
 using Framework.Core.Buffer;
 using Framework.Core.Vertex;
 using Framework.Utils;
+using Framework.Utils.GUI;
 
 namespace Examples
 {
     internal class HelloIndexOOP_PositionNonInterleaved : GameWindow
     {
+        private FPSCounter fpsCounter;
+
         VertexBufferObject vbo;
         VertexBufferObject posVbo;
         VertexArrayObject vao;
@@ -29,6 +32,8 @@ namespace Examples
         protected override void OnLoad()
         {
             base.OnLoad();
+
+            this.fpsCounter = new FPSCounter(this);
 
             float[] positionData =
             {
@@ -190,6 +195,14 @@ namespace Examples
             Draw.Elements(vao, ebo.IndexCount);
 
             SwapBuffers();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnUpdateFrame(FrameEventArgs args)
+        {
+            base.OnUpdateFrame(args);
+
+            this.fpsCounter.Update(args);
         }
 
         protected override void OnUnload()

@@ -24,7 +24,7 @@ namespace Examples
                 WindowBorder = WindowBorder.Fixed,
                 WindowState = WindowState.Normal,
                 APIVersion = new Version(3, 3),
-                Vsync = VSyncMode.On,
+                Vsync = VSyncMode.Off,
             };
 
             var window = new HelloScene(GameWindowSettings.Default, settings);

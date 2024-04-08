@@ -1,18 +1,25 @@
-﻿using OpenTK.Graphics.OpenGL;
-using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Desktop;
-
-using Framework.Core;
-using Framework.Core.Buffer;
-using Framework.Core.Vertex;
-using Framework.Utils;
+﻿// <copyright file="HelloUniform.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Examples
 {
+    using Framework.Core;
+    using Framework.Core.Buffer;
+    using Framework.Core.Vertex;
+    using Framework.Utils;
+    using Framework.Utils.GUI;
+    using OpenTK.Graphics.OpenGL;
+    using OpenTK.Windowing.Common;
+    using OpenTK.Windowing.Desktop;
+
+    /// <inheritdoc/>
     internal class HelloUniform : GameWindow
     {
-        VertexBufferObject vbo;
-        VertexArrayObject vao;
+        private FPSCounter fpsCounter;
+
+        private VertexBufferObject vbo;
+        private VertexArrayObject vao;
 
         private Shader shader;
 
@@ -20,65 +27,81 @@ namespace Examples
         private int tickUniformLocation;
         private float tick = 0.0f;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HelloUniform"/> class.
+        /// </summary>
+        /// <param name="gameWindowSettings"> PARAM TODO. </param>
+        /// <param name="nativeWindowSettings"> PARAM2 TODO. </param>
         public HelloUniform(
             GameWindowSettings gameWindowSettings,
-            NativeWindowSettings nativeWindowSettings) :
-            base(gameWindowSettings, nativeWindowSettings) { }
+            NativeWindowSettings nativeWindowSettings)
+            : base(gameWindowSettings, nativeWindowSettings)
+        {
+        }
 
+        /// <inheritdoc/>
         protected override void OnLoad()
         {
             base.OnLoad();
 
+            this.fpsCounter = new FPSCounter(this);
+
             float[] data =
             {
+            // .X       Y       Z
                 -0.75f, -0.75f, 0.0f,
-                0.75f , -0.75f, 0.0f,
-                0.0f  , 0.75f , 0.0f
+                0.75f,  -0.75f, 0.0f,
+                0.0f,   0.75f,  0.0f,
             };
 
-            vbo = new VertexBufferObject(data);
+            this.vbo = new VertexBufferObject(data);
 
             VertexFormat vertexFormat = new VertexFormat();
-            vertexFormat.AddAttribute(vbo, VertexAttributeType.Position);
+            vertexFormat.AddAttribute(this.vbo, VertexAttributeType.Position);
 
-            vao = new VertexArrayObject(vertexFormat);
+            this.vao = new VertexArrayObject(vertexFormat);
 
-            shader = new Shader("HelloUniform");
+            this.shader = new Shader("HelloUniform");
 
-            tickUniformLocation = GL.GetUniformLocation(shader.ID, "tick");
+            this.tickUniformLocation = GL.GetUniformLocation(this.shader.ID, "tick");
 
             GL.ClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         }
 
+        /// <inheritdoc/>
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             base.OnRenderFrame(args);
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            shader.Use();
+            this.shader.Use();
 
-            GL.Uniform1(tickUniformLocation, tick);
+            GL.Uniform1(this.tickUniformLocation, this.tick);
 
-            Draw.Triangles(vao, 0, 3);
+            Draw.Triangles(this.vao, 0, 3);
 
-            SwapBuffers();
+            this.SwapBuffers();
         }
 
+        /// <inheritdoc/>
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
 
-            tick += 0.01f;
+            this.tick += 1.66f * (float)args.Time;
+
+            this.fpsCounter.Update(args);
         }
 
+        /// <inheritdoc/>
         protected override void OnUnload()
         {
             base.OnUnload();
 
-            vbo.Dispose();
-            vao.Dispose();
-            shader.Dispose();
+            this.vbo.Dispose();
+            this.vao.Dispose();
+            this.shader.Dispose();
         }
     }
 }

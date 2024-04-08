@@ -16,11 +16,11 @@ namespace Examples
     using OpenTK.Windowing.Desktop;
     using ShaderType = ExamplesCommon.ShaderType;
 
-    /// <summary>
-    /// Exemplo de como estruturas shaders e materiais.
-    /// </summary>
+    /// <inheritdoc/>
     public class HelloScene : GameWindow
     {
+        private FPSCounter fpsCounter;
+
         private BasicScene scene;
 
         private Texture texture;
@@ -49,6 +49,8 @@ namespace Examples
         protected override void OnLoad()
         {
             base.OnLoad();
+
+            this.fpsCounter = new FPSCounter(this);
 
             // Cena
             this.scene = new BasicScene("SCENE.dae");
@@ -125,6 +127,8 @@ namespace Examples
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
+
+            this.fpsCounter.Update(args);
 
             this.light.UpdateUniforms();
             this.ambientLight.UpdateUniforms();

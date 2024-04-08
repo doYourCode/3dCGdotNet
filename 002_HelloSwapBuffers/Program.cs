@@ -4,12 +4,13 @@
 
 namespace Examples
 {
+    using Framework.Utils;
     using OpenTK.Mathematics;
     using OpenTK.Windowing.Common;
     using OpenTK.Windowing.Desktop;
 
     /// <summary>
-    /// Ponto de entrada.
+    /// Entry point.
     /// </summary>
     internal class Program
     {
@@ -22,12 +23,17 @@ namespace Examples
                 WindowBorder = WindowBorder.Fixed,
                 WindowState = WindowState.Normal,
                 APIVersion = new Version(3, 3),
-                Vsync = VSyncMode.On,
+                Vsync = VSyncMode.Off,
             };
 
-            var window = new HelloSwapBuffers(GameWindowSettings.Default, settings);
+            GameWindowSettings gmSettings = new GameWindowSettings()
+            {
+                UpdateFrequency = CONSTANTS.MAX_FPS,
+            };
 
-            window.Run();
+            var appWindow = new HelloSwapBuffers(gmSettings, settings);
+
+            appWindow.Run();
         }
     }
 }

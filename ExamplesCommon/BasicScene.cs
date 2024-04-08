@@ -4,11 +4,9 @@
 
 namespace ExamplesCommon
 {
-    using System.Numerics;
     using Assimp;
     using Framework.Core;
     using Framework.Core.Resource;
-    using OpenTK.Mathematics;
 
     /// <summary>
     /// A simple implementation of a scene using a list og scene elements.
@@ -55,29 +53,21 @@ namespace ExamplesCommon
                 Assimp.Quaternion rotation = new ();
                 Vector3D position = new ();
 
-                node.Transform.Decompose(out scale, out rotation, out position);    Console.WriteLine(node.Name);
+                node.Transform.Decompose(out scale, out rotation, out position);
+                Console.WriteLine(node.Name);
 
-                System.Numerics.Vector3 snposition = new (
-                    position.X,
-                    position.Y,
-                    position.Z); Console.WriteLine("Position: " + snposition);
+                Console.WriteLine("Position: " + position);
 
-                System.Numerics.Vector3 snrotation = new (
-                    MathHelper.RadiansToDegrees(rotation.X),
-                    MathHelper.RadiansToDegrees(rotation.Y),
-                    MathHelper.RadiansToDegrees(rotation.Z));   Console.WriteLine("Rotation: " + snrotation);
+                Console.WriteLine("Rotation: " + rotation);
 
-                System.Numerics.Vector3 snscale = new (
-                    scale.X,
-                    scale.Y,
-                    scale.Z);   Console.WriteLine("Scale: " + snscale);
+                Console.WriteLine("Scale: " + scale);
 
                 foreach (int i in node.MeshIndices)
                 {
                     // TODO: add transform support
                     Mesh mesh = scene.Meshes[i];
                     this.sceneMeshes.Add(mesh.Name, new BasicMesh(mesh));
-                    this.sceneTransforms.Add(mesh.Name, new Transform(snposition * 1.0f, snrotation * 1.0f, snscale * 1.0f));
+                    this.sceneTransforms.Add(mesh.Name, new Transform(position, rotation, scale));
                 }
             }
         }

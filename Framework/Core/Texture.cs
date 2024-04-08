@@ -21,7 +21,7 @@ namespace Framework.Core
         /// Initializes a new instance of the <see cref="Texture"/> class.
         /// </summary>
         public Texture()
-            : base("Texture ", (uint)GL.GenTexture())
+            : base("Texture", (uint)GL.GenTexture())
         {
         }
 
@@ -30,7 +30,7 @@ namespace Framework.Core
         /// </summary>
         /// <param name="id"> PARAM TODO. </param>
         public Texture(uint id)
-            : base("Texture ", id)
+            : base("Texture", id)
         {
         }
 
@@ -66,9 +66,10 @@ namespace Framework.Core
         /// </summary>
         /// <param name="path"> PARAM TODO. </param>
         /// <param name="unit"> PARAM2 TODO. </param>
-        /// <param name="invertY"> PARAM3 TODO. </param>
+        /// /// <param name="label"> PARAM3 TODO. </param>
+        /// <param name="invertY"> PARAM4 TODO. </param>
         /// <returns> RETURN TODO. </returns>
-        public static Texture LoadFromFile(string path, TextureUnit unit, bool invertY = false)
+        public static Texture LoadFromFile(string path, TextureUnit unit, string? label = null,  bool invertY = false)
         {
             path = rootPath + path;
 
@@ -119,7 +120,12 @@ namespace Framework.Core
 
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
-            return new Texture(handle);
+            if (label == null)
+            {
+                return new Texture(handle);
+            }
+
+            return new Texture(label, handle);
         }
 
         /// <summary>

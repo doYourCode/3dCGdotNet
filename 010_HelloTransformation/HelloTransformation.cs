@@ -1,11 +1,16 @@
-﻿using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Desktop;
-using OpenTK.Graphics.OpenGL4;
-using Framework.Core;
-using ExamplesCommon;
+﻿// <copyright file="HelloTransformation.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Examples
 {
+    using ExamplesCommon;
+    using Framework.Core;
+    using OpenTK.Graphics.OpenGL4;
+    using OpenTK.Windowing.Common;
+    using OpenTK.Windowing.Desktop;
+
+    /// <inheritdoc/>
     internal class HelloTransformation : GameWindow
     {
         private float tick = 0.0f;
@@ -16,31 +21,38 @@ namespace Examples
         private BasicMesh mesh;
         private Transform transform;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HelloTransformation"/> class.
+        /// </summary>
+        /// <param name="gameWindowSettings"> PARAM TODO. </param>
+        /// <param name="nativeWindowSettings"> PARAM2 TODO. </param>
         public HelloTransformation(
             GameWindowSettings gameWindowSettings,
-            NativeWindowSettings nativeWindowSettings) :
-            base(gameWindowSettings, nativeWindowSettings)
+            NativeWindowSettings nativeWindowSettings)
+            : base(gameWindowSettings, nativeWindowSettings)
         {
-            Title = "Hello Transformation!";
+            this.Title = "Hello Transformation!";
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad()
         {
             base.OnLoad();
 
             GL.Enable(EnableCap.DepthTest);
 
-            shader = new Shader("HelloTransformation");
+            this.shader = new Shader("HelloTransformation");
 
-            texture = Texture.LoadFromFile("Suzanne.png", TextureUnit.Texture0);
+            this.texture = Texture.LoadFromFile("Suzanne.png", TextureUnit.Texture0);
 
-            mesh = new BasicMesh("Monkey.fbx");
+            this.mesh = new BasicMesh("Monkey.fbx");
 
-            transform = new Transform();
+            this.transform = new Transform();
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         }
 
+        /// <inheritdoc/>
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             base.OnRenderFrame(args);
@@ -48,37 +60,36 @@ namespace Examples
             // Limpar a tela antes de desenhar (usando a clear color)
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            texture.Use(TextureUnit.Texture0);
-            shader.Use();
+            this.texture.Use(TextureUnit.Texture0);
+            this.shader.Use();
 
-            mesh.Draw();
+            this.mesh.Draw();
 
-            SwapBuffers();
+            this.SwapBuffers();
         }
 
+        /// <inheritdoc/>
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
 
             // Rotate the model matrix (experimente alterar esses valores)
-            transform.SetRotationY((float)System.Math.Cos(tick));
-            // P/ rotacionar nos outros eixos descomente as linhas abaixo
-            //_transform.SetRotationX(_tick);
-            //_transform.SetRotationZ(_tick);
+            this.transform.SetRotationY((float)System.Math.Cos(this.tick));
 
             // Identity matrix (per object)
-            shader.SetMatrix4("model", transform.GetModelMatrix());
+            this.shader.SetMatrix4("model", this.transform.GetModelMatrix());
 
-            tick += 0.0001f * speed;
+            this.tick += 0.0001f * this.speed;
         }
 
+        /// <inheritdoc/>
         protected override void OnUnload()
         {
             base.OnUnload();
 
-            mesh.Dispose();
-            shader.Dispose();
-            texture.Dispose();
+            this.mesh.Dispose();
+            this.shader.Dispose();
+            this.texture.Dispose();
         }
     }
 }

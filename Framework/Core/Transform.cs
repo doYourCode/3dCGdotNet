@@ -14,7 +14,7 @@ namespace Framework.Core
     {
         private Vector3 position;
 
-        private Vector3 rotation;
+        private Quaternion rotation; // private Vector3 rotation;
 
         private Vector3 scale;
 
@@ -24,7 +24,7 @@ namespace Framework.Core
         /// <param name="position"> Posição. </param>
         /// <param name="rotation"> Rotação. </param>
         /// <param name="scale"> Escala. </param>
-        public Transform(Vector3 position, Vector3 rotation, Vector3 scale)
+        public Transform(Vector3 position, Quaternion rotation, Vector3 scale)
         {
             this.position = position;
             this.rotation = rotation;
@@ -39,30 +39,39 @@ namespace Framework.Core
         /// <param name="scale"> Escala. </param>
         public Transform(
             System.Numerics.Vector3 position,
-            System.Numerics.Vector3 rotation,
+            System.Numerics.Quaternion rotation,
             System.Numerics.Vector3 scale)
         {
-            this.position = new ();
-            this.position.X = position.X;
-            this.position.Y = position.Y;
-            this.position.Z = position.Z;
+            this.position = new (position.X, position.Y, position.Z);
 
-            this.rotation = new ();
-            this.rotation.X = rotation.X;
-            this.rotation.Y = rotation.Y;
-            this.rotation.Z = rotation.Z;
+            this.rotation = new (rotation.X, rotation.Y, rotation.Z, rotation.W);
 
-            this.scale = new ();
-            this.scale.X = scale.X;
-            this.scale.Y = scale.Y;
-            this.scale.Z = scale.Z;
+            this.scale = new (scale.X, scale.Y, scale.Z);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Transform"/> class.
+        /// </summary>
+        /// <param name="position"> Posição. </param>
+        /// <param name="rotation"> Rotação. </param>
+        /// <param name="scale"> Escala. </param>
+        public Transform(
+            Assimp.Vector3D position,
+            Assimp.Quaternion rotation,
+            Assimp.Vector3D scale)
+        {
+            this.position = new (position.X, position.Y, position.Z);
+
+            this.rotation = new (rotation.X, rotation.Y, rotation.Z, rotation.W);
+
+            this.scale = new (scale.X, scale.Y, scale.Z);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Transform"/> class.
         /// </summary>
         public Transform()
-            : this(Vector3.Zero, Vector3.Zero, Vector3.One)
+            : this(Vector3.Zero, Quaternion.Identity, Vector3.One)
         {
         }
 
@@ -72,7 +81,7 @@ namespace Framework.Core
         /// </summary>
         /// <param name="position"> PARAM TODO. </param>
         public Transform(Vector3 position)
-            : this(position, Vector3.Zero, Vector3.One)
+            : this(position, Quaternion.Identity, Vector3.One)
         {
         }
 
@@ -82,7 +91,7 @@ namespace Framework.Core
         /// </summary>
         /// <param name="position"> PARAM TODO. </param>
         /// <param name="rotation"> PARAM2 TODO. </param>
-        public Transform(Vector3 position, Vector3 rotation)
+        public Transform(Vector3 position, Quaternion rotation)
             : this(position, rotation, Vector3.One)
         {
         }
@@ -95,7 +104,7 @@ namespace Framework.Core
         /// <summary>
         /// Gets or sets TODO.
         /// </summary>
-        public Vector3 Rotation { get => this.rotation; set => this.rotation = value; }
+        public Quaternion Rotation { get => this.rotation; set => this.rotation = value; }
 
         /// <summary>
         /// Gets or sets TODO.
@@ -110,10 +119,7 @@ namespace Framework.Core
         {
             Matrix4 posMat = Matrix4.CreateTranslation(this.position);
             Matrix4 scaleMat = Matrix4.CreateScale(this.scale);
-            Matrix4 rotX = Matrix4.CreateRotationX(this.rotation.X);
-            Matrix4 rotY = Matrix4.CreateRotationY(this.rotation.Y);
-            Matrix4 rotZ = Matrix4.CreateRotationZ(this.rotation.Z);
-            Matrix4 rotMat = rotX * rotY * rotZ;
+            Matrix4 rotMat = Matrix4.CreateFromQuaternion(this.rotation);
 
             return posMat * rotMat * scaleMat;
         }
@@ -141,7 +147,7 @@ namespace Framework.Core
         /// TODO.
         /// </summary>
         /// <returns> RETURN TODO. </returns>
-        public Vector3 GetRotation()
+        public Quaternion GetRotation()
         {
             return this.rotation;
         }
@@ -220,7 +226,7 @@ namespace Framework.Core
         /// TODO.
         /// </summary>
         /// <param name="rotation"> PARAM TODO. </param>
-        public void SetRotation(Vector3 rotation)
+        public void SetRotation(Quaternion rotation)
         {
             this.rotation = rotation;
         }
@@ -255,14 +261,25 @@ namespace Framework.Core
         /// <summary>
         /// TODO.
         /// </summary>
+        /// <param name="rot"> PARAM TODO. </param>
+        public void SetRotationW(float rot)
+        {
+            this.rotation.W = rot;
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
         /// <param name="x"> PARAM TODO. </param>
         /// <param name="y"> PARAM2 TODO. </param>
         /// <param name="z"> PARAM3 TODO. </param>
-        public void SetRotation(float x, float y, float z)
+        /// <param name="w"> PARAM4 TODO. </param>
+        public void SetRotation(float x, float y, float z, float w)
         {
             this.rotation.X = x;
             this.rotation.Y = y;
             this.rotation.Z = z;
+            this.rotation.W = w;
         }
 
         /// <summary>

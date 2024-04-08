@@ -24,7 +24,6 @@ namespace Examples
         private BasicScene scene;
 
         private Texture texture;
-        private Transform transform;
 
         private Light light;
         private AmbientLight ambientLight;
@@ -57,10 +56,6 @@ namespace Examples
             // Textura
             this.texture = Texture.LoadFromFile("Uv_checker_01.png", TextureUnit.Texture0);
 
-            // Transform
-            this.transform = new Transform();
-            this.transform.SetRotationY(3.14f);
-
             // Material
             MaterialFormat format = new ();
             format.AddFloat("roughness", 0.5f);
@@ -91,7 +86,7 @@ namespace Examples
             this.ambientLight.GetUniformLocations(this.basicMaterial.Shader);
 
             // Câmera
-            this.camera = new PerspectiveCamera(Vector3.UnitZ * 1.5f, this.Size.X / (float)this.Size.Y);
+            this.camera = new PerspectiveCamera(new Vector3(2.0f, 2.0f, 2.0f), this.Size.X / (float)this.Size.Y);
             this.camera.GetUniformLocations(this.basicMaterial.Shader);
 
             this.cameraController = new CameraController(this.camera, this);

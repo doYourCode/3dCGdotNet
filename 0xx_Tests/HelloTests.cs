@@ -32,7 +32,7 @@ namespace Examples
         {
             Transform transform = new Transform();
             transform.SetPosition(10, 20, 30);
-            transform.SetRotation(100, 200, 300);
+            transform.SetRotation(100, 200, 300, 0);
             transform.SetScale(0.1f, 0.2f, 0.3f);
 
             Print.Mat4(transform.GetModelMatrix());

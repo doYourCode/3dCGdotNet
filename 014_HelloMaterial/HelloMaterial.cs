@@ -22,6 +22,8 @@ namespace Examples
     /// </summary>
     public class HelloMaterial : GameWindow
     {
+        private FPSCounter fpsCounter;
+
         private ViewLayer view;
 
         private Dictionary<string, BasicMesh> meshes;
@@ -55,6 +57,8 @@ namespace Examples
         {
             base.OnLoad();
 
+            this.fpsCounter = new FPSCounter(this);
+
             // Modelos 3D
             this.meshes = new Dictionary<string, BasicMesh>
             {
@@ -75,8 +79,12 @@ namespace Examples
             format.AddFloat("specularPower", 9.0f);
             format.AddVector3("specularColor", new System.Numerics.Vector3(0.9f, 0.9f, 1.0f));
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
             this.basicMaterial = new BasicMaterial(ShaderType.Phong, format);
             this.basicMaterial.GetUniformLocations();
+
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // Luz
             this.light = new Light(
@@ -153,6 +161,8 @@ namespace Examples
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
+
+            this.fpsCounter.Update(args);
 
             this.view.Update(this, args);
 

@@ -1,14 +1,22 @@
-﻿using OpenTK.Windowing.Desktop;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
-using Framework.Core;
-using ExamplesCommon;
+﻿// <copyright file="Program.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Examples
 {
+    using ExamplesCommon;
+    using Framework.Core;
+    using Framework.Utils;
+    using OpenTK.Mathematics;
+    using OpenTK.Windowing.Common;
+    using OpenTK.Windowing.Desktop;
+
+    /// <summary>
+    /// Entry point.
+    /// </summary>
     internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             NativeWindowSettings settings = new NativeWindowSettings()
             {
@@ -17,16 +25,21 @@ namespace Examples
                 WindowBorder = WindowBorder.Fixed,
                 WindowState = WindowState.Normal,
                 APIVersion = new Version(3, 3),
-                Vsync = VSyncMode.On
+                Vsync = VSyncMode.Off,
             };
 
-            var window = new HelloGUI(GameWindowSettings.Default, settings);
+            GameWindowSettings gmSettings = new GameWindowSettings()
+            {
+                UpdateFrequency = CONSTANTS.ZERO,
+            };
+
+            var appWindow = new HelloGUI(gmSettings, settings);
 
             Shader.RootPath = "Resources/Shader/";
             Texture.RootPath = "Resources/Texture/";
             BasicMesh.RootPath = "Resources/Mesh/";
 
-            window.Run();
+            appWindow.Run();
         }
     }
 }

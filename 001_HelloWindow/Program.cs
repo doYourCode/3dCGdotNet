@@ -33,7 +33,7 @@ namespace Examples
             // Mais configurações de janela (relacionadas às funções da engine)
             GameWindowSettings gmSettings = new GameWindowSettings()
             {
-                UpdateFrequency = CONSTANTS.MAX_FPS,    // FPS configurado na Framework
+                UpdateFrequency = CONSTANTS.ZERO,    // FPS configurado na Framework
             };
 
             // Instanciação da janela

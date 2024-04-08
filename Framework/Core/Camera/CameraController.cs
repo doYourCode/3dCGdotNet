@@ -41,7 +41,8 @@ namespace Framework.Core.Camera
         /// <param name="mouse"> PARAM3 TODO. </param>
         public void Update(FrameEventArgs e, KeyboardState input, MouseState mouse)
         {
-            if (!this.window.IsFocused) // Check to see if the window is focused
+            // Check to see if the window is focused
+            if (!this.window.IsFocused)
             {
                 return;
             }
@@ -56,34 +57,40 @@ namespace Framework.Core.Camera
 
             if (input.IsKeyDown(Keys.W))
             {
-                this.camera.Position += this.camera.Front * cameraSpeed * (float)e.Time; // Forward
+                // Forward
+                this.camera.Position += this.camera.Front * cameraSpeed * (float)e.Time;
             }
             else if (input.IsKeyDown(Keys.S))
             {
-                this.camera.Position -= this.camera.Front * cameraSpeed * (float)e.Time; // Backwards
+                // Backwards
+                this.camera.Position -= this.camera.Front * cameraSpeed * (float)e.Time;
             }
 
             if (input.IsKeyDown(Keys.A))
             {
-                this.camera.Position -= this.camera.Right * cameraSpeed * (float)e.Time; // Left
+                // Left
+                this.camera.Position -= this.camera.Right * cameraSpeed * (float)e.Time;
             }
             else if (input.IsKeyDown(Keys.D))
             {
-                this.camera.Position += this.camera.Right * cameraSpeed * (float)e.Time; // Right
+                // Right
+                this.camera.Position += this.camera.Right * cameraSpeed * (float)e.Time;
             }
 
             if (input.IsKeyDown(Keys.Q))
             {
-                this.camera.Position += this.camera.Up * cameraSpeed * (float)e.Time; // Up
+                // Up
+                this.camera.Position += this.camera.Up * cameraSpeed * (float)e.Time;
             }
             else if (input.IsKeyDown(Keys.E))
             {
-                this.camera.Position -= this.camera.Up * cameraSpeed * (float)e.Time; // Down
+                // Down
+                this.camera.Position -= this.camera.Up * cameraSpeed * (float)e.Time;
             }
 
             if (mouse.IsButtonDown(MouseButton.Right))
             {
-                if (this.firstMove) // This bool variable is initially set to true.
+                if (this.firstMove)
                 {
                     this.lastPos = new Vector2(mouse.X, mouse.Y);
                     this.firstMove = false;
@@ -97,7 +104,9 @@ namespace Framework.Core.Camera
 
                     // Apply the camera pitch and yaw (we clamp the pitch in the camera class)
                     this.camera.Yaw += deltaX * sensitivity;
-                    this.camera.Pitch -= deltaY * sensitivity; // Reversed since y-coordinates range from bottom to top
+
+                    // Reversed since y-coordinates range from bottom to top
+                    this.camera.Pitch -= deltaY * sensitivity;
                 }
             }
 

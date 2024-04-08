@@ -1,4 +1,4 @@
-﻿// <copyright file="HelloIndexOOP_PositionNonInterleaved.cs" company="PlaceholderCompany">
+﻿// <copyright file="HelloIndexOOP_AllNonInterleaved.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
@@ -14,12 +14,13 @@ namespace Examples
     using OpenTK.Windowing.Desktop;
 
     /// <inheritdoc/>
-    internal class HelloIndexOOP_PositionNonInterleaved : GameWindow
+    internal class HelloIndexOOP_AllNonInterleaved : GameWindow
     {
         private FPSCounter fpsCounter;
 
-        private VertexBufferObject vbo;
+        private VertexBufferObject colorVbo;
         private VertexBufferObject posVbo;
+        private VertexBufferObject texcoordVbo;
         private VertexArrayObject vao;
         private ElementBufferObject ebo;
 
@@ -28,11 +29,11 @@ namespace Examples
         private Texture texture;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HelloIndexOOP_PositionNonInterleaved"/> class.
+        /// Initializes a new instance of the <see cref="HelloIndexOOP_AllNonInterleaved"/> class.
         /// </summary>
         /// <param name="gameWindowSettings"> PARAM TODO. </param>
         /// <param name="nativeWindowSettings"> PARAM2 TODO. </param>
-        public HelloIndexOOP_PositionNonInterleaved(
+        public HelloIndexOOP_AllNonInterleaved(
             GameWindowSettings gameWindowSettings,
             NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -104,62 +105,120 @@ namespace Examples
                 0.868952f,  -0.567358f, -0.000050f,
             };
 
-            float[] data =
+            float[] colorData =
             {
-            // .Color                               Texture coordinates
-            // .R           G           B           U           V
-                0.000000f,  1.000000f,  0.000000f,  1.000000f,  -0.000000f, // Triangle
-                0.000000f,  0.000000f,  1.000000f,  0.500000f,  -1.000000f,
-                1.000000f,  0.000000f,  0.000000f,  0.000000f,  -0.000000f,
+            // .Color
+            // .R           G           B
+                0.000000f,  1.000000f,  0.000000f,  // Triangle
+                0.000000f,  0.000000f,  1.000000f,
+                1.000000f,  0.000000f,  0.000000f,
 
-                1.000000f,  0.000000f,  0.000000f,  0.000000f,  -0.000000f, // Square
-                0.000000f,  1.000000f,  0.000000f,  1.000000f,  -0.000000f,
-                0.000000f,  0.000000f,  1.000000f,  1.000000f,  -1.000000f,
-                0.000000f,  0.000000f,  1.000000f,  0.000000f,  -1.000000f,
+                1.000000f,  0.000000f,  0.000000f,  // Square
+                0.000000f,  1.000000f,  0.000000f,
+                0.000000f,  0.000000f,  1.000000f,
+                0.000000f,  0.000000f,  1.000000f,
 
-                0.000000f,  1.000000f,  0.000000f,  1.000000f,  -0.500000f, // Hexagon
-                1.000000f,  0.000000f,  0.000000f,  0.750000f,  -1.000000f,
-                1.000000f,  0.000000f,  0.000000f,  0.250000f,  -1.000000f,
-                0.000000f,  1.000000f,  0.000000f,  0.000000f,  -0.500000f,
-                0.000000f,  0.000000f,  1.000000f,  0.250000f,  -0.000000f,
-                0.000000f,  0.000000f,  1.000000f,  0.750000f,  -0.000000f,
+                0.000000f,  1.000000f,  0.000000f,  // Hexagon
+                1.000000f,  0.000000f,  0.000000f,
+                1.000000f,  0.000000f,  0.000000f,
+                0.000000f,  1.000000f,  0.000000f,
+                0.000000f,  0.000000f,  1.000000f,
+                0.000000f,  0.000000f,  1.000000f,
 
-                1.000000f,  0.000000f,  0.000000f,  1.000000f,  -0.500000f, // Circle
-                0.944444f,  0.000000f,  0.000000f,  0.991936f,  -0.589810f,
-                0.888888f,  0.000000f,  0.000000f,  0.968690f,  -0.674366f,
-                0.833333f,  0.000000f,  0.000000f,  0.931680f,  -0.752249f,
-                0.777777f,  0.000000f,  0.000000f,  0.882324f,  -0.822041f,
-                0.722222f,  0.000000f,  0.000000f,  0.822041f,  -0.882324f,
-                0.666666f,  0.000000f,  0.000000f,  0.752249f,  -0.931680f,
-                0.611111f,  0.000000f,  0.000000f,  0.674366f,  -0.968690f,
-                0.555555f,  0.000000f,  0.000000f,  0.589810f,  -0.991936f,
-                0.500000f,  0.000000f,  0.000000f,  0.500000f,  -1.000000f,
-                0.444444f,  0.000000f,  0.000000f,  0.410190f,  -0.991936f,
-                0.388888f,  0.000000f,  0.000000f,  0.325634f,  -0.968690f,
-                0.333333f,  0.000000f,  0.000000f,  0.247751f,  -0.931680f,
-                0.277777f,  0.000000f,  0.000000f,  0.177959f,  -0.882324f,
-                0.222222f,  0.000000f,  0.000000f,  0.117676f,  -0.822041f,
-                0.166666f,  0.000000f,  0.000000f,  0.068320f,  -0.752249f,
-                0.111111f,  0.000000f,  0.000000f,  0.031310f,  -0.674366f,
-                0.055555f,  0.000000f,  0.000000f,  0.008064f,  -0.589810f,
-                0.111111f,  0.000000f,  0.000000f,  0.000000f,  -0.500000f,
-                0.166666f,  0.000000f,  0.000000f,  0.008064f,  -0.410190f,
-                0.222222f,  0.000000f,  0.000000f,  0.031310f,  -0.325634f,
-                0.277777f,  0.000000f,  0.000000f,  0.068320f,  -0.247751f,
-                0.333333f,  0.000000f,  0.000000f,  0.117676f,  -0.177959f,
-                0.388888f,  0.000000f,  0.000000f,  0.177959f,  -0.117676f,
-                0.444444f,  0.000000f,  0.000000f,  0.247751f,  -0.068320f,
-                0.500000f,  0.000000f,  0.000000f,  0.325634f,  -0.031310f,
-                0.555555f,  0.000000f,  0.000000f,  0.410190f,  -0.008064f,
-                0.611111f,  0.000000f,  0.000000f,  0.500000f,  -0.000000f,
-                0.666666f,  0.000000f,  0.000000f,  0.589810f,  -0.008064f,
-                0.722222f,  0.000000f,  0.000000f,  0.674366f,  -0.031310f,
-                0.777777f,  0.000000f,  0.000000f,  0.752249f,  -0.068320f,
-                0.833333f,  0.000000f,  0.000000f,  0.822041f,  -0.117676f,
-                0.888888f,  0.000000f,  0.000000f,  0.882324f,  -0.177959f,
-                0.944444f,  0.000000f,  0.000000f,  0.931680f,  -0.247751f,
-                1.000000f,  0.000000f,  0.000000f,  0.968690f,  -0.325634f,
-                1.000000f,  0.000000f,  0.000000f,  0.991936f,  -0.410190f,
+                1.000000f,  0.000000f,  0.000000f,  // Circle
+                0.944444f,  0.000000f,  0.000000f,
+                0.888888f,  0.000000f,  0.000000f,
+                0.833333f,  0.000000f,  0.000000f,
+                0.777777f,  0.000000f,  0.000000f,
+                0.722222f,  0.000000f,  0.000000f,
+                0.666666f,  0.000000f,  0.000000f,
+                0.611111f,  0.000000f,  0.000000f,
+                0.555555f,  0.000000f,  0.000000f,
+                0.500000f,  0.000000f,  0.000000f,
+                0.444444f,  0.000000f,  0.000000f,
+                0.388888f,  0.000000f,  0.000000f,
+                0.333333f,  0.000000f,  0.000000f,
+                0.277777f,  0.000000f,  0.000000f,
+                0.222222f,  0.000000f,  0.000000f,
+                0.166666f,  0.000000f,  0.000000f,
+                0.111111f,  0.000000f,  0.000000f,
+                0.055555f,  0.000000f,  0.000000f,
+                0.111111f,  0.000000f,  0.000000f,
+                0.166666f,  0.000000f,  0.000000f,
+                0.222222f,  0.000000f,  0.000000f,
+                0.277777f,  0.000000f,  0.000000f,
+                0.333333f,  0.000000f,  0.000000f,
+                0.388888f,  0.000000f,  0.000000f,
+                0.444444f,  0.000000f,  0.000000f,
+                0.500000f,  0.000000f,  0.000000f,
+                0.555555f,  0.000000f,  0.000000f,
+                0.611111f,  0.000000f,  0.000000f,
+                0.666666f,  0.000000f,  0.000000f,
+                0.722222f,  0.000000f,  0.000000f,
+                0.777777f,  0.000000f,  0.000000f,
+                0.833333f,  0.000000f,  0.000000f,
+                0.888888f,  0.000000f,  0.000000f,
+                0.944444f,  0.000000f,  0.000000f,
+                1.000000f,  0.000000f,  0.000000f,
+                1.000000f,  0.000000f,  0.000000f,
+            };
+
+            float[] uvData =
+            {
+            // .Texture coordinates
+            // .U           V
+                1.000000f,  -0.000000f, // Triangle
+                0.500000f,  -1.000000f,
+                0.000000f,  -0.000000f,
+
+                0.000000f,  -0.000000f, // Square
+                1.000000f,  -0.000000f,
+                1.000000f,  -1.000000f,
+                0.000000f,  -1.000000f,
+
+                1.000000f,  -0.500000f, // Hexagon
+                0.750000f,  -1.000000f,
+                0.250000f,  -1.000000f,
+                0.000000f,  -0.500000f,
+                0.250000f,  -0.000000f,
+                0.750000f,  -0.000000f,
+
+                1.000000f,  -0.500000f, // Circle
+                0.991936f,  -0.589810f,
+                0.968690f,  -0.674366f,
+                0.931680f,  -0.752249f,
+                0.882324f,  -0.822041f,
+                0.822041f,  -0.882324f,
+                0.752249f,  -0.931680f,
+                0.674366f,  -0.968690f,
+                0.589810f,  -0.991936f,
+                0.500000f,  -1.000000f,
+                0.410190f,  -0.991936f,
+                0.325634f,  -0.968690f,
+                0.247751f,  -0.931680f,
+                0.177959f,  -0.882324f,
+                0.117676f,  -0.822041f,
+                0.068320f,  -0.752249f,
+                0.031310f,  -0.674366f,
+                0.008064f,  -0.589810f,
+                0.000000f,  -0.500000f,
+                0.008064f,  -0.410190f,
+                0.031310f,  -0.325634f,
+                0.068320f,  -0.247751f,
+                0.117676f,  -0.177959f,
+                0.177959f,  -0.117676f,
+                0.247751f,  -0.068320f,
+                0.325634f,  -0.031310f,
+                0.410190f,  -0.008064f,
+                0.500000f,  -0.000000f,
+                0.589810f,  -0.008064f,
+                0.674366f,  -0.031310f,
+                0.752249f,  -0.068320f,
+                0.822041f,  -0.117676f,
+                0.882324f,  -0.177959f,
+                0.931680f,  -0.247751f,
+                0.968690f,  -0.325634f,
+                0.991936f,  -0.410190f,
             };
 
             int[] indices =
@@ -167,20 +226,23 @@ namespace Examples
                 0, 1, 2, // Triangle
                 3, 4, 5, 5, 6, 3, // Square
                 10, 7, 8, 9, 8, 10, 11, 7, 10, 11, 12, 7, // Hexagon
-                13, 14, 15, 13, 15, 16, 13, 16, 17, 13, 17, 18, 13, 18, 19, 13, 19, 20, 13, 20, 21, 13, 21, 22, // Circle
+                13, 14, 15, 13, 15, 16, 13, 16, 17, 13, 17, 18, 13, 18, 19, 13, 19, 20, 13, 20, 21, 13, 21, 22,  // Circle
                 13, 22, 23, 13, 23, 24, 13, 24, 25, 13, 25, 26, 13, 26, 27, 13, 27, 28, 13, 28, 29, 13, 29, 30,
                 13, 30, 31, 13, 31, 32, 13, 32, 33, 13, 33, 34, 13, 34, 35, 13, 35, 36, 13, 36, 37, 13, 37, 38,
                 13, 38, 39, 13, 39, 40, 13, 40, 41, 13, 41, 42, 13, 42, 43, 13, 43, 44, 13, 44, 45, 13, 45, 46,
                 13, 46, 47, 13, 47, 48,
             };
 
-            this.vbo = new VertexBufferObject(data);
+            this.texcoordVbo = new VertexBufferObject(uvData);
+
+            this.colorVbo = new VertexBufferObject(colorData);
 
             this.posVbo = new VertexBufferObject(positionData);
 
             VertexFormat vertexFormat = new VertexFormat();
             vertexFormat.AddAttribute(this.posVbo, VertexAttributeType.Position);
-            vertexFormat.AddAttributesGroup(this.vbo, VertexAttributeType.Color, VertexAttributeType.TexCoord0);
+            vertexFormat.AddAttribute(this.colorVbo, VertexAttributeType.Color);
+            vertexFormat.AddAttribute(this.texcoordVbo, VertexAttributeType.TexCoord0);
 
             this.vao = new VertexArrayObject(vertexFormat);
 
@@ -223,8 +285,9 @@ namespace Examples
             base.OnUnload();
 
             this.vao.Dispose();
-            this.vbo.Dispose();
+            this.colorVbo.Dispose();
             this.posVbo.Dispose();
+            this.texcoordVbo.Dispose();
             this.ebo.Dispose();
             this.shader.Dispose();
             this.texture.Dispose();

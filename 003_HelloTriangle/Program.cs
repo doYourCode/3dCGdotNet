@@ -28,7 +28,7 @@ namespace Examples
 
             GameWindowSettings gmSettings = new GameWindowSettings()
             {
-                UpdateFrequency = CONSTANTS.MAX_FPS,
+                UpdateFrequency = CONSTANTS.ZERO,
             };
 
             var appWindow = new HelloTriangle(gmSettings, settings);

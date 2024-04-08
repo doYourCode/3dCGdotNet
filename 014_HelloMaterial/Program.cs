@@ -6,12 +6,13 @@ namespace Examples
 {
     using ExamplesCommon;
     using Framework.Core;
+    using Framework.Utils;
     using OpenTK.Mathematics;
     using OpenTK.Windowing.Common;
     using OpenTK.Windowing.Desktop;
 
     /// <summary>
-    /// Ponto de entrada.
+    /// Entry point.
     /// </summary>
     internal class Program
     {
@@ -19,21 +20,26 @@ namespace Examples
         {
             NativeWindowSettings settings = new NativeWindowSettings()
             {
-                Title = "Hello Scene",
-                ClientSize = new Vector2i(1200, 800),
+                Title = "Hello Material",
+                ClientSize = new Vector2i(1600, 800),
                 WindowBorder = WindowBorder.Fixed,
                 WindowState = WindowState.Normal,
                 APIVersion = new Version(3, 3),
-                Vsync = VSyncMode.On,
+                Vsync = VSyncMode.Off,
             };
 
-            var window = new HelloMaterial(GameWindowSettings.Default, settings);
+            GameWindowSettings gmSettings = new GameWindowSettings()
+            {
+                UpdateFrequency = CONSTANTS.ZERO,
+            };
+
+            var appWindow = new HelloMaterial(gmSettings, settings);
 
             Shader.RootPath = "Resources/Shader/";
             Texture.RootPath = "Resources/Texture/";
             BasicMesh.RootPath = "Resources/Mesh/";
 
-            window.Run();
+            appWindow.Run();
         }
     }
 }

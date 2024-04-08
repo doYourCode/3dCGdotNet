@@ -68,9 +68,9 @@ namespace Examples
 #pragma warning disable CS0618 // Type or member is obsolete
 
             this.basicMaterial = new BasicMaterial(ShaderType.Phong, format);
+            this.basicMaterial.GetUniformLocations();
 
 #pragma warning restore CS0618 // Type or member is obsolete
-            this.basicMaterial.GetUniformLocations();
 
             // Luz
             this.light = new Light(

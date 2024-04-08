@@ -6,6 +6,7 @@ namespace Examples
 {
     using ExamplesCommon;
     using Framework.Core;
+    using Framework.Utils.GUI;
     using OpenTK.Graphics.OpenGL4;
     using OpenTK.Windowing.Common;
     using OpenTK.Windowing.Desktop;
@@ -13,6 +14,8 @@ namespace Examples
     /// <inheritdoc/>
     internal class HelloTransformation : GameWindow
     {
+        private FPSCounter fpsCounter;
+
         private float tick = 0.0f;
         private float speed = 100.0f;
 
@@ -38,6 +41,8 @@ namespace Examples
         protected override void OnLoad()
         {
             base.OnLoad();
+
+            this.fpsCounter = new FPSCounter(this);
 
             GL.Enable(EnableCap.DepthTest);
 
@@ -72,6 +77,8 @@ namespace Examples
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
+
+            this.fpsCounter.Update(args);
 
             // Rotate the model matrix (experimente alterar esses valores)
             this.transform.SetRotationY((float)System.Math.Cos(this.tick));

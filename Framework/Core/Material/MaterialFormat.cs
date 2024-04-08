@@ -24,7 +24,7 @@ namespace Framework.Core.Material
         /// <summary>
         /// Gets a reference to the list containing all the attributes.
         /// </summary>
-        internal ref Dictionary<string, MaterialAttribute> AttributesRef { get => ref this.attributes; }
+        public ref Dictionary<string, MaterialAttribute> AttributesRef { get => ref this.attributes; }
 
         /// <summary>
         /// Gets TODO.

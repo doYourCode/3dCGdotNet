@@ -53,7 +53,7 @@ namespace Examples
             this.fpsCounter = new FPSCounter(this);
 
             // Cena
-            this.scene = new BasicScene("SCENE.dae");
+            this.scene = new BasicScene("SCENE.3ds", false, true);
 
             // Textura
             this.texture = Texture.LoadFromFile("Uv_checker_01.png", TextureUnit.Texture0);
@@ -74,16 +74,16 @@ namespace Examples
 
             // Luz
             this.light = new Light(
-                new System.Numerics.Vector3(2.0f, 2.0f, 2.0f),
+                new System.Numerics.Vector3(0.0f, 0.0f, 0.0f),
                 new System.Numerics.Vector3(1.0f, 1.0f, 1.0f),
-                new System.Numerics.Vector3(-1.0f, 0.3f, 1.2f),
+                new System.Numerics.Vector3(1.0f, 1.0f, 1.0f),
                 1.0f,
                 false);
 
             this.light.GetUniformLocations(this.basicMaterial.Shader);
 
             this.ambientLight = new AmbientLight(
-                new System.Numerics.Vector3(0.0f, 0.0f, 0.0f),
+                new System.Numerics.Vector3(0.06f, 0.05f, 0.12f),
                 1.0f);
             this.ambientLight.GetUniformLocations(this.basicMaterial.Shader);
 

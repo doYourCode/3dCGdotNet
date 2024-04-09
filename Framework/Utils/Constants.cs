@@ -49,7 +49,7 @@ namespace Framework.Utils
         /// <summary>
         /// TODO.
         /// </summary>
-        public const double MAX_FPS = 512;
+        public const double MAX_FPS = 120;
     }
 
 #pragma warning restore SA1310 // Field names should not contain underscore

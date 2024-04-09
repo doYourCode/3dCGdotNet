@@ -121,7 +121,7 @@ namespace Framework.Core
             Matrix4 scaleMat = Matrix4.CreateScale(this.scale);
             Matrix4 rotMat = Matrix4.CreateFromQuaternion(this.rotation);
 
-            return posMat * rotMat * scaleMat;
+            return scaleMat * rotMat * posMat;
         }
 
         /// <summary>

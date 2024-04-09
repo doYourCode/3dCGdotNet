@@ -25,12 +25,12 @@ namespace Examples
                 WindowBorder = WindowBorder.Fixed,
                 WindowState = WindowState.Normal,
                 APIVersion = new Version(3, 3),
-                Vsync = VSyncMode.Off,
+                Vsync = VSyncMode.On,
             };
 
             GameWindowSettings gmSettings = new GameWindowSettings()
             {
-                UpdateFrequency = CONSTANTS.ZERO,
+                UpdateFrequency = CONSTANTS.MAX_FPS,
             };
 
             var appWindow = new HelloScene(gmSettings, settings);

@@ -27,7 +27,7 @@ namespace ExamplesCommon
         /// Initializes a new instance of the <see cref="BasicScene"/> class.
         /// </summary>
         /// <param name="filePath">The path that points to the scene file.</param>
-        public BasicScene(string filePath)
+        public BasicScene(string filePath, bool invertUv = false, bool swapYZ = false)
             : base(filePath.ToString(), 0)
         {
             filePath = rootPath + filePath;
@@ -41,10 +41,12 @@ namespace ExamplesCommon
 
             Scene scene = context.ImportFile(
                 filePath,
-                PostProcessSteps.Triangulate | PostProcessSteps.GenerateSmoothNormals | PostProcessSteps.FlipUVs);
+                PostProcessSteps.Triangulate | PostProcessSteps.FixInFacingNormals | PostProcessSteps.FlipUVs);
 
             uint meshCount = (uint)scene.RootNode.ChildCount;
-
+#if DEBUG
+            Console.WriteLine("Importing scene: " + filePath);
+#endif
             foreach (Node node in scene.RootNode.Children)
             {
                 Transform transform = new ();
@@ -54,19 +56,32 @@ namespace ExamplesCommon
                 Vector3D position = new ();
 
                 node.Transform.Decompose(out scale, out rotation, out position);
-                Console.WriteLine(node.Name);
 
-                Console.WriteLine("Position: " + position);
+                if (swapYZ)
+                {
+                    float tmp = rotation.Z;
+                    rotation.Z = rotation.Y;
+                    rotation.Y = tmp;
 
-                Console.WriteLine("Rotation: " + rotation);
+                    tmp = position.Z;
+                    position.Z = position.Y;
+                    position.Y = tmp;
 
-                Console.WriteLine("Scale: " + scale);
-
+                    rotation.X *= -1.0f;
+                    position.X *= -1.0f;
+                }
+#if DEBUG
+                Console.WriteLine(
+                    "Object: " + node.Name + "\n"
+                    + "\tPosition: " + position + "\n"
+                    + "\tRotation: " + rotation + "\n"
+                    + "\tScale: " + scale);
+#endif
                 foreach (int i in node.MeshIndices)
                 {
                     // TODO: add transform support
                     Mesh mesh = scene.Meshes[i];
-                    this.sceneMeshes.Add(mesh.Name, new BasicMesh(mesh));
+                    this.sceneMeshes.Add(mesh.Name, new BasicMesh(mesh, invertUv, swapYZ));
                     this.sceneTransforms.Add(mesh.Name, new Transform(position, rotation, scale));
                 }
             }
@@ -92,6 +107,18 @@ namespace ExamplesCommon
                 shader.SetMatrix4("model", this.sceneTransforms[mesh.Label].GetModelMatrix());
                 mesh.Draw();
             }
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="a"> PARAM TODO. </param>
+        /// <param name="b"> PARAM2 TODO. </param>
+        private void Swap(ref float a, ref float b)
+        {
+            float tmp = a;
+            a = b;
+            b = tmp;
         }
     }
 }

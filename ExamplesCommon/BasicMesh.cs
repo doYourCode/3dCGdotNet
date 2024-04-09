@@ -28,9 +28,11 @@ namespace ExamplesCommon
         /// </summary>
         /// <param name="filePath">The path to the file.</param>
         /// <param name="invertUv">Checks if UVs Y element should be inverted.</param>
+        /// <param name="swapYZ">Checks if Y and Z elements should be swaped.</param>
         public BasicMesh(
             string filePath,
-            bool invertUv = false)
+            bool invertUv = false,
+            bool swapYZ = false)
             : base(filePath.ToString(), 0)
         {
             filePath = RootPath + filePath;
@@ -41,7 +43,7 @@ namespace ExamplesCommon
             // Loads the data into a "scene"
             var scene = context.ImportFile(
                 filePath,
-                PostProcessSteps.Triangulate | PostProcessSteps.GenerateSmoothNormals | PostProcessSteps.FlipUVs);
+                PostProcessSteps.Triangulate | PostProcessSteps.None | PostProcessSteps.FlipUVs);
 
             // Arrays p/ guardar copia dos dados na RAM
             var positions = new List<float>();
@@ -53,7 +55,7 @@ namespace ExamplesCommon
             // Loads the vertex data into the lists
             foreach (var mesh in scene.Meshes)
             {
-                this.Setup(mesh);
+                this.Setup(mesh, invertUv, swapYZ);
             }
         }
 
@@ -61,10 +63,12 @@ namespace ExamplesCommon
         /// Initializes a new instance of the <see cref="BasicMesh"/> class.
         /// </summary>
         /// <param name="mesh">The Assimp mesh object to be imported.</param>
-        public BasicMesh(Mesh mesh)
+        /// <param name="invertUv">Checks if UVs Y element should be inverted.</param>
+        /// <param name="swapYZ">Checks if Y and Z elements should be swaped.</param>
+        public BasicMesh(Mesh mesh, bool invertUv = false, bool swapYZ = false)
             : base(mesh.Name, 0)
         {
-            this.Setup(mesh);
+            this.Setup(mesh, invertUv, swapYZ);
         }
 
         /// <summary>
@@ -98,7 +102,7 @@ namespace ExamplesCommon
         /// Setups mesh data.
         /// </summary>
         /// <param name="mesh">Tme Assimp mesh to be loaded into a mesh.</param>
-        private void Setup(Mesh mesh)
+        private void Setup(Mesh mesh, bool invertUv = false, bool swapYZ = false)
         {
             // Arrays p/ guardar copia dos dados na RAM
             var positions = new List<float>();
@@ -109,10 +113,20 @@ namespace ExamplesCommon
 
             for (int i = 0; i < mesh.VertexCount; i++)
             {
-                positions.AddRange(new[]
+                if (swapYZ)
                 {
-                    mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z,
-                });
+                    positions.AddRange(new[]
+                    {
+                        -mesh.Vertices[i].X, mesh.Vertices[i].Z, mesh.Vertices[i].Y,
+                    });
+                }
+                else
+                {
+                    positions.AddRange(new[]
+                    {
+                        mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z,
+                    });
+                }
 
                 if (mesh.HasVertexColors(0))
                 {
@@ -155,8 +169,24 @@ namespace ExamplesCommon
             for (int i = 0; i < positions.Count / 3; i++)
             {
                 interleaved.AddRange(new[] { colors[i].R, colors[i].G, colors[i].B });
-                interleaved.AddRange(new[] { uvs[i].X, uvs[i].Y });
-                interleaved.AddRange(new[] { normals[i].X, normals[i].Y, normals[i].Z });
+
+                if (invertUv)
+                {
+                    interleaved.AddRange(new[] { uvs[i].Y, uvs[i].X });
+                }
+                else
+                {
+                    interleaved.AddRange(new[] { uvs[i].X, uvs[i].Y });
+                }
+
+                if (swapYZ)
+                {
+                    interleaved.AddRange(new[] { -normals[i].X, normals[i].Z, normals[i].Y });
+                }
+                else
+                {
+                    interleaved.AddRange(new[] { normals[i].X, normals[i].Y, normals[i].Z });
+                }
             }
 
             this.positionVbo = new VertexBufferObject(positions.ToArray());
@@ -172,11 +202,6 @@ namespace ExamplesCommon
                 VertexAttributeType.Color,
                 VertexAttributeType.TexCoord0,
                 VertexAttributeType.Normal);
-#if DEBUG
-            Console.WriteLine("BasicMesh layout setup:\n");
-            format.PrintLayout();
-            Console.WriteLine("\n");
-#endif
 
             this.vao = new VertexArrayObject(format);
 

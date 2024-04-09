@@ -55,37 +55,45 @@ namespace Framework.Core.Camera
             const float cameraSpeed = 1.5f;
             const float sensitivity = 0.2f;
 
+            float speedMultiplier = 1.0f;
+
+            if (input.IsKeyDown(Keys.LeftShift))
+            {
+                // Forward
+                speedMultiplier = 3.0f;
+            }
+
             if (input.IsKeyDown(Keys.W))
             {
                 // Forward
-                this.camera.Position += this.camera.Front * cameraSpeed * (float)e.Time;
+                this.camera.Position += this.camera.Front * cameraSpeed * (float)e.Time * speedMultiplier;
             }
             else if (input.IsKeyDown(Keys.S))
             {
                 // Backwards
-                this.camera.Position -= this.camera.Front * cameraSpeed * (float)e.Time;
+                this.camera.Position -= this.camera.Front * cameraSpeed * (float)e.Time * speedMultiplier;
             }
 
             if (input.IsKeyDown(Keys.A))
             {
                 // Left
-                this.camera.Position -= this.camera.Right * cameraSpeed * (float)e.Time;
+                this.camera.Position -= this.camera.Right * cameraSpeed * (float)e.Time * speedMultiplier;
             }
             else if (input.IsKeyDown(Keys.D))
             {
                 // Right
-                this.camera.Position += this.camera.Right * cameraSpeed * (float)e.Time;
+                this.camera.Position += this.camera.Right * cameraSpeed * (float)e.Time * speedMultiplier;
             }
 
             if (input.IsKeyDown(Keys.Q))
             {
                 // Up
-                this.camera.Position += this.camera.Up * cameraSpeed * (float)e.Time;
+                this.camera.Position += this.camera.Up * cameraSpeed * (float)e.Time * speedMultiplier;
             }
             else if (input.IsKeyDown(Keys.E))
             {
                 // Down
-                this.camera.Position -= this.camera.Up * cameraSpeed * (float)e.Time;
+                this.camera.Position -= this.camera.Up * cameraSpeed * (float)e.Time * speedMultiplier;
             }
 
             if (mouse.IsButtonDown(MouseButton.Right))

@@ -158,7 +158,7 @@ namespace Framework.Core.Light
         public bool CastShadow { get => this.castShadow; set => this.castShadow = value; } // TODO: implementar os efeitos de sombra
 
         /// <summary>
-        /// Gets or sets TODO.
+        /// Gets TODO.
         /// </summary>
         public ref Vector3 PositionRef { get => ref this.position; }
 

@@ -39,7 +39,7 @@ namespace Framework.Core.Resource
 
             this.label = label;
 
-            this.RegisterInstance(label + "_" + this.id, this);
+            this.RegisterInstance(label + "_" + this.id);
         }
 
         /// <summary>
@@ -143,10 +143,9 @@ namespace Framework.Core.Resource
         /// Register this instance of <see cref="DisposableResource"/> for future tracking.
         /// </summary>
         /// <param name="label">The unique identifier string.</param>
-        /// <param name="dispRes">The instance to be registered.</param>
-        public void RegisterInstance(string label, DisposableResource dispRes)
+        public void RegisterInstance(string label)
         {
-            DisposableResource.disposableResources.Add(label, dispRes);
+            DisposableResource.disposableResources.Add(label, this);
         }
 
         /// <summary>

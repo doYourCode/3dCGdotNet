@@ -12,7 +12,7 @@ namespace Framework.Utils.GUI
     /// </summary>
     public class FPSCounter
     {
-        private static uint bufferSize = 512;
+        private static uint bufferSize = 128;
 
         private static double bufferSizeInv = 1.0 / (double)bufferSize;
 

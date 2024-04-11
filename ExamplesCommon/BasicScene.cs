@@ -27,6 +27,8 @@ namespace ExamplesCommon
         /// Initializes a new instance of the <see cref="BasicScene"/> class.
         /// </summary>
         /// <param name="filePath">The path that points to the scene file.</param>
+        /// <param name="invertUv"> PARAM TODO. </param>
+        /// <param name="swapYZ"> PARAM2 TODO. </param>
         public BasicScene(string filePath, bool invertUv = false, bool swapYZ = false)
             : base(filePath.ToString(), 0)
         {
@@ -47,6 +49,14 @@ namespace ExamplesCommon
 #if DEBUG
             Console.WriteLine("Importing scene: " + filePath);
 #endif
+
+            Console.WriteLine("Materials: " + scene.MaterialCount);
+
+            foreach (Assimp.Material material in scene.Materials)
+            {
+                Console.WriteLine(material.TextureDiffuse.FilePath);
+            }
+
             foreach (Node node in scene.RootNode.Children)
             {
                 Transform transform = new ();

@@ -37,8 +37,16 @@ namespace Framework.Utils.GUI.ViewLayer
         public void Unload();
 
         /// <summary>
+        /// Resizes the screen.
+        /// </summary>
+        /// <param name="width"> The new width. </param>
+        /// <param name="height">  The new height. </param>
+        public void Resize(int width, int height);
+
+        /// <summary>
         /// Renders the View objects.
         /// </summary>
-        public void RenderView();
+        public void RenderView(); // TODO: refactor it so there's no two render methods.
+        //
     }
 }

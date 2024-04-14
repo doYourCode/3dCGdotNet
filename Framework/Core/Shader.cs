@@ -146,6 +146,17 @@ namespace Framework.Core
             GL.Uniform3(this.uniformLocations[name], data);
         }
 
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="name"> PARAM TODO. </param>
+        /// <param name="data"> PARAM2 TODO. </param>
+        public void SetVector4(string name, Vector4 data)
+        {
+            GL.UseProgram(this.ID);
+            GL.Uniform4(this.uniformLocations[name], data);
+        }
+
         /// <inheritdoc/>
         protected override void Dispose(bool isManualDispose)
         {

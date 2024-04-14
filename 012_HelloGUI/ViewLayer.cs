@@ -65,6 +65,8 @@ namespace Examples
         {
             GL.Disable(EnableCap.DepthTest);
 
+            ImGui.ShowDemoWindow();
+
             this.RenderView();
             this.controller.Render();
 

@@ -5,10 +5,13 @@
 namespace ExamplesCommon
 {
     using Assimp;
+    using Framework.Core;
     using Framework.Core.Buffer;
+    using Framework.Core.Camera;
     using Framework.Core.Resource;
     using Framework.Core.Vertex;
     using OpenTK.Graphics.OpenGL4;
+    using System;
 
     /// <summary>
     /// A basic implementation of a 3d mesh object.
@@ -81,6 +84,18 @@ namespace ExamplesCommon
         /// </summary>
         public void Draw()
         {
+            GL.BindVertexArray(this.vao.ID);
+            GL.DrawElements(
+                BeginMode.Triangles,
+                this.ebo.IndexCount,
+                DrawElementsType.UnsignedInt,
+                0);
+        }
+
+        public void Draw(Shader shadowMapProgram, PerspectiveCamera camera)
+        {
+            shadowMapProgram.Use();
+
             GL.BindVertexArray(this.vao.ID);
             GL.DrawElements(
                 BeginMode.Triangles,

@@ -10,7 +10,6 @@ namespace Examples
     using OpenTK.Mathematics;
     using OpenTK.Windowing.Common;
     using OpenTK.Windowing.Desktop;
-    using OpenTK.Windowing.GraphicsLibraryFramework;
 
     /// <summary>
     /// Entry point.
@@ -25,7 +24,7 @@ namespace Examples
                 ClientSize = GetScreenSize(),
                 WindowBorder = WindowBorder.Resizable,
                 WindowState = WindowState.Maximized,
-                APIVersion = new Version(3, 3),
+                APIVersion = new Version(4, 2),
                 Vsync = VSyncMode.Off,
             };
 
@@ -34,7 +33,7 @@ namespace Examples
                 UpdateFrequency = CONSTANTS.MAX_FPS,
             };
 
-            var appWindow = new ApplicationLayer(gmSettings, settings);
+            var appWindow = new TestApp(gmSettings, settings);
 
             Shader.RootPath = "Resources/Shader/";
             Texture.RootPath = "Resources/Texture/";
@@ -49,7 +48,9 @@ namespace Examples
         /// <returns> The size of the screen in pixels. </returns>
         private static Vector2i GetScreenSize()
         {
-            var tmpWindow = new GameWindow(GameWindowSettings.Default, NativeWindowSettings.Default);
+            var tmpWindow = new GameWindow(
+                GameWindowSettings.Default,
+                NativeWindowSettings.Default);
 
             MonitorInfo mi = Monitors.GetMonitorFromWindow(tmpWindow);
 

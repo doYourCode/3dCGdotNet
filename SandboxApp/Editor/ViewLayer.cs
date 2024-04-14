@@ -4,6 +4,7 @@
 
 namespace Examples
 {
+    using Framework.Core;
     using Framework.Utils.GUI;
     using Framework.Utils.GUI.ViewLayer;
     using ImGuiNET;
@@ -16,7 +17,7 @@ namespace Examples
     {
         private ImGuiController controller;
 
-        private GameWindow window;
+        private ApplicationLayer window;
 
         private bool sceneTreeActive;
 
@@ -29,7 +30,7 @@ namespace Examples
         private bool viewportActive;
 
         /// <summary>
-        /// Gets the ImGui controller object reference..
+        /// Gets the ImGui controller object reference.
         /// </summary>
         public ImGuiController Controller { get => this.controller; }
 
@@ -41,8 +42,11 @@ namespace Examples
         /// <inheritdoc/>
         public void Load(GameWindow window)
         {
-            this.controller = new ImGuiController(window.ClientSize.X, window.ClientSize.Y);
-            this.window = window;
+            this.controller = new ImGuiController(
+                window.ClientSize.X,
+                window.ClientSize.Y);
+
+            this.window = (ApplicationLayer)window;
         }
 
         /// <inheritdoc/>
@@ -153,6 +157,11 @@ namespace Examples
                 "Viewport",
                 ref this.viewportActive,
                 ImGuiWindowFlags.NoMove);
+
+            ImGui.GetWindowDrawList().AddImage(
+                (System.IntPtr)this.window.FrameBuffer.Texture.ID,
+                ImGui.GetWindowPos(),
+                ImGui.GetContentRegionAvail() + ImGui.GetWindowPos());
 
             ImGui.End();
         }

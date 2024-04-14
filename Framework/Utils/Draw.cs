@@ -83,7 +83,33 @@ namespace Framework.Utils
 
             GL.Disable(EnableCap.DepthTest);    // Disable depth
 
-            GL.BindTexture(TextureTarget.Texture2D, fbo.Texture.ID);
+            fbo.Texture.Use(TextureUnit.Texture0);
+
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="screenRectangle"> PARAM TODO2. </param>
+        public static void ScreenRectangle(ScreenRectangle screenRectangle)
+        {
+            screenRectangle.Vao.Bind();
+
+            GL.Disable(EnableCap.DepthTest);    // Disable depth
+
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="screenRectangle"> PARAM TODO2. </param>
+        public static void ScreenRectangle()
+        {
+            Draw.screenRectangle.Vao.Bind();
+
+            GL.Disable(EnableCap.DepthTest);    // Disable depth
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }

@@ -14,8 +14,11 @@ namespace Framework.Core.Buffer
     /// </summary>
     public class FrameBufferObject : OpenGLObject
     {
-        private readonly Color4 defaultBackgroundColor =
-    new Color4(0.0f, 0.0f, 0.0f, 1.0f);
+        private readonly Color4 defaultBackgroundColor = new Color4(
+            1.0f,
+            1.0f,
+            0.0f,
+            1.0f);
 
         private Texture texture;
 
@@ -113,7 +116,7 @@ namespace Framework.Core.Buffer
             else
             {
                 // Configurar parâmetros para criar textura e framebuffer sem multisampling
-                GL.BindTexture(TextureTarget.Texture2DMultisample, this.texture.ID);
+                GL.BindTexture(TextureTarget.Texture2D, this.texture.ID);
 
                 GL.TexImage2D(
                     TextureTarget.Texture2D,
@@ -152,6 +155,23 @@ namespace Framework.Core.Buffer
                     TextureTarget.Texture2D,
                     this.texture.ID,
                     0);
+
+                uint rboId;
+                rboId = (uint)GL.GenRenderbuffer();
+
+                GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, rboId);
+
+                GL.RenderbufferStorage(
+                    RenderbufferTarget.Renderbuffer,
+                    RenderbufferStorage.Depth24Stencil8,
+                    this.width,
+                    this.height);
+
+                GL.FramebufferRenderbuffer(
+                    FramebufferTarget.Framebuffer,
+                    FramebufferAttachment.DepthStencilAttachment,
+                    RenderbufferTarget.Renderbuffer,
+                    rboId);
             }
 
             // Error checking framebuffer
@@ -166,10 +186,7 @@ namespace Framework.Core.Buffer
         /// <summary>
         /// Gets the internal Texture object.
         /// </summary>
-        public Texture Texture
-        {
-            get => this.texture; private set { }
-        }
+        public Texture Texture { get => this.texture; }
 
         /// <summary>
         /// Unbinds any bound custom FrameBuffer, it makes OpenGL bind the Default.
@@ -211,7 +228,37 @@ namespace Framework.Core.Buffer
         /// <param name="other">The other texture to blit to.</param>
         public void BlitTexture(FrameBufferObject other)
         {
-            // TODO
+            // Make it so the multisampling FBO is read while the post-processing FBO is drawn
+            GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, this.ID);
+            GL.BindFramebuffer(FramebufferTarget.DrawFramebuffer, other.ID);
+
+            GL.BlitFramebuffer(
+                0,
+                0,
+                this.width,
+                this.height,
+                0,
+                0,
+                other.width,
+                other.height,
+                ClearBufferMask.ColorBufferBit,
+                BlitFramebufferFilter.Nearest);
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="rect"> PARAM TODO. </param>
+        /// <param name="shader"> PARAM2 TODO. </param>
+        public void Draw(ScreenRectangle rect, Shader shader)
+        {
+            shader.Use();
+
+            GL.BindVertexArray(rect.Vao.ID);
+            GL.Disable(EnableCap.DepthTest); // prevents framebuffer rectangle from being discarded
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, this.texture.ID);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
 
         /// <inheritdoc/>

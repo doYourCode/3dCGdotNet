@@ -12,6 +12,8 @@ namespace Framework.Core.Camera
     /// </summary>
     public class PerspectiveCamera
     {
+        private static Matrix4 defaultMatrix;
+
         private int positionUniformLocation;
 
         private Vector3 front = -Vector3.UnitZ;
@@ -144,6 +146,27 @@ namespace Framework.Core.Camera
         public void GetUniformLocations(Shader shader)
         {
             this.positionUniformLocation = GL.GetUniformLocation(shader.ID, "viewPosition");
+        }
+
+        /// <summary>
+        /// TODO.
+        /// </summary>
+        /// <param name="fovDeg"> PARAM TODO. </param>
+        /// <param name="nearPlane"> PARAM2 TODO. </param>
+        /// <param name="farPlane"> PARAM3 TODO. </param>
+        public void UpdateMatrix(float fovDeg, float nearPlane, float farPlane)
+        {
+            // Initializes matrices since otherwise they will be the null matrix
+            Matrix4 view = default(Matrix4);
+            Matrix4 projection = default(Matrix4);
+
+            // Makes camera look in the right direction from the right position
+            view = Matrix4.LookAt(this.Position, this.Position + this.front, this.up);
+            // Adds perspective to the scene
+            projection = Matrix4.CreatePerspectiveFieldOfView(this.fov, this.AspectRatio, 0.01f, 100f);
+
+            // Sets new camera matrix
+            defaultMatrix = projection * view;
         }
 
         /// <summary>

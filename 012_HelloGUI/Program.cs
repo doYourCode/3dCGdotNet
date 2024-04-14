@@ -22,7 +22,7 @@ namespace Examples
             {
                 Title = "Hello GUI",
                 ClientSize = new Vector2i(800, 800),
-                WindowBorder = WindowBorder.Fixed,
+                WindowBorder = WindowBorder.Resizable,
                 WindowState = WindowState.Normal,
                 APIVersion = new Version(3, 3),
                 Vsync = VSyncMode.Off,

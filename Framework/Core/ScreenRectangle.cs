@@ -31,14 +31,14 @@ namespace Framework.Core
 #pragma warning disable SA1137 // Elements should have the same indentation
 
             // .2D positions (just ignore the third values
-            //  X       Y       Z
-                1.0f,  -1.0f,   0.0f,
+            //  X      Y        Z
+               -1.0f,  1.0f,    0.0f,
                -1.0f,  -1.0f,   0.0f,
-               -1.0f,   1.0f,   0.0f,
+               1.0f,   -1.0f,   0.0f,
 
-                1.0f,   1.0f,   0.0f,
-                1.0f,  -1.0f,   0.0f,
-               -1.0f,   1.0f,   0.0f,
+               -1.0f,  1.0f,    0.0f,
+               1.0f,   -1.0f,   0.0f,
+               1.0f,   1.0f,    0.0f,
 
 #pragma warning restore SA1137 // Elements should have the same indentation
             };
@@ -47,13 +47,13 @@ namespace Framework.Core
             {
             // .Texture coordinates
             //  U       V
-                1.0f,   0.0f,
+                0.0f,   1.0f,
                 0.0f,   0.0f,
-                0.0f,   1.0f,
-
-                1.0f,   1.0f,
                 1.0f,   0.0f,
+
                 0.0f,   1.0f,
+                1.0f,   0.0f,
+                1.0f,   1.0f,
             };
 
             this.posVbo = new VertexBufferObject(positionData);

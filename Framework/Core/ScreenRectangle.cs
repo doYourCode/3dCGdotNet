@@ -13,6 +13,8 @@ namespace Framework.Core
     /// </summary>
     public class ScreenRectangle : ResourceObject
     {
+        private static ScreenRectangle defaultInstance = new ScreenRectangle("Default-");
+
         private VertexArrayObject vao;
 
         private VertexBufferObject posVbo;
@@ -23,8 +25,8 @@ namespace Framework.Core
         /// Initializes a new instance of the <see cref="ScreenRectangle"/> class.
         /// TODO.
         /// </summary>
-        public ScreenRectangle()
-            : base("ScreenRectangle ", 0)
+        public ScreenRectangle(string name = "")
+            : base(name + "ScreenRectangle ", 0)
         {
             float[] positionData =
             {
@@ -65,6 +67,11 @@ namespace Framework.Core
 
             this.vao = new VertexArrayObject(format);
         }
+
+        /// <summary>
+        /// Gets TODO.
+        /// </summary>
+        public static ScreenRectangle Default { get => ScreenRectangle.defaultInstance; }
 
         /// <summary>
         /// Gets TODO.

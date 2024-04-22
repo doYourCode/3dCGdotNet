@@ -6,6 +6,7 @@ namespace Examples
 {
     using ExamplesCommon;
     using Framework.Core;
+    using Framework.Core.Buffer;
     using Framework.Core.Camera;
     using Framework.Utils;
     using Framework.Utils.GUI;
@@ -15,7 +16,7 @@ namespace Examples
     using OpenTK.Windowing.Desktop;
 
     /// <inheritdoc/>
-    internal class TestApp : GameWindow
+    internal class TestApp2 : GameWindow
     {
         // FBO EXAMPLE DATA
 
@@ -61,12 +62,15 @@ namespace Examples
         private PerspectiveCamera camera;
         private CameraController cameraController;
 
+        private FrameBufferObject firstFbo;
+        private FrameBufferObject postEffectsFbo;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestApp"/> class.
+        /// Initializes a new instance of the <see cref="TestApp2"/> class.
         /// </summary>
         /// <param name="gameWindowSettings"> PARAM TODO. </param>
         /// <param name="nativeWindowSettings"> PARAM2 TODO. </param>
-        public TestApp(
+        public TestApp2(
             GameWindowSettings gameWindowSettings,
             NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -169,7 +173,7 @@ namespace Examples
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.GenTextures(1, out this.postProcessingTexture);
             GL.BindTexture(TextureTarget.Texture2D, this.postProcessingTexture);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb16f, this.FBOWIDTH, this.FBOHEIGHT, 0, PixelFormat.Rgb, PixelType.UnsignedByte, (IntPtr)null);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb32f, this.FBOWIDTH, this.FBOHEIGHT, 0, PixelFormat.Rgb, PixelType.UnsignedByte, (IntPtr)null);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
@@ -221,6 +225,13 @@ namespace Examples
 
             // END OF FBO EXAMPLE DATA INIT
 
+
+            this.firstFbo = new FrameBufferObject(this.ClientSize.X, this.ClientSize.Y, true, true, 8); // OBJECT ORIENTED FBOs
+
+            this.postEffectsFbo = new FrameBufferObject(this.ClientSize.X, this.ClientSize.Y);
+
+
+
             // We make the mouse cursor invisible and captured so we can have proper FPS-camera movement.
             this.CursorState = CursorState.Grabbed;
         }
@@ -246,9 +257,12 @@ namespace Examples
 
             // END OF SHADOW RENDERING
 
+            //this.firstFbo.Bind();
+
             // Preparations for the Frame Buffer
             GL.Viewport(0, 0, WIDTH, HEIGHT);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, this.normalFBO);
+
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Send the light matrix to the shader
@@ -263,18 +277,21 @@ namespace Examples
 
             this.mesh.Draw();
 
-            // Make it so the multisampling FBO is read while the post-processing FBO is drawn
+            // Make it so the multisampling FBO is read while the post-processing FBO is drawn 
             GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, this.normalFBO);
             GL.BindFramebuffer(FramebufferTarget.DrawFramebuffer, this.postProcessingFBO);
             // BLIT IT!
             GL.BlitFramebuffer(0, 0, this.WIDTH, this.HEIGHT, 0, 0, this.FBOWIDTH, this.FBOHEIGHT, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Linear);
 
+            //this.firstFbo.BlitTexture(this.postEffectsFbo);
+
 #if true
 
             // Bind default FBO
-            GL.Viewport(0, 0, WIDTH, HEIGHT);
+            //GL.Viewport(0, 0, WIDTH, HEIGHT);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-            // Draw the framebuffer rectangle
+            //FrameBufferObject.BindDefault();
+            //Draw the framebuffer rectangle
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             GL.ActiveTexture(TextureUnit.Texture0);
@@ -282,6 +299,8 @@ namespace Examples
             this.framebufferProgram.Use();
 
             Draw.ScreenRectangle();
+
+            //this.postEffectsFbo.Draw(ScreenRectangle.Default, this.framebufferProgram);
 
 #endif
 

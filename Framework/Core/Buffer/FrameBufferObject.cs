@@ -22,13 +22,13 @@ namespace Framework.Core.Buffer
 
         private Texture texture;
 
-        private ushort width;
+        private int width;
 
-        private ushort height;
-
-        private ushort numSamples;
+        private int height;
 
         private float gamma;
+
+        private uint renderBufferId = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FrameBufferObject"/> class.
@@ -36,25 +36,28 @@ namespace Framework.Core.Buffer
         /// <param name="width"> PARAM TODO. </param>
         /// <param name="height"> PARAM2 TODO. </param>
         /// <param name="isMultisample"> PARAM3 TODO. </param>
-        /// <param name="numSamples"> PARAM4 TODO. </param>
-        /// <param name="gamma"> PARAM5 TODO. </param>
+        /// <param name="useRenderBuffer"> PARAM4 TODO. </param>
+        /// <param name="numSamples"> PARAM5 TODO. </param>
+        /// <param name="gamma"> PARAM6 TODO. </param>
         public FrameBufferObject(
-            ushort width = 512,
-            ushort height = 512,
+            int width = 512,
+            int height = 512,
             bool isMultisample = false,
-            ushort numSamples = 1,
+            bool useRenderBuffer = false,
+            int numSamples = 1,
             float gamma = 1.0f)
             : base("FrameBufferObject", (uint)GL.GenBuffer())
         {
             this.width = width;
             this.height = height;
-            this.numSamples = numSamples;
             this.gamma = gamma;
 
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, this.ID);
 
             // Gera um endereço para uma textura de uso interno
             this.texture = new Texture("FBO (" + this.ID + ") - Texture ", (uint)GL.GenTexture());
+
+            GL.ActiveTexture(TextureUnit.Texture0);
 
             if (isMultisample)
             {
@@ -95,23 +98,25 @@ namespace Framework.Core.Buffer
                     this.texture.ID,
                     0);
 
-                uint rboId;
-                rboId = (uint)GL.GenRenderbuffer();
+                if (useRenderBuffer)
+                {
+                    this.renderBufferId = (uint)GL.GenRenderbuffer();
 
-                GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, rboId);
+                    GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, this.renderBufferId);
 
-                GL.RenderbufferStorageMultisample(
-                    RenderbufferTarget.Renderbuffer,
-                    numSamples,
-                    RenderbufferStorage.Depth24Stencil8,
-                    this.width,
-                    this.height);
+                    GL.RenderbufferStorageMultisample(
+                        RenderbufferTarget.Renderbuffer,
+                        numSamples,
+                        RenderbufferStorage.Depth24Stencil8,
+                        this.width,
+                        this.height);
 
-                GL.FramebufferRenderbuffer(
-                    FramebufferTarget.Framebuffer,
-                    FramebufferAttachment.DepthStencilAttachment,
-                    RenderbufferTarget.Renderbuffer,
-                    rboId);
+                    GL.FramebufferRenderbuffer(
+                        FramebufferTarget.Framebuffer,
+                        FramebufferAttachment.DepthStencilAttachment,
+                        RenderbufferTarget.Renderbuffer,
+                        this.renderBufferId);
+                }
             }
             else
             {
@@ -156,22 +161,24 @@ namespace Framework.Core.Buffer
                     this.texture.ID,
                     0);
 
-                uint rboId;
-                rboId = (uint)GL.GenRenderbuffer();
+                if (useRenderBuffer)
+                {
+                    this.renderBufferId = (uint)GL.GenRenderbuffer();
 
-                GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, rboId);
+                    GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, this.renderBufferId);
 
-                GL.RenderbufferStorage(
-                    RenderbufferTarget.Renderbuffer,
-                    RenderbufferStorage.Depth24Stencil8,
-                    this.width,
-                    this.height);
+                    GL.RenderbufferStorage(
+                        RenderbufferTarget.Renderbuffer,
+                        RenderbufferStorage.Depth24Stencil8,
+                        this.width,
+                        this.height);
 
-                GL.FramebufferRenderbuffer(
-                    FramebufferTarget.Framebuffer,
-                    FramebufferAttachment.DepthStencilAttachment,
-                    RenderbufferTarget.Renderbuffer,
-                    rboId);
+                    GL.FramebufferRenderbuffer(
+                        FramebufferTarget.Framebuffer,
+                        FramebufferAttachment.DepthStencilAttachment,
+                        RenderbufferTarget.Renderbuffer,
+                        this.renderBufferId);
+                }
             }
 
             // Error checking framebuffer
@@ -179,7 +186,7 @@ namespace Framework.Core.Buffer
 
             if (fboStatus != FramebufferErrorCode.FramebufferComplete)
             {
-                Console.WriteLine("Framebuffer " + this.texture.ID + " error:" + fboStatus);
+                Console.WriteLine("Framebuffer " + this.ID + " error:" + fboStatus);
             }
         }
 
@@ -207,7 +214,7 @@ namespace Framework.Core.Buffer
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, this.ID);
 
             GL.ClearColor(this.defaultBackgroundColor);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Ao final é necessário reativar o Depth Testing uma vez que este
             // foi desabilitado para desenhar o FrameRect na função FunFunc(...)
@@ -242,7 +249,7 @@ namespace Framework.Core.Buffer
                 other.width,
                 other.height,
                 ClearBufferMask.ColorBufferBit,
-                BlitFramebufferFilter.Nearest);
+                BlitFramebufferFilter.Linear);
         }
 
         /// <summary>
@@ -266,6 +273,7 @@ namespace Framework.Core.Buffer
         {
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, CONSTANTS.NONE);
             GL.DeleteFramebuffer(this.ID);
+            GL.DeleteRenderbuffer(0);
 
             this.texture.Dispose();
         }

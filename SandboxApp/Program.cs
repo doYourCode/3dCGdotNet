@@ -33,7 +33,7 @@ namespace Examples
                 UpdateFrequency = CONSTANTS.MAX_FPS,
             };
 
-            var appWindow = new TestApp(gmSettings, settings);
+            var appWindow = new TestApp2(gmSettings, settings);
 
             Shader.RootPath = "Resources/Shader/";
             Texture.RootPath = "Resources/Texture/";
